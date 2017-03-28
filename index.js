@@ -209,6 +209,10 @@ module.exports = (val, options) => {
 		},
 
 		// Is Tests
+		/**
+		 * Validates that a value is indeed a date
+		 * @return {object} returns itself to continue the chain
+		 */
 		isDate() {
 			if (/^((1[0-2])|(0?[1-9]))[\-\/\.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[\-\/\.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/.test(val)) {
 				passing = true;
@@ -223,6 +227,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value is a proper date
+		 * @return {object} returns itself to continue the chain
+		 */
 		isDateProper() {
 			if ((/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[\-\/\.]?((1[0-2])|(0?[1-9]))[\-\/\.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/).test(val)) {
 				passing = true;
@@ -327,6 +335,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value meets a zip code format
+		 * @return {object} returns itself to continue the chain
+		 */
 		isZip() {
 			if ((/^\d{5}(-\d{4})?$/).test(val)) {
 				passing = true;
@@ -341,6 +353,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value meets a postal code format
+		 * @return {object} returns itself to continue the chain
+		 */
 		isPostalCode() {
 			if ((/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val)) {
 				passing = true;
@@ -355,6 +371,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value is a proper phone format
+		 * @return {object} returns itself to continue the chain
+		 */
 		isPhone() {
 			if ((/^[0-9]{10}$/g).test(val.replace(/\W/g, ''))) {
 				passing = true;
@@ -369,6 +389,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value is a proper license plate format
+		 * @return {object} returns itself to continue the chain
+		 */
 		isLicensePlate() {
 			if ((/^[a-z0-9\-\s]+$/i).test(val)) {
 				passing = true;
@@ -383,6 +407,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value is in a visa card format
+		 * @return {object} returns itself to continue the chain
+		 */
 		isVisaCard() {
 			if ((/^4[0-9]{15}$/).test(val)) {
 				passing = true;
@@ -397,6 +425,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value is in a master card format
+		 * @return {object} returns itself to continue the chain
+		 */
 		isMasterCard() {
 			if ((/^5[1-5][0-9]{14}$/).test(val)) {
 				passing = true;
@@ -411,6 +443,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value is in a american express format
+		 * @return {object} returns itself to continue the chain
+		 */
 		isAmericanExpressCard() {
 			if ((/^3(4|7)[0-9]{13}$/).test(val)) {
 				passing = true;
@@ -445,6 +481,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value meets a 2 digit or 4 digit format
+		 * @return {object} returns itself to continue the chain
+		 */
 		meetsYearStandard() {
 			if ((/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val)) {
 				passing = true;
@@ -459,6 +499,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value meets a proper cvn format
+		 * @return {object} returns itself to continue the chain
+		 */
 		meetsCVN() {
 			if (val.length === 3 && (/[0-9]/).test(val)) {
 				passing = true;
@@ -473,6 +517,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value meets a proper cvn amex format
+		 * @return {object} returns itself to continue the chain
+		 */
 		meetsCVNAmex() {
 			if (val.length === 4 && (/[0-9]/).test(val)) {
 				passing = true;
@@ -487,6 +535,10 @@ module.exports = (val, options) => {
 			return this;
 		},
 
+		/**
+		 * Validates that a value meets a tread depth format
+		 * @return {object} returns itself to continue the chain
+		 */
 		meetsTreadDepth() {
 			if ((/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val)) {
 				passing = true;
