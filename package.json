@@ -1,0 +1,21 @@
+{
+  "name": "simply_valid",
+  "version": "1.0.0",
+  "description": "a simple data driven validation utility library",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "validation",
+    "simple",
+    "data",
+    "simply",
+    "valid"
+  ],
+  "author": "Dustin Hershman",
+  "license": "MIT"
+}
