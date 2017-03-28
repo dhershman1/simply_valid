@@ -96,6 +96,56 @@ test('Test isVin()', t => {
 	t.end();
 });
 
+test('Test isDate()', t => {
+	t.ok(validate('03-28-2017').isDate().finish().isValid, 'Returns that this is indeed a date');
+	t.end();
+});
+
+test('Test isDateProper()', t => {
+	t.ok(validate('2017-03-28').isDateProper().finish().isValid, 'Returns that this is indeed a proper date');
+	t.end();
+});
+
+test('Test isEmail()', t => {
+	t.ok(validate('coolkid778@aol.com').isEmail().finish().isValid, 'Returned OK This is a email');
+	t.end();
+});
+
+test('Test isZip()', t => {
+	t.ok(validate('77885').isZip().finish().isValid, 'Returned OK This is a Zip Code');
+	t.end();
+});
+
+test('Test isPostalCode()', t => {
+	t.ok(validate('K1A0B1').isPostalCode().finish().isValid, 'Returned OK This is a Postal Code');
+	t.end();
+});
+
+test('Test isPhone()', t => {
+	t.ok(validate('888-555-9987').isPhone().finish().isValid, 'Returned OK This is a phone format');
+	t.end();
+});
+
+test('Test isLicensePlate()', t => {
+	t.ok(validate('SSS1829').isLicensePlate().finish().isValid, 'Returned OK This is a license plate format');
+	t.end();
+});
+
+test('Test isVisaCard()', t => {
+	t.ok(validate('4111111111111111').isVisaCard().finish().isValid, 'Returned OK This is a Visa card format');
+	t.end();
+});
+
+test('Test isMasterCard()', t => {
+	t.ok(validate('5511111111111111').isMasterCard().finish().isValid, 'Returned OK This is a MasterCard format');
+	t.end();
+});
+
+test('Test isAmericanExpressCard()', t => {
+	t.ok(validate('341111111111111').isAmericanExpressCard().finish().isValid, 'Returned OK This is a American Express card format');
+	t.end();
+});
+
 test('Test matchesGiven()', t => {
 	t.ok(validate('Chicken', {
 		toMatch: 'Chicken'
@@ -133,6 +183,28 @@ test('Test meetsLength() Fail', t => {
 
 	t.notOk(results.isValid, 'This does not meet length requirements');
 	t.equal(results.story.length, 1, 'Story returned with a length of 1');
+	t.end();
+});
+
+test('Test meetsYearStandard()', t => {
+	t.ok(validate('2017').meetsYearStandard().finish().isValid, 'Proper 4 digit format');
+	t.ok(validate('17').meetsYearStandard().finish().isValid, 'Proper 2 digit format');
+	t.notOk(validate('178').meetsYearStandard().finish().isValid, 'inProper 3 digit format');
+	t.end();
+});
+
+test('Test meetsCVN()', t => {
+	t.ok(validate('201').meetsCVN().finish().isValid, 'Proper 3 digit CVN format');
+	t.end();
+});
+
+test('Test meetsCVNAmex()', t => {
+	t.ok(validate('2081').meetsCVNAmex().finish().isValid, 'Proper 4 digit CVN Amex format');
+	t.end();
+});
+
+test('Test meetsTreadDepth()', t => {
+	t.ok(validate('12').meetsTreadDepth().finish().isValid, 'Proper tread depth format');
 	t.end();
 });
 

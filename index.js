@@ -1,4 +1,4 @@
-const _ = require('underscore');
+const extend = require('extend-object');
 
 /* eslint no-useless-escape: 0 */
 
@@ -15,7 +15,7 @@ module.exports = (val, options) => {
 	let story = [];
 	let passing = false;
 	// This acts as our fallback global options
-	const opts = _.extend({}, defaults, options);
+	const opts = extend({}, defaults, options);
 
 	if (!val) {
 		return {
@@ -356,7 +356,7 @@ module.exports = (val, options) => {
 		},
 
 		isPhone() {
-			if ((/^[0-9]{10}$/g).test(val.replace(/\W/, ''))) {
+			if ((/^[0-9]{10}$/g).test(val.replace(/\W/g, ''))) {
 				passing = true;
 			} else {
 				passing = false;
@@ -460,7 +460,7 @@ module.exports = (val, options) => {
 		},
 
 		meetsCVN() {
-			if (val.length === 3 && (/[^0-9]/).test(val)) {
+			if (val.length === 3 && (/[0-9]/).test(val)) {
 				passing = true;
 			} else {
 				passing = false;
@@ -469,10 +469,12 @@ module.exports = (val, options) => {
 					test: 'meetsCVN'
 				});
 			}
+
+			return this;
 		},
 
 		meetsCVNAmex() {
-			if (val.length === 4 && (/[^0-9]/).test(val)) {
+			if (val.length === 4 && (/[0-9]/).test(val)) {
 				passing = true;
 			} else {
 				passing = false;
@@ -481,6 +483,8 @@ module.exports = (val, options) => {
 					test: 'metsCVNAmex'
 				});
 			}
+
+			return this;
 		},
 
 		meetsTreadDepth() {
@@ -493,6 +497,8 @@ module.exports = (val, options) => {
 					test: 'metsCVNAmex'
 				});
 			}
+
+			return this;
 		},
 
 		// No Tests
