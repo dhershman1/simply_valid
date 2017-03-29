@@ -1,6 +1,6 @@
 # Simply Valid
 
-A simple to use data driven validation system, no HTML or jQuery required.
+A simple to use data driven validation system
 
 ## Parameters
 
@@ -20,7 +20,7 @@ A simple to use data driven validation system, no HTML or jQuery required.
 ## Usage
 You can call it as an object to use each method individually or via a chain
 ```js
-import validation from '../../utils/validation';
+const validation = require('simply_valid');
 
 validation(val, options).method();
 ```
