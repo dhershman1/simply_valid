@@ -116,8 +116,8 @@ test('Test isZip()', t => {
 	t.end();
 });
 
-test('Test isPostalCode()', t => {
-	t.ok(validate('K1A0B1').isPostalCode().finish().isValid, 'Returned OK This is a Postal Code');
+test('Test isCAPostalCode()', t => {
+	t.ok(validate('K1A0B1').isCAPostalCode().finish().isValid, 'Returned OK This is a Postal Code');
 	t.end();
 });
 

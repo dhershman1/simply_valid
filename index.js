@@ -354,10 +354,10 @@ module.exports = (val, options) => {
 		},
 
 		/**
-		 * Validates that a value meets a postal code format
+		 * Validates that a value meets a Canada postal code format
 		 * @return {object} returns itself to continue the chain
 		 */
-		isPostalCode() {
+		isCAPostalCode() {
 			if ((/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val)) {
 				passing = true;
 			} else {
