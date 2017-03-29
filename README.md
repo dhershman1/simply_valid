@@ -207,12 +207,14 @@ Checks if the value matches a proper zip code format
 validate('44114').isZip().finish();
 ```
 
-### isPostalCode
-Checks if the value matches a proper postal code format
+### isCAPostalCode
+Checks if the value matches a proper Canada postal code format
+
+(Universal method coming soon?)
 
 ##### Usage
 ```js
-validate('K1A0B1').isPostalCode().finish();
+validate('K1A0B1').isCAPostalCode().finish();
 ```
 
 ### isVin
