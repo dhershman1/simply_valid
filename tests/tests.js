@@ -113,6 +113,7 @@ test('Test isEmail()', t => {
 
 test('Test isZip()', t => {
 	t.ok(validate('77885').isZip().finish().isValid, 'Returned OK This is a Zip Code');
+	t.notOk(validate('').isZip().finish().isValid, 'Returned OK This is a Zip Code');
 	t.end();
 });
 
@@ -142,7 +143,7 @@ test('Test isMasterCard()', t => {
 });
 
 test('Test isAmericanExpressCard()', t => {
-	t.ok(validate('341111111111111').isAmericanExpressCard().finish().isValid, 'Returned OK This is a American Express card format');
+	t.ok(validate('341111111111111').isAmericanExpressCard().finish().isValid, 'Returned OK This is a American Express format');
 	t.end();
 });
 
