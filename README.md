@@ -25,6 +25,10 @@ const validation = require('simply_valid');
 validation(val, options).method();
 ```
 
+## Changelog v1.0.3
+> - Removed logic for handling empty values, letting methods handle that themselves
+> - Added Test for this
+
 ## Methods
 
 ## **misc** Methods

@@ -17,13 +17,6 @@ module.exports = (val, options) => {
 	// This acts as our fallback global options
 	const opts = extend({}, defaults, options);
 
-	if (!val) {
-		return {
-			isValid: false,
-			test: 'No Value Set'
-		};
-	}
-
 	const methods = {
 		// Has Tests
 		/**
