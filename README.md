@@ -150,6 +150,14 @@ Checks if the value is a valid date (US)
 validate('03-28-2017').isDate().finish();
 ```
 
+### isDateShort
+Checks if the value is a valid date (US)
+
+##### Usage
+```js
+validate('03-28').isDateShort().finish();
+```
+
 ### isDateProper
 Checks if the value is a valid date (US)
 

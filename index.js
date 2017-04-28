@@ -64,7 +64,7 @@ module.exports = (val, options) => {
 			} else {
 				passing = false;
 				story.push({
-					isValid: false,hasvarters
+					isValid: false,
 					test: 'hasNumbers'
 				});
 			}

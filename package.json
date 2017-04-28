@@ -11,21 +11,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://dhershman@bitbucket.org/dhershman/simply-valid.git"
+    "url": "https://github.com/dhershman1/simply_valid.git"
   },
   "keywords": [
     "validation",
     "simple",
     "data",
     "simply",
-    "valid"
+    "valid",
+		"frontend",
+		"JS"
   ],
   "author": "Dustin Hershman",
   "license": "MIT",
   "bugs": {
-    "url": "https://bitbucket.org/dhershman/simply-valid/issues"
+    "url": "https://github.com/dhershman1/simply_valid/issues"
   },
-  "homepage": "https://bitbucket.org/dhershman/simply-valid/overview",
+  "homepage": "https://github.com/dhershman1/simply_valid",
   "devDependencies": {
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3"
