@@ -25,9 +25,16 @@ const validation = require('simply_valid');
 validation(val, options).method();
 ```
 
-## Changelog v1.0.3
-> - Removed logic for handling empty values, letting methods handle that themselves
-> - Added Test for this
+## Changelog v1.1.0
+> - Added `isDateShort` method, to account for 4 digit date formats
+> - Doubled test count to test more situations
+> - Fixed `hasUpperAndLowerCase` not properly checking for both lower AND upper case
+> - Fixed `hasLetters` to use a stricter regex so number only strings don't pass
+> - Upgraded `isLicensePlate` to be more capable in capturing a larger variety of plate formats
+>  - Please Note: Length checks should be doubled checked based on location since style varies by location
+> - Fixed `noNumber` to use a better regex for proper validation
+> - Fixed `finish` Sometimes reporting bad responses if the test after the bad test failed
+> - Converted to non ES6 standards for better front end support
 
 ## Methods
 

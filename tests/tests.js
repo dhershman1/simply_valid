@@ -10,16 +10,19 @@ const testData = {
 
 test('Test hasValue()', t => {
 	t.ok(validate(testData.zip).hasValue().finish().isValid, 'Value Test passed');
+	t.notOk(validate('').hasValue().finish().isValid, 'Value is not present so test is not valid');
 	t.end();
 });
 
 test('Test hasNumbers()', t => {
 	t.ok(validate(testData.zip).hasNumbers().finish().isValid, 'Value has numbers');
+	t.notOk(validate('$$#@').hasNumbers().finish().isValid, 'No numbers invalid test');
 	t.end();
 });
 
 test('Test hasLetters()', t => {
 	t.ok(validate(testData.address).hasLetters().finish().isValid, 'Value has letters');
+	t.notOk(validate(testData.zip).hasLetters().finish().isValid, 'No letters invalid test');
 	t.end();
 });
 
@@ -33,117 +36,141 @@ test('Test hasCustom()', t => {
 test('Test hasNumbersOrSpecials()', t => {
 	t.ok(validate(testData.address).hasNumbersOrSpecials().finish().isValid, 'Has Numbers passed');
 	t.ok(validate('$$%#@@HI!').hasNumbersOrSpecials().finish().isValid, 'Has Special Characters');
+	t.notOk(validate('HELLO').hasNumbersOrSpecials().finish().isValid, 'Does not have numbers or special chars');
 	t.end();
 });
 
 test('Test hasSpecialCharacters()', t => {
 	t.ok(validate('$$%#@@HI!').hasSpecialCharacters().finish().isValid, 'Has Special Characters');
+	t.notOk(validate('HELLO').hasSpecialCharacters().finish().isValid, 'Does not have Special Characters');
 	t.end();
 });
 
 test('Test hasUpperAndLowerCase()', t => {
 	t.ok(validate('Hi').hasUpperAndLowerCase().finish().isValid, 'Has Upper and Lower Case');
+	t.notOk(validate('hi').hasUpperAndLowerCase().finish().isValid, 'Does not have upper and lower case');
 	t.end();
 });
 
 test('Test isEmail()', t => {
 	t.ok(validate('IamEmail@cool.com').isEmail().finish().isValid, 'That is indeed an email');
+	t.notOk(validate('notEmail').isEmail().finish().isValid, 'Indeed it is NOT an email');
 	t.end();
 });
 
 test('Test isNumber()', t => {
 	t.ok(validate(testData.zip).isNumber().finish().isValid, 'Should return that it is a number');
-	t.end();
-});
-
-test('Test isNumber() Fail', t => {
-	const results = validate('chicken').isNumber().finish();
-
-	t.notOk(results.isValid, 'This is NOT a number');
-	t.equal(results.story.length, 1, 'Story returned with a length of 1');
+	t.notOk(validate('Cheese').isNumber().finish().isValid, 'Is not a number');
 	t.end();
 });
 
 test('Test isPositive()', t => {
-
 	t.ok(validate('12').isPositive().finish().isValid, 'Returned OK is a positive');
-	t.end();
-});
-
-test('Test isPositive() Fail', t => {
-	const results = validate('You Smell Good!').isPositive().finish();
-
-	t.notOk(results.isValid, 'This contains no positive numbers');
-	t.equal(results.story.length, 1, 'Story returned with a length of 1');
+	t.notOk(validate('You Smell Good!').isPositive().finish().isValid, 'This contains no positive numbers');
+	t.equal(validate('You Smell Good!').isPositive().finish().story.length, 1, 'Story returned with a length of 1');
+	t.notOk(validate(-1).isPositive().finish().isValid, 'Value is not positive');
 	t.end();
 });
 
 test('Test isNegative()', t => {
 	t.ok(validate('-12').isNegative().finish().isValid, 'Returned OK is a Negative');
-	t.end();
-});
-
-test('Test isNegative() Fail', t => {
-	const results = validate('You Smell Bad!').isNegative().finish();
-
-	t.notOk(results.isValid, 'This contains no negative numbers');
-	t.equal(results.story.length, 1, 'Story returned with a length of 1');
+	t.notOk(validate('You Smell Bad!').isNegative().finish().isValid, 'Is not a negative number');
+	t.notOk(validate(5).isNegative().finish().isValid, '5 is not a negative number');
+	t.notOk(validate(0).isNegative().finish().isValid, '0 is not a negative number');
 	t.end();
 });
 
 test('Test isVin()', t => {
 	t.ok(validate('JM1CW2BL8C0127808').isVin().finish().isValid, 'Returned OK This is a VIN');
+	t.notOk(validate('JM1CW2BL8C012780865').isVin().finish().isValid, 'Returned not valid, too long to be vin');
+	t.notOk(validate('112').isVin().finish().isValid, 'Returned not valid, not a vin');
 	t.end();
 });
 
 test('Test isDate()', t => {
 	t.ok(validate('03-28-2017').isDate().finish().isValid, 'Returns that this is indeed a date');
+	t.ok(validate('03.28.2017').isDate().finish().isValid, 'Returns valid as date with dots');
+	t.ok(validate('03/28/2017').isDate().finish().isValid, 'Returns valid as date with slashes');
+	t.notOk(validate('03-27').isDate().finish().isValid, 'Returns not full date');
+	t.end();
+});
+
+test('Test isDateShort()', t => {
+	t.ok(validate('03-28').isDateShort().finish().isValid, 'Returns that this is indeed a date');
+	t.ok(validate('03.28').isDateShort().finish().isValid, 'Returns valid as date with dots');
+	t.ok(validate('03/28').isDateShort().finish().isValid, 'Returns valid as date with slashes');
+	t.notOk(validate('03-27-2018').isDateShort().finish().isValid, 'Returns not short date');
 	t.end();
 });
 
 test('Test isDateProper()', t => {
 	t.ok(validate('2017-03-28').isDateProper().finish().isValid, 'Returns that this is indeed a proper date');
+	t.ok(validate('2017.03.28').isDateProper().finish().isValid, 'Returns valid as date with dots');
+	t.ok(validate('2017/03/28').isDateProper().finish().isValid, 'Returns valid as date with slashes');
+	t.notOk(validate('03-27-2018').isDateProper().finish().isValid, 'Returns invalid not a proper date');
 	t.end();
 });
 
 test('Test isEmail()', t => {
 	t.ok(validate('coolkid778@aol.com').isEmail().finish().isValid, 'Returned OK This is a email');
+	t.notOk(validate('coolkid77').isEmail().finish().isValid, 'Returns invalid its not an email');
 	t.end();
 });
 
 test('Test isZip()', t => {
 	t.ok(validate('77885').isZip().finish().isValid, 'Returned OK This is a Zip Code');
-	t.notOk(validate('').isZip().finish().isValid, 'Returned OK This is a Zip Code');
+	t.notOk(validate('778885').isZip().finish().isValid, 'Returned invalid not a zip code');
+	t.notOk(validate('').isZip().finish().isValid, 'Returned invalid not a zip code');
 	t.end();
 });
 
 test('Test isCAPostalCode()', t => {
 	t.ok(validate('K1A0B1').isCAPostalCode().finish().isValid, 'Returned OK This is a Postal Code');
+	t.notOk(validate('77885').isCAPostalCode().finish().isValid, 'Invalid postal code for CA');
 	t.end();
 });
 
 test('Test isPhone()', t => {
 	t.ok(validate('888-555-9987').isPhone().finish().isValid, 'Returned OK This is a phone format');
+	t.ok(validate('888.555.9987').isPhone().finish().isValid, 'Returned OK This is a phone format');
+	t.ok(validate('8885559987').isPhone().finish().isValid, 'Returned OK This is a phone format');
+	t.notOk(validate('88-444-8877').isPhone().finish().isValid, 'Returned invalid this is not a valid phone');
+	t.notOk(validate('8888-4444-8877').isPhone().finish().isValid, 'Returned invalid this is not a valid phone');
 	t.end();
 });
 
 test('Test isLicensePlate()', t => {
 	t.ok(validate('SSS1829').isLicensePlate().finish().isValid, 'Returned OK This is a license plate format');
+	t.ok(validate('SSS-1829').isLicensePlate().finish().isValid, 'Returned OK This is a license plate format');
+	t.ok(validate('SSS•1829').isLicensePlate().finish().isValid, 'Returned OK This is a license plate format');
+	t.notOk(validate('SSS 18').isLicensePlate().finish().isValid, 'Invalid plate is too short');
+	t.notOk(validate('SSSS 188').isLicensePlate().finish().isValid, 'Invalid plate is too long');
 	t.end();
 });
 
 test('Test isVisaCard()', t => {
 	t.ok(validate('4111111111111111').isVisaCard().finish().isValid, 'Returned OK This is a Visa card format');
+	t.notOk(validate('5111111111111111').isVisaCard().finish().isValid, 'Invalid lead number');
+	t.notOk(validate('41111111111111111').isVisaCard().finish().isValid, 'Invalid to long');
+	t.notOk(validate('411111111111111').isVisaCard().finish().isValid, 'Invalid to short');
 	t.end();
 });
 
 test('Test isMasterCard()', t => {
 	t.ok(validate('5511111111111111').isMasterCard().finish().isValid, 'Returned OK This is a MasterCard format');
+	t.notOk(validate('5711111111111111').isMasterCard().finish().isValid, 'Invalid 2nd digit (not 1-5)');
+	t.notOk(validate('7511111111111111').isMasterCard().finish().isValid, 'Invalid 1st digit (not 5)');
+	t.notOk(validate('55511111111111111').isMasterCard().finish().isValid, 'Invalid to long');
+	t.notOk(validate('551111111111111').isMasterCard().finish().isValid, 'Invalid to short');
 	t.end();
 });
 
 test('Test isAmericanExpressCard()', t => {
-	t.ok(validate('341111111111111').isAmericanExpressCard().finish().isValid, 'Returned OK This is a American Express format');
+	t.ok(validate('341111111111111').isAmericanExpressCard().finish().isValid, 'Returned valid format');
+	t.notOk(validate('381111111111111').isAmericanExpressCard().finish().isValid, 'Invalid 2nd digit (not 4 or 7)');
+	t.notOk(validate('541111111111111').isAmericanExpressCard().finish().isValid, 'Invalid 1st digit (not 3)');
+	t.notOk(validate('3411111111111111').isAmericanExpressCard().finish().isValid, 'Invalid to long');
+	t.notOk(validate('34111111111111').isAmericanExpressCard().finish().isValid, 'Invalid to short');
 	t.end();
 });
 
@@ -151,20 +178,29 @@ test('Test matchesGiven()', t => {
 	t.ok(validate('Chicken', {
 		toMatch: 'Chicken'
 	}).matchesGiven().finish().isValid, 'Given value matches option');
+	t.notOk(validate('Cow', {
+		toMatch: 'Chicken'
+	}).matchesGiven().finish().isValid, 'Given value does not match option');
 	t.end();
 });
 
 test('Test matchesPattern()', t => {
 	t.ok(validate('Chicken', {
-		basePattern: /[a-z]/i
+		basePattern: /[a-z]/ig
 	}).matchesPattern().finish().isValid, 'Given value matches pattern');
+	t.notOk(validate('123456', {
+		basePattern: /[a-z]/ig
+	}).matchesPattern().finish().isValid, 'Given value does not match pattern');
 	t.end();
 });
 
 test('Test doesNotMatch()', t => {
-	t.ok(validate('CoolKid112', {
-		antiPattern: /\?/ig
+	t.notOk(validate('CoolKid112', {
+		antiPattern: /[A-Z]/ig
 	}).doesNotMatch().finish().isValid, 'Given value matched anti pattern');
+	t.ok(validate('CoolKid112', {
+		antiPattern: /\s/ig
+	}).doesNotMatch().finish().isValid, 'Given value did not get a match in anti pattern');
 	t.end();
 });
 
@@ -173,73 +209,77 @@ test('Test meetsLength()', t => {
 		maxLength: 5,
 		minLength: 5
 	}).meetsLength().finish().isValid, 'Returns OK within our length limits');
-	t.end();
-});
-
-test('Test meetsLength() Fail', t => {
-	const results = validate('chicken', {
-		maxLength: 10,
-		minLength: 10
-	}).meetsLength().finish();
-
-	t.notOk(results.isValid, 'This does not meet length requirements');
-	t.equal(results.story.length, 1, 'Story returned with a length of 1');
+	t.notOk(validate(testData.zip, {
+		maxLength: 6,
+		minLength: 6
+	}).meetsLength().finish().isValid, 'Invalid does not meet min length');
+	t.notOk(validate(testData.zip, {
+		maxLength: 4,
+		minLength: 4
+	}).meetsLength().finish().isValid, 'Invalid does not meet max length');
 	t.end();
 });
 
 test('Test meetsYearStandard()', t => {
 	t.ok(validate('2017').meetsYearStandard().finish().isValid, 'Proper 4 digit format');
 	t.ok(validate('17').meetsYearStandard().finish().isValid, 'Proper 2 digit format');
-	t.notOk(validate('178').meetsYearStandard().finish().isValid, 'inProper 3 digit format');
+	t.notOk(validate('178').meetsYearStandard().finish().isValid, 'Invalid 3 digit format');
 	t.end();
 });
 
 test('Test meetsCVN()', t => {
 	t.ok(validate('201').meetsCVN().finish().isValid, 'Proper 3 digit CVN format');
+	t.notOk(validate('2011').meetsCVN().finish().isValid, 'Invalid format for CVN');
 	t.end();
 });
 
 test('Test meetsCVNAmex()', t => {
 	t.ok(validate('2081').meetsCVNAmex().finish().isValid, 'Proper 4 digit CVN Amex format');
+	t.notOk(validate('208').meetsCVNAmex().finish().isValid, 'Invalid format for CVN Amex');
 	t.end();
 });
 
 test('Test meetsTreadDepth()', t => {
 	t.ok(validate('12').meetsTreadDepth().finish().isValid, 'Proper tread depth format');
+	t.notOk(validate('AA').meetsTreadDepth().finish().isValid, 'Invalid tread depth format');
 	t.end();
 });
 
 test('Test noSpecials()', t => {
 	t.ok(validate(testData.zip).noSpecials().finish().isValid, 'Returned OK no specials');
-	t.end();
-});
-
-test('Test noSpecials() Fail', t => {
-	const results = validate('$#@%#@Cheese').noSpecials().finish();
-
-	t.notOk(results.isValid, 'This contains special characters');
-	t.equal(results.story.length, 1, 'Story returned with a length of 1');
+	t.notOk(validate('Cool!!@').noSpecials().finish().isValid, 'Invalid does have specials');
+	t.equal(validate('Cool!!@').noSpecials().finish().story.length, 1, 'Put error in story');
 	t.end();
 });
 
 test('Test noNumbers()', t => {
 	t.ok(validate('Chicken').noNumbers().finish().isValid, 'Returned OK no Numbers');
+	t.notOk(validate('chicken1').noNumbers().finish().isValid, 'Invalid value contained numbers');
 	t.end();
 });
 
 
 test('Test a Chain of Validations', t => {
 
-	t.ok(validate(10).isNumber().isPositive().finish().isValid, 'Chain came back successful');
+	t.ok(validate(10).isNumber().noSpecials().isPositive().finish().isValid, 'Chain came back successful');
 	t.end();
 });
 
 test('Test a Chain of Validations for Failure', t => {
-	const results = validate('cow', {
+	let results = validate('cow', {
 		maxLength: 10,
 		minLength: 5
 	}).isNumber().isPositive().meetsLength().finish();
 
 	t.notOk(results.isValid, 'Chain came back unsuccessful');
+	t.equal(results.story.length, 3, 'All methods added to story');
+
+	results = validate('cow', {
+		maxLength: 10,
+		minLength: 3
+	}).hasLetters().isPositive().meetsLength().finish();
+
+	t.notOk(results.isValid, 'Chain came back unsuccessful');
+	t.equal(results.story.length, 1, 'All methods added to story');
 	t.end();
 });
