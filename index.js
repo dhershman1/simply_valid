@@ -558,7 +558,7 @@ module.exports = (val, options) => {
 				passing = false;
 				story.push({
 					isValid: false,
-					test: 'metsCVNAmex'
+					test: 'meetsCVNAmex'
 				});
 			}
 
@@ -576,7 +576,7 @@ module.exports = (val, options) => {
 				passing = false;
 				story.push({
 					isValid: false,
-					test: 'metsCVNAmex'
+					test: 'meetsTreadDepth'
 				});
 			}
 
