@@ -25,7 +25,11 @@ const validation = require('simply_valid');
 validation(val, options).method();
 ```
 
-## Changelog v1.1.0
+## Changelog
+> v1.1.1
+> - Fixed Typo in an error message
+
+> v1.1.0
 > - Added `isDateShort` method, to account for 4 digit date formats
 > - Doubled test count to test more situations
 > - Fixed `hasUpperAndLowerCase` not properly checking for both lower AND upper case
