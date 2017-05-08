@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/dhershman1/simply_valid.svg?branch=master)](https://travis-ci.org/dhershman1/simply_valid)
 # Simply Valid
 
 A simple to use data driven validation system
