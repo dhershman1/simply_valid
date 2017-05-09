@@ -2,14 +2,14 @@ function extend() {
 	var extended = {};
 	var key = '';
 	var prop = '';
-	var argument = '';
+	var arg = '';
 
 	for (key in arguments) {
-		argument = arguments[key];
+		arg = arguments[key];
 
-		for (prop in argument) {
-			if (Object.prototype.hasOwnProperty.call(argument, prop)) {
-				extended[prop] = argument[prop];
+		for (prop in arg) {
+			if (Object.prototype.hasOwnProperty.call(arg, prop)) {
+				extended[prop] = arg[prop];
 			}
 		}
 	}
@@ -19,20 +19,9 @@ function extend() {
 
 /* eslint no-useless-escape: 0 */
 
-module.exports = (val, options) => {
-	var defaults = {
-		maxLength: 20,
-		minLength: 1,
-		basePattern: '',
-		antiPattern: '',
-		vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
-		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/ig,
-		toMatch: ''
-	};
+function getMethods(val, opts) {
 	var story = [];
 	var passing = false;
-	// This acts as our fallback global options
-	var opts = extend({}, defaults, options);
 
 	return {
 		// Has Tests
@@ -636,4 +625,44 @@ module.exports = (val, options) => {
 			return response;
 		}
 	};
-};
+}
+
+function createMethod(methodArr, options) {
+	return function(val) {
+		var i = 0;
+		var len = methodArr.length;
+		var methods = getMethods(val, options);
+		var data = {};
+
+		for (i; i < len; i++) {
+			methods[methodArr[i]]();
+		}
+
+		data = methods.finish();
+
+		return data;
+	};
+}
+
+function simplyValid(val, options, useCreate) {
+	var defaults = {
+		maxLength: 20,
+		minLength: 1,
+		basePattern: '',
+		antiPattern: '',
+		vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
+		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/ig,
+		toMatch: ''
+	};
+
+	// This acts as our fallback global options
+	var opts = extend({}, defaults, options);
+
+	if ((typeof options === 'boolean' && options) || useCreate) {
+		return createMethod(val, opts);
+	}
+
+	return getMethods(val, opts);
+}
+
+module.exports = simplyValid;

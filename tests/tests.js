@@ -283,3 +283,50 @@ test('Test a Chain of Validations for Failure', t => {
 	t.equal(results.story.length, 1, 'All methods added to story');
 	t.end();
 });
+
+/* Run Tests against new custom style method */
+test('Test CustomMethod Passing', t => {
+	let custom = validate(['isNumber', 'isPositive'], {}, true);
+	let results = custom(4);
+
+	t.ok(results, 'Returned OK');
+	t.ok(results.isValid, 'Value returned as Valid');
+
+	results = custom('1000');
+	t.ok(results.isValid, 'String but still holds a complete number, and is valid');
+
+	custom = validate(['meetsLength', 'hasLetters'], {
+		minLength: 3,
+		maxLength: 5
+	}, true);
+
+	results = custom('h100');
+	t.ok(results.isValid, 'Meets length and hasLetters valid');
+	t.end();
+});
+
+test('Test Custom with only 2 arguments', t => {
+	const custom = validate(['hasSpecialCharacters', 'hasLetters'], true);
+	let results = custom('cool!@');
+
+	t.ok(results.isValid, 'Results are valid');
+	t.end();
+});
+
+test('Test CustomMethod Failed', t => {
+	const custom = validate(['isNumber', 'isPositive'], {}, true);
+	let results = custom(-4);
+
+	t.ok(results, 'Returned OK');
+	t.notOk(results.isValid, 'Value returned as Invalid');
+
+	results = custom('-1000');
+	t.notOk(results.isValid, 'Value is originally a string but still a number, but is invalid');
+
+	results = custom('cheese');
+	t.notOk(results.isValid, 'Nothing about this is valid');
+	t.equal(results.story.length, 2, 'Both tests should be recorded in the story');
+	t.equal(results.story[0].test, 'isNumber', 'First failed test is the iNumber method');
+	t.equal(results.story[1].test, 'isPositive', 'Second failed test is the isPositive method');
+	t.end();
+});

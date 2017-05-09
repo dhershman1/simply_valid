@@ -3,6 +3,28 @@
 
 A simple to use data driven validation system
 
+## Changelog
+> v1.2.0
+> - Added ability to create a variable of validation methods that are ran on a value
+> - Unit tested this new feature
+> - Cleaned up code slightly
+> - Removed Deps
+> - Finished cleaning up ES6 that I missed (Sorry about that)
+
+> v1.1.1
+> - Fixed Typo in an error message
+
+> v1.1.0
+> - Added `isDateShort` method, to account for 4 digit date formats
+> - Doubled test count to test more situations
+> - Fixed `hasUpperAndLowerCase` not properly checking for both lower AND upper case
+> - Fixed `hasLetters` to use a stricter regex so number only strings don't pass
+> - Upgraded `isLicensePlate` to be more capable in capturing a larger variety of plate formats
+>  - Please Note: Length checks should be doubled checked based on location since style varies by location
+> - Fixed `noNumber` to use a better regex for proper validation
+> - Fixed `finish` Sometimes reporting bad responses if the test after the bad test failed
+> - Converted to non ES6 standards for better front end support
+
 ## Parameters
 
 - `val` - `String|Number`: The value set that is going to be validated `Required`
@@ -21,25 +43,28 @@ A simple to use data driven validation system
 ## Usage
 You can call it as an object to use each method individually or via a chain
 ```js
-const validation = require('simply_valid');
+var validation = require('simply_valid');
 
 validation(val, options).method();
+// As of v1.2.0+ you can now also setup a custom variable of methods
+validation([methods], options, true);
+// OR
+validation([methods], true);
+// See Below for a full usage example
 ```
 
-## Changelog
-> v1.1.1
-> - Fixed Typo in an error message
+## Setting methods to a custom function
+To use the new feature in v1.2.0+ simple set the methods you want and then call your variable with your value.
+```js
+var validation = require('simply_valid');
 
-> v1.1.0
-> - Added `isDateShort` method, to account for 4 digit date formats
-> - Doubled test count to test more situations
-> - Fixed `hasUpperAndLowerCase` not properly checking for both lower AND upper case
-> - Fixed `hasLetters` to use a stricter regex so number only strings don't pass
-> - Upgraded `isLicensePlate` to be more capable in capturing a larger variety of plate formats
->  - Please Note: Length checks should be doubled checked based on location since style varies by location
-> - Fixed `noNumber` to use a better regex for proper validation
-> - Fixed `finish` Sometimes reporting bad responses if the test after the bad test failed
-> - Converted to non ES6 standards for better front end support
+var myValidation = validation(['isNumber', 'isPositive'], true);
+myValidation(4);
+// Outputs: { isValid: true }
+myValidation(-4);
+// Outputs: { isValid: false, story: [ { isValid: false, test: 'isPositive' } ] }
+```
+And that's really it, I built this into simply valid for those who need to do a lot of the same validation, and don't want to have to keep typing the same chains over and over and over again.
 
 ## Methods
 
