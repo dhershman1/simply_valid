@@ -124,7 +124,7 @@ validate('CoolKid112').hasUpperAndLowerCase().finish();
 ## **match** Methods
 
 ### matchesGiven
-Checks if the value matches the `toMatch` value given in options
+Checks if the value matches the `toMatch` value given in options this is a STRICT match
 
 ##### Usage
 ```js

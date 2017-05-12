@@ -5,6 +5,7 @@
 > * Huge code cleanup
 > * Performance improvements
 > * Fixed some error message typos
+> * Added 21 more unit tests
 > * Removed `if else` setup
 >   * Each method now runs a `if` check to determine if a failure happens and thats it
 >   * Cleaned up `finish()`

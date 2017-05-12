@@ -52,12 +52,6 @@ test('Test hasUpperAndLowerCase()', t => {
 	t.end();
 });
 
-test('Test isEmail()', t => {
-	t.ok(validate('IamEmail@cool.com').isEmail().finish().isValid, 'That is indeed an email');
-	t.notOk(validate('notEmail').isEmail().finish().isValid, 'Indeed it is NOT an email');
-	t.end();
-});
-
 test('Test isNumber()', t => {
 	t.ok(validate(testData.zip).isNumber().finish().isValid, 'Should return that it is a number');
 	t.notOk(validate('Cheese').isNumber().finish().isValid, 'Is not a number');
@@ -66,6 +60,7 @@ test('Test isNumber()', t => {
 
 test('Test isPositive()', t => {
 	t.ok(validate('12').isPositive().finish().isValid, 'Returned OK is a positive');
+	t.ok(validate(12).isPositive().finish().isValid, 'Returned OK is a positive');
 	t.notOk(validate('You Smell Good!').isPositive().finish().isValid, 'This contains no positive numbers');
 	t.equal(validate('You Smell Good!').isPositive().finish().story.length, 1, 'Story returned with a length of 1');
 	t.notOk(validate(-1).isPositive().finish().isValid, 'Value is not positive');
@@ -74,6 +69,7 @@ test('Test isPositive()', t => {
 
 test('Test isNegative()', t => {
 	t.ok(validate('-12').isNegative().finish().isValid, 'Returned OK is a Negative');
+	t.ok(validate(-12).isNegative().finish().isValid, 'Returned OK is a Negative');
 	t.notOk(validate('You Smell Bad!').isNegative().finish().isValid, 'Is not a negative number');
 	t.notOk(validate(5).isNegative().finish().isValid, '5 is not a negative number');
 	t.notOk(validate(0).isNegative().finish().isValid, '0 is not a negative number');
@@ -91,6 +87,9 @@ test('Test isDate()', t => {
 	t.ok(validate('03-28-2017').isDate().finish().isValid, 'Returns that this is indeed a date');
 	t.ok(validate('03.28.2017').isDate().finish().isValid, 'Returns valid as date with dots');
 	t.ok(validate('03/28/2017').isDate().finish().isValid, 'Returns valid as date with slashes');
+	t.ok(validate('03/28/17').isDate().finish().isValid, 'Returns valid as date with slashes & short year');
+	t.ok(validate('03282017').isDate().finish().isValid, 'Returns valid as date with no specials');
+	t.ok(validate('032817').isDate().finish().isValid, 'Returns valid as date with short year & no specials');
 	t.notOk(validate('03-27').isDate().finish().isValid, 'Returns not full date');
 	t.end();
 });
@@ -113,7 +112,14 @@ test('Test isDateProper()', t => {
 
 test('Test isEmail()', t => {
 	t.ok(validate('coolkid778@aol.com').isEmail().finish().isValid, 'Returned OK This is a email');
+	t.ok(validate('coolkid17@AAAAAAHHHHHHHHHHHH.com').isEmail().finish().isValid, 'valid yet annoying email address');
+	t.ok(validate('IamEmail@cool.com').isEmail().finish().isValid, 'That is indeed an email');
+	t.notOk(validate('notEmail').isEmail().finish().isValid, 'Indeed it is NOT an email');
 	t.notOk(validate('coolkid77').isEmail().finish().isValid, 'Returns invalid its not an email');
+	t.notOk(validate('coolkid77@gmail').isEmail().finish().isValid, 'Returns invalid email address format');
+	t.notOk(validate('coolkid77@gmailcom').isEmail().finish().isValid, 'Returns invalid email address format');
+	t.notOk(validate('coolkid77@gmail-com').isEmail().finish().isValid, 'Returns invalid email address format');
+	t.notOk(validate('coolkid77gmail.com').isEmail().finish().isValid, 'Returns invalid email address format');
 	t.end();
 });
 
@@ -153,6 +159,8 @@ test('Test isVisaCard()', t => {
 	t.notOk(validate('5111111111111111').isVisaCard().finish().isValid, 'Invalid lead number');
 	t.notOk(validate('41111111111111111').isVisaCard().finish().isValid, 'Invalid to long');
 	t.notOk(validate('411111111111111').isVisaCard().finish().isValid, 'Invalid to short');
+	t.notOk(validate('55544444444444GGF').isVisaCard().finish().isValid, 'Invalid bad start number and has letters');
+	t.notOk(validate('4111111111111GGF').isVisaCard().finish().isValid, 'Invalid bad has letters');
 	t.end();
 });
 
@@ -162,6 +170,8 @@ test('Test isMasterCard()', t => {
 	t.notOk(validate('7511111111111111').isMasterCard().finish().isValid, 'Invalid 1st digit (not 5)');
 	t.notOk(validate('55511111111111111').isMasterCard().finish().isValid, 'Invalid to long');
 	t.notOk(validate('551111111111111').isMasterCard().finish().isValid, 'Invalid to short');
+	t.notOk(validate('551111111111111G').isMasterCard().finish().isValid, 'Invalid to short');
+	t.notOk(validate('5511111111111111GG').isMasterCard().finish().isValid, 'Invalid to short');
 	t.end();
 });
 
@@ -171,6 +181,7 @@ test('Test isAmericanExpressCard()', t => {
 	t.notOk(validate('541111111111111').isAmericanExpressCard().finish().isValid, 'Invalid 1st digit (not 3)');
 	t.notOk(validate('3411111111111111').isAmericanExpressCard().finish().isValid, 'Invalid to long');
 	t.notOk(validate('34111111111111').isAmericanExpressCard().finish().isValid, 'Invalid to short');
+	t.notOk(validate('34111111111111GG').isAmericanExpressCard().finish().isValid, 'Invalid to short');
 	t.end();
 });
 
@@ -178,6 +189,9 @@ test('Test matchesGiven()', t => {
 	t.ok(validate('Chicken', {
 		toMatch: 'Chicken'
 	}).matchesGiven().finish().isValid, 'Given value matches option');
+	t.notOk(validate(5, {
+		toMatch: '5'
+	}).matchesGiven().finish().isValid, 'Given Number does NOT match string version');
 	t.notOk(validate('Cow', {
 		toMatch: 'Chicken'
 	}).matchesGiven().finish().isValid, 'Given value does not match option');
@@ -247,6 +261,8 @@ test('Test meetsTreadDepth()', t => {
 
 test('Test noSpecials()', t => {
 	t.ok(validate(testData.zip).noSpecials().finish().isValid, 'Returned OK no specials');
+	t.ok(validate('IAmCool123').noSpecials().finish().isValid, 'Returned valid no specials in sentence');
+	t.notOk(validate('I am cool 123').noSpecials().finish().isValid, 'Returned invalid spaces in sentence');
 	t.notOk(validate('Cool!!@').noSpecials().finish().isValid, 'Invalid does have specials');
 	t.equal(validate('Cool!!@').noSpecials().finish().story.length, 1, 'Put error in story');
 	t.end();
@@ -262,6 +278,11 @@ test('Test noNumbers()', t => {
 test('Test a Chain of Validations', t => {
 
 	t.ok(validate(10).isNumber().noSpecials().isPositive().finish().isValid, 'Chain came back successful');
+	t.ok(validate('Passw0rd!')
+		.hasUpperAndLowerCase()
+		.hasSpecialCharacters()
+		.hasNumbers()
+		.finish().isValid, 'Chain returned valid');
 	t.end();
 });
 
@@ -310,6 +331,8 @@ test('Test Custom with only 2 arguments', t => {
 	let results = custom('cool!@');
 
 	t.ok(results.isValid, 'Results are valid');
+	t.notOk(custom('cool').isValid, 'Results invalid no specials');
+	t.notOk(custom('!@!$@#!').isValid, 'Results invalid no letters');
 	t.end();
 });
 
