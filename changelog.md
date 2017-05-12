@@ -6,8 +6,8 @@
 > * Performance improvements
 > * Fixed some error message typos
 > * Removed `if else` setup
-  * Each method now runs a `if` check to determine if a failure happens and thats it
-  * Cleaned up `finish()`
+>   * Each method now runs a `if` check to determine if a failure happens and thats it
+>   * Cleaned up `finish()`
 
 ## v1.2.0
 
@@ -28,7 +28,7 @@
 > - Fixed `hasUpperAndLowerCase` not properly checking for both lower AND upper case
 > - Fixed `hasLetters` to use a stricter regex so number only strings don't pass
 > - Upgraded `isLicensePlate` to be more capable in capturing a larger variety of plate formats
-  - Please Note: Length checks should be doubled checked based on location since style varies by location
+>   - Please Note: Length checks should be doubled checked based on location since style varies by location
 > - Fixed `noNumber` to use a better regex for proper validation
 > - Fixed `finish` Sometimes reporting bad responses if the test after the bad test failed
 > - Converted to non ES6 standards for better front end support
