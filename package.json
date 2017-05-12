@@ -1,6 +1,6 @@
 {
   "name": "simply_valid",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "a simple data driven validation utility library",
   "main": "index.js",
   "directories": {
@@ -19,8 +19,8 @@
     "data",
     "simply",
     "valid",
-		"frontend",
-		"JS"
+    "frontend",
+    "JS"
   ],
   "author": "Dustin Hershman",
   "license": "MIT",
