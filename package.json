@@ -1,12 +1,13 @@
 {
   "name": "simply_valid",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "a simple data driven validation utility library",
-  "main": "index.js",
+  "main": "dist/simply_valid.umd.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
+    "prepublish": "rollup -f umd -i index.js -o dist/simply_valid.umd.js",
     "test": "tape tests/tests.js | tap-spec"
   },
   "repository": {
@@ -29,6 +30,7 @@
   },
   "homepage": "https://github.com/dhershman1/simply_valid",
   "devDependencies": {
+    "rollup": "^0.41.6",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3"
   }
