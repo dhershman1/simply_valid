@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.2.2
+
+> * Added Rollup as a dev dependency
+>   * Module builds out to umd style
+>   * Should make life easier if requires isn't an option
+
 ## v1.2.1
 
 > * Huge code cleanup
