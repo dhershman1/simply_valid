@@ -546,7 +546,7 @@ function createMethod(methodArr, options) {
 	};
 }
 
-function simplyValid(val, options, useCreate) {
+export default function simplyValid(val, options, useCreate) {
 	var defaults = {
 		maxLength: 20,
 		minLength: 1,
@@ -566,5 +566,3 @@ function simplyValid(val, options, useCreate) {
 
 	return getMethods(val, opts);
 }
-
-module.exports = simplyValid;

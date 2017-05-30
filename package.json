@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "prepublish": "rollup -f umd -i index.js -o dist/simply_valid.umd.js",
+    "prepublish": "rollup -f umd -n simply_valid -i index.js -o dist/simply_valid.umd.js",
     "test": "tape tests/tests.js | tap-spec"
   },
   "repository": {

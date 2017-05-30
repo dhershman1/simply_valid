@@ -1,7 +1,7 @@
 'use strict';
 
 const test = require('tape');
-const validate = require('../index.js');
+const validate = require('../dist/simply_valid.umd.js');
 
 const testData = {
 	zip: '11445',

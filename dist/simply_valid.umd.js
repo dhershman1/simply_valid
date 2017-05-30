@@ -1,7 +1,7 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(factory());
+	(global.simply_valid = factory());
 }(this, (function () { 'use strict';
 
 function extend() {
@@ -573,6 +573,6 @@ function simplyValid(val, options, useCreate) {
 	return getMethods(val, opts);
 }
 
-module.exports = simplyValid;
+return simplyValid;
 
 })));
