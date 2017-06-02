@@ -4,8 +4,17 @@
 
 A simple to use data driven validation system
 
+## Contents
+* [Custom Function](#setting-methods-to-a-custom-function)
+* [Methods](#methods)
+  * [Misc Methods](#misc-methods)
+  * [Has Methods](#has-methods)
+  * [Match Methods](#match-methods)
+  * [Is Methods](#is-methods)
+  * [Meets Methods](#meets-methods)
+  * [No Methods](#no-methods)
+
 ## Changelog
-**Current Version: 1.2.1**
 
 You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
 
