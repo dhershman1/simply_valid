@@ -185,6 +185,13 @@ test('Test isAmericanExpressCard()', t => {
 	t.end();
 });
 
+test('Test matchesCustom()', t => {
+	t.ok(validate('Cheese').matchesCustom(/[A-Z]/gi).finish().isValid, 'Matched custom pattern');
+	t.ok(validate('2').matchesCustom(/[0-9]/gi).finish().isValid, 'Matched custom pattern');
+
+	t.end();
+});
+
 test('Test matchesGiven()', t => {
 	t.ok(validate('Chicken', {
 		toMatch: 'Chicken'

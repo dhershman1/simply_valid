@@ -1,11 +1,11 @@
-function extend() {
+function extend(...objs) {
 	var extended = {};
 	var key = '';
 	var prop = '';
 	var arg = '';
 
-	for (key in arguments) {
-		arg = arguments[key];
+	for (key in objs) {
+		arg = objs[key];
 
 		for (prop in arg) {
 			if (Object.prototype.hasOwnProperty.call(arg, prop)) {
@@ -17,9 +17,7 @@ function extend() {
 	return extended;
 }
 
-/* eslint no-useless-escape: 0 */
-
-function getMethods(val, opts) {
+const getMethods = (val, opts) => {
 	var story = [];
 
 	return {
@@ -131,6 +129,25 @@ function getMethods(val, opts) {
 		},
 
 		// Match Tests
+
+		/**
+		 * Matches against a custom pattern
+		 * @method matchesCustom
+		 * @param  {String}      pattern This should be a REGEX string
+		 * @return {Object}              returns itself to continue the chain
+		 */
+		matchesCustom: function matchesCustom(pattern) {
+			if (!pattern.test(val)) {
+				story.push({
+					isValid: false,
+					test: 'matchesCustom',
+					customPattern: pattern
+				});
+			}
+
+			return this;
+		},
+
 		/**
 		 * Validates that a value matches the given option
 		 * @return {object} returns itself to continue the chain
@@ -527,16 +544,15 @@ function getMethods(val, opts) {
 			return response;
 		}
 	};
-}
+};
 
-function createMethod(methodArr, options) {
-	return function(val) {
-		var i = 0;
-		var len = methodArr.length;
-		var methods = getMethods(val, options);
-		var data = {};
+const createMethod = (methodArr, opts) => {
+	return (val, options) => {
+		const customOpts = extend(opts, options);
+		const methods = getMethods(val, customOpts);
+		let data = {};
 
-		for (i; i < len; i++) {
+		for (let i = 0, len = methodArr.length; i < len; i++) {
 			methods[methodArr[i]]();
 		}
 
@@ -544,10 +560,10 @@ function createMethod(methodArr, options) {
 
 		return data;
 	};
-}
+};
 
-export default function simplyValid(val, options, useCreate) {
-	var defaults = {
+export default (val, options, useCreate) => {
+	let defaults = {
 		maxLength: 20,
 		minLength: 1,
 		basePattern: '',
@@ -558,11 +574,11 @@ export default function simplyValid(val, options, useCreate) {
 	};
 
 	// This acts as our fallback global options
-	var opts = extend({}, defaults, options);
+	const opts = extend({}, defaults, options);
 
 	if ((typeof options === 'boolean' && options) || useCreate) {
 		return createMethod(val, opts);
 	}
 
 	return getMethods(val, opts);
-}
+};

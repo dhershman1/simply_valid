@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.3.0
+
+> - Optimizations to processing
+> - Added more flexibility overall
+> - Module will now uglify and transpile itself
+> - Added `matchesCustom` which accepts a pattern param to test against this should be used mainly for chains
+> - Added the ability when you create a custom function now each time you call that function you can overwrite your options as needed (see README for more info)
+
 ## v1.2.2
 
 > * Added Rollup as a dev dependency

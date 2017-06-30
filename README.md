@@ -56,6 +56,17 @@ myValidation(4);
 // Outputs: { isValid: true }
 myValidation(-4);
 // Outputs: { isValid: false, story: [ { isValid: false, test: 'isPositive' } ] }
+
+// You can now overwrite options on the fly as needed
+var myValidation = validation(['matchesPattern'], {
+	basePattern: /[A-Z]/gi
+}, true);
+myValidation('Cheese');
+// Output: { isValid: true }
+myValidation(4, {
+	basePattern: /[0-9]/g
+});
+// Output: { isValid: true }
 ```
 And that's really it, I built this into simply valid for those who need to do a lot of the same validation, and don't want to have to keep typing the same chains over and over and over again.
 
@@ -66,7 +77,7 @@ And that's really it, I built this into simply valid for those who need to do a 
 ### finish
 Signifies the end of the chain every method is chainable besides finish, if you do not call finish at the end of your chain, you **will** not get any data back.
 
-##### Usage
+#### Usage
 ```js
 validate('Chicken').noNumbers().finish();
 ```
@@ -76,7 +87,7 @@ validate('Chicken').noNumbers().finish();
 ### hasValue
 Checks if the value is actually a value
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112').hasValue().finish();
 ```
@@ -84,7 +95,7 @@ validate('CoolKid112').hasValue().finish();
 ### hasNumbers
 Checks if the value has a number
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112').hasNumbers().finish();
 ```
@@ -92,7 +103,7 @@ validate('CoolKid112').hasNumbers().finish();
 ### hasLetters
 Checks if the value has a letter
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112').hasLetters().finish();
 ```
@@ -100,7 +111,7 @@ validate('CoolKid112').hasLetters().finish();
 ### hasCustom
 Checks if the value contains a character within your `basePattern` value
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112', {
   basePattern: /[A-Z]/
@@ -110,7 +121,7 @@ validate('CoolKid112', {
 ### hasNumbersOrSpecials
 Checks if the value contains numbers or special characters
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112').hasNumbersOrSpecials().finish();
 ```
@@ -118,7 +129,7 @@ validate('CoolKid112').hasNumbersOrSpecials().finish();
 ### hasSpecialCharacters
 Checks if the value contains any special characters
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112').hasSpecialCharacters().finish();
 ```
@@ -126,17 +137,27 @@ validate('CoolKid112').hasSpecialCharacters().finish();
 ### hasUpperAndLowerCase
 Checks if the value contains a upper and lower case character
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112').hasUpperAndLowerCase().finish();
 ```
 
 ## **match** Methods
 
+### matchesCustom
+Checks against a custom pattern sent in as a parameter this is the only current method to accept a param.
+
+NOTE: It is recommended to use this only with chain style syntax and not custom function syntax
+
+#### Usage
+```js
+validate('Hello').matchesCustom(/[A-Z]/gi).finish();
+```
+
 ### matchesGiven
 Checks if the value matches the `toMatch` value given in options this is a STRICT match
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112', {
   toMatch: 'CoolKid112'
@@ -146,7 +167,7 @@ validate('CoolKid112', {
 ### matchesPattern
 Checks if the value matches the `basePattern` option
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112', {
   basePattern: /[a-z][0-9]/ig
@@ -156,7 +177,7 @@ validate('CoolKid112', {
 ### doesNotMatch
 Verifies a value does not match the `antiPattern` option
 
-##### Usage
+#### Usage
 ```js
 validate('CoolKid112', {
   antiPattern: 'NotCoolKid211'
@@ -168,7 +189,7 @@ validate('CoolKid112', {
 ### isDate
 Checks if the value is a valid date (US)
 
-##### Usage
+#### Usage
 ```js
 validate('03-28-2017').isDate().finish();
 ```
@@ -176,7 +197,7 @@ validate('03-28-2017').isDate().finish();
 ### isDateShort
 Checks if the value is a valid date (US)
 
-##### Usage
+#### Usage
 ```js
 validate('03-28').isDateShort().finish();
 ```
@@ -184,7 +205,7 @@ validate('03-28').isDateShort().finish();
 ### isDateProper
 Checks if the value is a valid date (US)
 
-##### Usage
+#### Usage
 ```js
 validate('2017-03-28').isDateProper().finish();
 ```
@@ -192,7 +213,7 @@ validate('2017-03-28').isDateProper().finish();
 ### isEmail
 Checks if the value is a valid email
 
-##### Usage
+#### Usage
 ```js
 validate('cOoLkId112@aol.com').isEmail().finish();
 // You can also set your own email pattern for regex if you want
@@ -204,7 +225,7 @@ validate('cOoLkId112@aol.com', {
 ### isNumber
 Checks if the value is a number
 
-##### Usage
+#### Usage
 ```js
 validate('112').isNumber().finish();
 ```
@@ -212,7 +233,7 @@ validate('112').isNumber().finish();
 ### isPositive
 Checks if the value is positive
 
-##### Usage
+#### Usage
 ```js
 validate('112').isPositive().finish();
 ```
@@ -220,7 +241,7 @@ validate('112').isPositive().finish();
 ### isNegative
 Checks if the value is Negative
 
-##### Usage
+#### Usage
 ```js
 validate('-112').isNegative().finish();
 ```
@@ -228,7 +249,7 @@ validate('-112').isNegative().finish();
 ### isLicensePlate
 Checks if the value matches a license plate format
 
-##### Usage
+#### Usage
 ```js
 validate('SSS1829').isLicensePlate().finish();
 ```
@@ -236,7 +257,7 @@ validate('SSS1829').isLicensePlate().finish();
 ### isPhone
 Checks if the value matches a proper phone length (accepts both formatted and unformatted numbers)
 
-##### Usage
+#### Usage
 ```js
 validate('440-555-7799').isPhone().finish();
 ```
@@ -244,7 +265,7 @@ validate('440-555-7799').isPhone().finish();
 ### isZip
 Checks if the value matches a proper zip code format
 
-##### Usage
+#### Usage
 ```js
 validate('44114').isZip().finish();
 ```
@@ -254,7 +275,7 @@ Checks if the value matches a proper Canada postal code format
 
 (Universal method coming soon?)
 
-##### Usage
+#### Usage
 ```js
 validate('K1A0B1').isCAPostalCode().finish();
 ```
@@ -262,7 +283,7 @@ validate('K1A0B1').isCAPostalCode().finish();
 ### isVin
 Checks if the value is a valid VIN
 
-##### Usage
+#### Usage
 ```js
 validate('JM1CW2BL8C0127808').isVin().finish();
 // You can also set your own vin pattern for regex if you want
@@ -274,7 +295,7 @@ validate('JM1CW2BL8C0127808', {
 ### isVisaCard
 Checks if the value is a proper Visa card format
 
-##### Usage
+#### Usage
 ```js
 validate('4111111111111111').isVisaCard().finish();
 ```
@@ -282,7 +303,7 @@ validate('4111111111111111').isVisaCard().finish();
 ### isMasterCard
 Checks if the value is a proper MasterCard format
 
-##### Usage
+#### Usage
 ```js
 validate('5511111111111111').isMasterCard().finish();
 ```
@@ -290,7 +311,7 @@ validate('5511111111111111').isMasterCard().finish();
 ### isAmericanExpressCard
 Checks if the value is a proper American Express card format
 
-##### Usage
+#### Usage
 ```js
 validate('341111111111111').isAmericanExpressCard().finish();
 ```
@@ -300,7 +321,7 @@ validate('341111111111111').isAmericanExpressCard().finish();
 ### meetsLength
 Checks if our value meets our desired length
 
-##### Usage
+#### Usage
 ```js
 validate('Chicken').meetsLength().finish();
 ```
@@ -308,7 +329,7 @@ validate('Chicken').meetsLength().finish();
 ### meetsYearStandard
 Checks if our value meets the proper 2 or 4 digit year standard
 
-##### Usage
+#### Usage
 ```js
 validate('2017').meetsYearStandard().finish();
 validate('17').meetsYearStandard().finish();
@@ -317,7 +338,7 @@ validate('17').meetsYearStandard().finish();
 ### meetsCVN
 Checks if our value is a proper CVN
 
-##### Usage
+#### Usage
 ```js
 validate('333').meetsCVN().finish();
 ```
@@ -325,7 +346,7 @@ validate('333').meetsCVN().finish();
 ### meetsCVNAmex
 Checks if our value is a proper Amex CVN
 
-##### Usage
+#### Usage
 ```js
 validate('3343').meetsCVNAmex().finish();
 ```
@@ -333,7 +354,7 @@ validate('3343').meetsCVNAmex().finish();
 ### meetsTreadDepth
 Checks if our value meets a tread depth format
 
-##### Usage
+#### Usage
 ```js
 validate('22').meetsTreadDepth().finish();
 ```
@@ -343,7 +364,7 @@ validate('22').meetsTreadDepth().finish();
 ### noSpecials
 Checks if our value contains any special characters
 
-##### Usage
+#### Usage
 ```js
 validate('Chicken').noSpecials().finish();
 ```
@@ -351,7 +372,7 @@ validate('Chicken').noSpecials().finish();
 ### noNumbers
 Verifies our value contains no numbers
 
-##### Usage
+#### Usage
 ```js
 validate('Chicken').noNumbers().finish();
 ```
