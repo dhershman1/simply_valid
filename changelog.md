@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.3.1
+
+> - Test improvements now each test will also run BOTH ways of running a method
+> - Fixed an issue where validation could sometimes give back false positives due to not working with a clean slate
+> - Methods now also record the value they failed on for better story telling
+> - Removed the globals in regex as they were messing with state (That was a dumb mistake on my end)
+> - Removed the `isValid` boolean recorded in stories, since it was basically valueless
+
 ## 1.3.0
 
 > - Optimizations to processing

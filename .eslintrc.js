@@ -176,7 +176,7 @@ module.exports = {
 		'lines-around-comment': 'error',
 		'lines-around-directive': 'off',
 		'max-depth': 'off',
-		'max-len': ['error', {
+		'max-len': ['off', {
 			'tabWidth': 1,
 			'code': 120
 		}],

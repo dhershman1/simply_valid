@@ -4,6 +4,8 @@
 
 A simple to use data driven validation system
 
+**NOTE: Only supports IE 9+**
+
 ## Contents
 * [Custom Function](#setting-methods-to-a-custom-function)
 * [Methods](#methods)

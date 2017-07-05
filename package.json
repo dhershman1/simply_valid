@@ -8,7 +8,7 @@
   },
   "scripts": {
     "prepublish": "rollup -c",
-    "test": "tape tests/tests.js | tap-spec"
+    "test": "npm run prepublish && tape tests/tests.js | tap-spec"
   },
   "repository": {
     "type": "git",

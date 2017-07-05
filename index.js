@@ -1,13 +1,10 @@
 function extend(...objs) {
-	var extended = {};
-	var key = '';
-	var prop = '';
-	var arg = '';
+	let extended = {};
 
-	for (key in objs) {
-		arg = objs[key];
+	for (let key in objs) {
+		let arg = objs[key];
 
-		for (prop in arg) {
+		for (let prop in arg) {
 			if (Object.prototype.hasOwnProperty.call(arg, prop)) {
 				extended[prop] = arg[prop];
 			}
@@ -18,7 +15,7 @@ function extend(...objs) {
 }
 
 const getMethods = (val, opts) => {
-	var story = [];
+	let story = [];
 
 	return {
 		// Has Tests
@@ -29,8 +26,8 @@ const getMethods = (val, opts) => {
 		hasValue: function hasValue() {
 			if (!val && val.length === 0) {
 				story.push({
-					isValid: false,
-					test: 'hasValue'
+					test: 'hasValue',
+					value: val
 				});
 			}
 
@@ -44,8 +41,8 @@ const getMethods = (val, opts) => {
 		hasNumbers: function hasNumbers() {
 			if (val.search(/\d/) === -1) {
 				story.push({
-					isValid: false,
-					test: 'hasNumbers'
+					test: 'hasNumbers',
+					value: val
 				});
 			}
 
@@ -59,8 +56,8 @@ const getMethods = (val, opts) => {
 		hasLetters: function hasLetters() {
 			if (val.search(/[A-Z]\d?/i) === -1) {
 				story.push({
-					isValid: false,
-					test: 'hasLetters'
+					test: 'hasLetters',
+					value: val
 				});
 			}
 
@@ -74,9 +71,9 @@ const getMethods = (val, opts) => {
 		hasCustom: function hasCustom() {
 			if (val.search(opts.basePattern) === -1) {
 				story.push({
-					isValid: false,
 					test: 'hasCustom',
-					customRegex: opts.basePattern
+					customRegex: opts.basePattern,
+					value: val
 				});
 			}
 
@@ -90,8 +87,8 @@ const getMethods = (val, opts) => {
 		hasNumbersOrSpecials: function hasNumbersOrSpecials() {
 			if (val.search(/\d/) === -1 && val.search(/\W/) === -1) {
 				story.push({
-					isValid: false,
-					test: 'hasNumbersOrSpecials'
+					test: 'hasNumbersOrSpecials',
+					value: val
 				});
 			}
 
@@ -105,8 +102,8 @@ const getMethods = (val, opts) => {
 		hasSpecialCharacters: function hasSpecialCharacters() {
 			if (val.search(/\W/) === -1) {
 				story.push({
-					isValid: false,
-					test: 'hasSpecialCharacters'
+					test: 'hasSpecialCharacters',
+					value: val
 				});
 			}
 
@@ -120,8 +117,8 @@ const getMethods = (val, opts) => {
 		hasUpperAndLowerCase: function hasUpperAndLowerCase() {
 			if (val.search(/[A-Z]/) === -1 || val.search(/[a-z]/) === -1) {
 				story.push({
-					isValid: false,
-					test: 'hasUpperAndLowerCase'
+					test: 'hasUpperAndLowerCase',
+					value: val
 				});
 			}
 
@@ -139,9 +136,9 @@ const getMethods = (val, opts) => {
 		matchesCustom: function matchesCustom(pattern) {
 			if (!pattern.test(val)) {
 				story.push({
-					isValid: false,
 					test: 'matchesCustom',
-					customPattern: pattern
+					customPattern: pattern,
+					value: val
 				});
 			}
 
@@ -155,8 +152,8 @@ const getMethods = (val, opts) => {
 		matchesGiven: function matchesGiven() {
 			if (val !== opts.toMatch) {
 				story.push({
-					isValid: false,
-					test: 'matchesGiven'
+					test: 'matchesGiven',
+					value: val
 				});
 			}
 
@@ -170,8 +167,8 @@ const getMethods = (val, opts) => {
 		matchesPattern: function matchesPattern() {
 			if (!opts.basePattern.test(val)) {
 				story.push({
-					isValid: false,
-					test: 'matchesPattern'
+					test: 'matchesPattern',
+					value: val
 				});
 			}
 
@@ -185,8 +182,8 @@ const getMethods = (val, opts) => {
 		doesNotMatch: function doesNotMatch() {
 			if (opts.antiPattern.test(val)) {
 				story.push({
-					isValid: false,
-					test: 'doesNotMatch'
+					test: 'doesNotMatch',
+					value: val
 				});
 			}
 
@@ -199,12 +196,12 @@ const getMethods = (val, opts) => {
 		 * @return {object} returns itself to continue the chain
 		 */
 		isDate: function isDate() {
-			var reg = /^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m;
+			const reg = /^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m;
 
 			if (!reg.test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isDate'
+					test: 'isDate',
+					value: val
 				});
 			}
 
@@ -212,12 +209,12 @@ const getMethods = (val, opts) => {
 		},
 
 		isDateShort: function isDateShort() {
-			var reg = /^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m;
+			const reg = /^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m;
 
 			if (!reg.test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isDateShort'
+					test: 'isDateShort',
+					value: val
 				});
 			}
 
@@ -229,12 +226,12 @@ const getMethods = (val, opts) => {
 		 * @return {object} returns itself to continue the chain
 		 */
 		isDateProper: function isDateProper() {
-			var reg = /^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m;
+			const reg = /^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m;
 
 			if (!reg.test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isDateProper'
+					test: 'isDateProper',
+					value: val
 				});
 			}
 
@@ -248,8 +245,8 @@ const getMethods = (val, opts) => {
 		isEmail: function isEmail() {
 			if (!opts.emailPattern.test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isEmail'
+					test: 'isEmail',
+					value: val
 				});
 			}
 
@@ -263,8 +260,8 @@ const getMethods = (val, opts) => {
 		isNumber: function isNumber() {
 			if (isNaN(val)) {
 				story.push({
-					isValid: false,
-					test: 'isNumber'
+					test: 'isNumber',
+					value: val
 				});
 			}
 
@@ -278,8 +275,8 @@ const getMethods = (val, opts) => {
 		isPositive: function isPositive() {
 			if (isNaN(val) || Number(val) < 0) {
 				story.push({
-					isValid: false,
-					test: 'isPositive'
+					test: 'isPositive',
+					value: val
 				});
 			}
 
@@ -293,8 +290,8 @@ const getMethods = (val, opts) => {
 		isNegative: function isNegative() {
 			if (isNaN(val) || Number(val) >= 0) {
 				story.push({
-					isValid: false,
-					test: 'isNegative'
+					test: 'isNegative',
+					value: val
 				});
 			}
 
@@ -308,8 +305,8 @@ const getMethods = (val, opts) => {
 		isVin: function isVin() {
 			if (!opts.vinPattern.test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isVin'
+					test: 'isVin',
+					value: val
 				});
 			}
 
@@ -323,8 +320,8 @@ const getMethods = (val, opts) => {
 		isZip: function isZip() {
 			if (!(/^\d{5}(-\d{4})?$/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isZip'
+					test: 'isZip',
+					value: val
 				});
 			}
 
@@ -338,8 +335,8 @@ const getMethods = (val, opts) => {
 		isCAPostalCode: function isCAPostalCode() {
 			if (!(/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isCAPostalCode'
+					test: 'isCAPostalCode',
+					value: val
 				});
 			}
 
@@ -351,10 +348,10 @@ const getMethods = (val, opts) => {
 		 * @return {object} returns itself to continue the chain
 		 */
 		isPhone: function isPhone() {
-			if (!(/^[0-9]{10}$/g).test(val.replace(/\W/g, ''))) {
+			if (!(/^[0-9]{10}$/).test(val.replace(/\W/g, ''))) {
 				story.push({
-					isValid: false,
-					test: 'isPhone'
+					test: 'isPhone',
+					value: val
 				});
 			}
 
@@ -366,10 +363,10 @@ const getMethods = (val, opts) => {
 		 * @return {object} returns itself to continue the chain
 		 */
 		isLicensePlate: function isLicensePlate() {
-			if (!(/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/ig).test(val)) {
+			if (!(/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isLicensePlate'
+					test: 'isLicensePlate',
+					value: val
 				});
 			}
 
@@ -383,8 +380,8 @@ const getMethods = (val, opts) => {
 		isVisaCard: function isVisaCard() {
 			if (!(/^4[0-9]{15}$/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isVisaCard'
+					test: 'isVisaCard',
+					value: val
 				});
 			}
 
@@ -398,8 +395,8 @@ const getMethods = (val, opts) => {
 		isMasterCard: function isMasterCard() {
 			if (!(/^5[1-5][0-9]{14}$/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isMasterCard'
+					test: 'isMasterCard',
+					value: val
 				});
 			}
 
@@ -413,8 +410,8 @@ const getMethods = (val, opts) => {
 		isAmericanExpressCard: function isAmericanExpressCard() {
 			if (!(/^3(4|7)[0-9]{13}$/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'isAmericanExpressCard'
+					test: 'isAmericanExpressCard',
+					value: val
 				});
 			}
 
@@ -429,8 +426,8 @@ const getMethods = (val, opts) => {
 		meetsLength: function meetsLength() {
 			if (val.length < opts.minLength || val.length > opts.maxLength) {
 				story.push({
-					isValid: false,
-					test: 'meetsLength'
+					test: 'meetsLength',
+					value: val
 				});
 			}
 
@@ -444,8 +441,8 @@ const getMethods = (val, opts) => {
 		meetsYearStandard: function meetsYearStandard() {
 			if (!(/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'meetsYearStandard'
+					test: 'meetsYearStandard',
+					value: val
 				});
 			}
 
@@ -459,8 +456,8 @@ const getMethods = (val, opts) => {
 		meetsCVN: function meetsCVN() {
 			if (val.length !== 3 || !(/[0-9]/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'meetsCVN'
+					test: 'meetsCVN',
+					value: val
 				});
 			}
 
@@ -474,8 +471,8 @@ const getMethods = (val, opts) => {
 		meetsCVNAmex: function meetsCVNAmex() {
 			if (val.length !== 4 || !(/[0-9]/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'meetsCVNAmex'
+					test: 'meetsCVNAmex',
+					value: val
 				});
 			}
 
@@ -489,8 +486,8 @@ const getMethods = (val, opts) => {
 		meetsTreadDepth: function meetsTreadDepth() {
 			if (!(/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'meetsTreadDepth'
+					test: 'meetsTreadDepth',
+					value: val
 				});
 			}
 
@@ -505,8 +502,8 @@ const getMethods = (val, opts) => {
 		noSpecials: function noSpecials() {
 			if ((/\W/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'noSpecials'
+					test: 'noSpecials',
+					value: val
 				});
 			}
 
@@ -518,10 +515,10 @@ const getMethods = (val, opts) => {
 		 * @return {object} returns itself to continue the chain
 		 */
 		noNumbers: function noNumbers() {
-			if ((/[0-9]/ig).test(val)) {
+			if ((/[0-9]/).test(val)) {
 				story.push({
-					isValid: false,
-					test: 'noNumbers'
+					test: 'noNumbers',
+					value: val
 				});
 			}
 
@@ -533,7 +530,7 @@ const getMethods = (val, opts) => {
 		 * @return {object} returns a passing property or a failing property with an array of failures
 		 */
 		finish: function finish() {
-			var response = {
+			let response = {
 				isValid: (story.length === 0)
 			};
 
@@ -548,17 +545,12 @@ const getMethods = (val, opts) => {
 
 const createMethod = (methodArr, opts) => {
 	return (val, options) => {
-		const customOpts = extend(opts, options);
+		const customOpts = extend({}, opts, options);
 		const methods = getMethods(val, customOpts);
-		let data = {};
 
-		for (let i = 0, len = methodArr.length; i < len; i++) {
-			methods[methodArr[i]]();
-		}
+		methodArr.forEach(currMethod => methods[currMethod]());
 
-		data = methods.finish();
-
-		return data;
+		return methods.finish();
 	};
 };
 
@@ -569,7 +561,7 @@ export default (val, options, useCreate) => {
 		basePattern: '',
 		antiPattern: '',
 		vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
-		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/ig,
+		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
 		toMatch: ''
 	};
 
