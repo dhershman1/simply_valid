@@ -316,3 +316,12 @@ test('Test noLetters()', t => {
 	t.notOk(custom('chicken1').isValid, 'Invalid value contained letters');
 	t.end();
 });
+
+test('Test simple stack of methods', t => {
+	const custom = validate(['noSpecials', 'noNumbers']);
+
+	t.ok(custom('Cool').isValid, 'No specials or numbers passed');
+	t.notOk(custom('Cool12').isValid, 'Failed because numbers');
+	t.notOk(custom('Cool12!').isValid, 'Failed because numbers & specials');
+	t.end();
+});
