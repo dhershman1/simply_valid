@@ -2,6 +2,8 @@
 
 # Simply Valid
 
+**The following Documentation is for v2+ for v1.x.x see README-1.x.x.md**
+
 A simple to use data driven validation system
 
 **NOTE: Only supports IE 9+**
@@ -9,7 +11,6 @@ A simple to use data driven validation system
 ## Contents
 * [Custom Function](#setting-methods-to-a-custom-function)
 * [Methods](#methods)
-  * [Misc Methods](#misc-methods)
   * [Has Methods](#has-methods)
   * [Match Methods](#match-methods)
   * [Is Methods](#is-methods)
@@ -22,7 +23,7 @@ You can find the changelog here: https://github.com/dhershman1/simply_valid/blob
 
 ## Parameters
 
-- `val` - `String|Number`: The value set that is going to be validated `Required`
+- `methods` - `Array`: Array of validation method names to run. (see list below)
 - `options` - `Object`: An object of rules to overwrite the default rules
 
 ## Options
@@ -33,55 +34,87 @@ You can find the changelog here: https://github.com/dhershman1/simply_valid/blob
 - `antiPattern` - `Regex`: The base regex pattern you want to ensure does NOT get a match
 - `emailPattern` - `Regex`: The pattern used to match emails (There is a default pattern set already)
 - `vinPattern` - `Regex`: The pattern used to match VINs (There is a default pattern set already)
-- `toMatch` - `String|Number`: The value you want to match against when calling basic match methods
+- `equalTo` - `String|Number`: The value you want to match against when calling basic match methods
 
 ## Usage
-You can call it as an object to use each method individually or via a chain
+Using Standardized JS
+```js
+import simplyValid from 'simply_valid';
+
+simplyValid([methods], options);
+```
+
+Using commonjs
 ```js
 var validation = require('simply_valid');
 
-validation(val, options).method();
-// As of v1.2.0+ you can now also setup a custom variable of methods
-validation([methods], options, true);
-// OR
-validation([methods], true);
+validation([methods], options);
 // See Below for a full usage example
 ```
 
-## Setting methods to a custom function
-To use the new feature in v1.2.0+ simple set the methods you want and then call your variable with your value.
-```js
-var validation = require('simply_valid');
-
-var myValidation = validation(['isNumber', 'isPositive'], true);
-myValidation(4);
-// Outputs: { isValid: true }
-myValidation(-4);
-// Outputs: { isValid: false, story: [ { isValid: false, test: 'isPositive' } ] }
-
-// You can now overwrite options on the fly as needed
-var myValidation = validation(['matchesPattern'], {
-	basePattern: /[A-Z]/gi
-}, true);
-myValidation('Cheese');
-// Output: { isValid: true }
-myValidation(4, {
-	basePattern: /[0-9]/g
-});
-// Output: { isValid: true }
+In the browser
+```html
+<script src="path/to/dist/simplyValid.umd.js"></script>
+<script>
+simplyValid([methods], options);
+</script>
 ```
-And that's really it, I built this into simply valid for those who need to do a lot of the same validation, and don't want to have to keep typing the same chains over and over and over again.
 
 ## Methods
 
-## **misc** Methods
+All methods return one of the following:
 
-### finish
-Signifies the end of the chain every method is chainable besides finish, if you do not call finish at the end of your chain, you **will** not get any data back.
+If everything passes you will get back a simple object `{isValid: true}`
 
-#### Usage
+If some of your validation methods fail you should expect the following:
+
 ```js
-validate('Chicken').noNumbers().finish();
+{
+	isValid: false,
+	story: [{
+		test: 'Test Name',
+		value: 'Values it failed on'
+	}]
+}
+```
+
+**You can also stack validation methods**
+
+You can set multiple validation methods to your function, like so:
+
+```js
+import simplyValid from 'simply_valid';
+
+const validation = simplyValid(['hasValue', 'isPositive']);
+validation(1);
+// Output: {isValid: true}
+validation(-1);
+/*
+	{
+		isValid: false,
+		story: [{
+			test: 'isPositive',
+			value: -1
+		}]
+	}
+ */
+```
+
+**You can Also set options as needed on the fly per call**
+
+This is useful if you need to set dynamic regex or dynamic options for your data.
+
+```js
+const validation = simplyValid(['hasCustom'], {
+  basePattern: /[A-Z]/
+});
+
+validation('CoolKid112');
+// Output: {isValid: true}
+validation(11123, {
+	basePattern: /[0-9]/
+});
+// Output: {isValid: true}
 ```
 
 ## **has** Methods
@@ -91,7 +124,9 @@ Checks if the value is actually a value
 
 #### Usage
 ```js
-validate('CoolKid112').hasValue().finish();
+const validation = simplyValid(['hasValue']);
+
+validation('CoolKid112');
 ```
 
 ### hasNumbers
@@ -99,7 +134,9 @@ Checks if the value has a number
 
 #### Usage
 ```js
-validate('CoolKid112').hasNumbers().finish();
+const validation = simplyValid(['hasNumbers']);
+
+validation('CoolKid112');
 ```
 
 ### hasLetters
@@ -107,7 +144,9 @@ Checks if the value has a letter
 
 #### Usage
 ```js
-validate('CoolKid112').hasLetters().finish();
+const validation = simplyValid(['hasLetters']);
+
+validation('CoolKid112');
 ```
 
 ### hasCustom
@@ -115,9 +154,11 @@ Checks if the value contains a character within your `basePattern` value
 
 #### Usage
 ```js
-validate('CoolKid112', {
+const validation = simplyValid(['hasCustom'], {
   basePattern: /[A-Z]/
-}).hasCustom().finish();
+});
+
+validation('CoolKid112');
 ```
 
 ### hasNumbersOrSpecials
@@ -125,7 +166,9 @@ Checks if the value contains numbers or special characters
 
 #### Usage
 ```js
-validate('CoolKid112').hasNumbersOrSpecials().finish();
+const validation = simplyValid(['hasNumbersOrSpecials']);
+
+validation('CoolKid112');
 ```
 
 ### hasSpecialCharacters
@@ -133,7 +176,9 @@ Checks if the value contains any special characters
 
 #### Usage
 ```js
-validate('CoolKid112').hasSpecialCharacters().finish();
+const validation = simplyValid(['hasSpecialCharacters']);
+
+validation('CoolKid112');
 ```
 
 ### hasUpperAndLowerCase
@@ -141,39 +186,23 @@ Checks if the value contains a upper and lower case character
 
 #### Usage
 ```js
-validate('CoolKid112').hasUpperAndLowerCase().finish();
+const validation = simplyValid(['hasUpperAndLowerCase']);
+
+validation('CoolKid112');
 ```
 
 ## **match** Methods
-
-### matchesCustom
-Checks against a custom pattern sent in as a parameter this is the only current method to accept a param.
-
-NOTE: It is recommended to use this only with chain style syntax and not custom function syntax
-
-#### Usage
-```js
-validate('Hello').matchesCustom(/[A-Z]/gi).finish();
-```
-
-### matchesGiven
-Checks if the value matches the `toMatch` value given in options this is a STRICT match
-
-#### Usage
-```js
-validate('CoolKid112', {
-  toMatch: 'CoolKid112'
-}).matchesGiven().finish();
-```
 
 ### matchesPattern
 Checks if the value matches the `basePattern` option
 
 #### Usage
 ```js
-validate('CoolKid112', {
-  basePattern: /[a-z][0-9]/ig
-}).matchesPattern().finish();
+const validation = simplyValid(['matchesPattern'], {
+	basePattern: /[a-z][0-9]/ig
+});
+
+validation('CoolKid112');
 ```
 
 ### doesNotMatch
@@ -181,9 +210,11 @@ Verifies a value does not match the `antiPattern` option
 
 #### Usage
 ```js
-validate('CoolKid112', {
-  antiPattern: 'NotCoolKid211'
-}).doesNotMatch().finish();
+const validation = simplyValid(['matchesPattern'], {
+	antiPattern: /[0-9]/g
+});
+
+validation('CoolKid');
 ```
 
 ## **is** Methods
@@ -193,35 +224,52 @@ Checks if the value is a valid date (US)
 
 #### Usage
 ```js
-validate('03-28-2017').isDate().finish();
+const validation = simplyValid(['isDate']);
+
+validation('03-28-2017');
 ```
 
 ### isDateShort
-Checks if the value is a valid date (US)
+Checks if the value is a valid date (US) in short tense
 
 #### Usage
 ```js
-validate('03-28').isDateShort().finish();
+const validation = simplyValid(['isDateShort']);
+
+validation('03-28');
 ```
 
 ### isDateProper
-Checks if the value is a valid date (US)
+Checks if the value is a valid date (US) in proper format
 
 #### Usage
 ```js
-validate('2017-03-28').isDateProper().finish();
+const validation = simplyValid(['isDateProper']);
+
+validation('2017-03-28');
+```
+
+### isEqual
+Replaces `matchGiven`, does what it says runs a `strict` compare test on the value
+
+#### Usage
+
+```js
+const validation = simplyValid(['isEqual'], {
+	equalTo: 'CoolKid112'
+});
+
+validation('CoolKid112');
 ```
 
 ### isEmail
-Checks if the value is a valid email
+Checks if the value is a valid email uses the `emailPattern` option to validate against
 
 #### Usage
 ```js
-validate('cOoLkId112@aol.com').isEmail().finish();
-// You can also set your own email pattern for regex if you want
-validate('cOoLkId112@aol.com', {
-  emailPattern: /[a-z]/ig
-}).isEmail().finish();
+const validation = simplyValid(['isEmail']);
+
+validation('cOoLkId112@aol.com');
 ```
 
 ### isNumber
@@ -229,23 +277,29 @@ Checks if the value is a number
 
 #### Usage
 ```js
-validate('112').isNumber().finish();
+const validation = simplyValid(['isNumber']);
+
+validation('112');
 ```
 
 ### isPositive
-Checks if the value is positive
+Checks if the value is both a number **AND** that it is positive
 
 #### Usage
 ```js
-validate('112').isPositive().finish();
+const validation = simplyValid(['isPositive']);
+
+validation('112');
 ```
 
 ### isNegative
-Checks if the value is Negative
+Checks if the value is both a number **AND** that it is negative
 
 #### Usage
 ```js
-validate('-112').isNegative().finish();
+const validation = simplyValid(['isNegative']);
+
+validation('-112');
 ```
 
 ### isLicensePlate
@@ -253,7 +307,9 @@ Checks if the value matches a license plate format
 
 #### Usage
 ```js
-validate('SSS1829').isLicensePlate().finish();
+const validation = simplyValid(['isLicensePlate']);
+
+validation('SSS1829');
 ```
 
 ### isPhone
@@ -261,7 +317,9 @@ Checks if the value matches a proper phone length (accepts both formatted and un
 
 #### Usage
 ```js
-validate('440-555-7799').isPhone().finish();
+const validation = simplyValid(['isPhone']);
+
+validation('440-555-7799');
 ```
 
 ### isZip
@@ -269,29 +327,29 @@ Checks if the value matches a proper zip code format
 
 #### Usage
 ```js
-validate('44114').isZip().finish();
+const validation = simplyValid(['isZip']);
+
+validation('44114');
 ```
 
 ### isCAPostalCode
 Checks if the value matches a proper Canada postal code format
 
-(Universal method coming soon?)
-
 #### Usage
 ```js
-validate('K1A0B1').isCAPostalCode().finish();
+const validation = simplyValid(['isCAPostalCode']);
+
+validation('K1A0B1');
 ```
 
 ### isVin
-Checks if the value is a valid VIN
+Checks if the value is a valid VIN uses the property `vinPattern` in options
 
 #### Usage
 ```js
-validate('JM1CW2BL8C0127808').isVin().finish();
-// You can also set your own vin pattern for regex if you want
-validate('JM1CW2BL8C0127808', {
-  emailPattern: /[a-z]/ig
-}).isVin().finish();
+const validation = simplyValid(['isVin']);
+
+validation('JM1CW2BL8C0127808');
 ```
 
 ### isVisaCard
@@ -299,7 +357,9 @@ Checks if the value is a proper Visa card format
 
 #### Usage
 ```js
-validate('4111111111111111').isVisaCard().finish();
+const validation = simplyValid(['isVisaCard']);
+
+validation('4111111111111111');
 ```
 
 ### isMasterCard
@@ -307,7 +367,9 @@ Checks if the value is a proper MasterCard format
 
 #### Usage
 ```js
-validate('5511111111111111').isMasterCard().finish();
+const validation = simplyValid(['isMasterCard']);
+
+validation('5511111111111111');
 ```
 
 ### isAmericanExpressCard
@@ -315,17 +377,24 @@ Checks if the value is a proper American Express card format
 
 #### Usage
 ```js
-validate('341111111111111').isAmericanExpressCard().finish();
+const validation = simplyValid(['isAmericanExpressCard']);
+
+validation('341111111111111');
 ```
 
 ## **meets** Methods
 
 ### meetsLength
-Checks if our value meets our desired length
+Checks if our value meets our desired length uses the `minLength` and `maxLength` properties in options
 
 #### Usage
 ```js
-validate('Chicken').meetsLength().finish();
+const validation = simplyValid(['meetsLength'], {
+	minLength: 1,
+	maxLength: 20
+});
+
+validation('Chicken');
 ```
 
 ### meetsYearStandard
@@ -333,8 +402,10 @@ Checks if our value meets the proper 2 or 4 digit year standard
 
 #### Usage
 ```js
-validate('2017').meetsYearStandard().finish();
-validate('17').meetsYearStandard().finish();
+const validation = simplyValid(['meetsYearStandard']);
+
+validation('2017');
+validation('17');
 ```
 
 ### meetsCVN
@@ -342,7 +413,9 @@ Checks if our value is a proper CVN
 
 #### Usage
 ```js
-validate('333').meetsCVN().finish();
+const validation = simplyValid(['meetsCVN']);
+
+validation('333');
 ```
 
 ### meetsCVNAmex
@@ -350,7 +423,9 @@ Checks if our value is a proper Amex CVN
 
 #### Usage
 ```js
-validate('3343').meetsCVNAmex().finish();
+const validation = simplyValid(['meetsCVNAmex']);
+
+validation('3343');
 ```
 
 ### meetsTreadDepth
@@ -358,7 +433,9 @@ Checks if our value meets a tread depth format
 
 #### Usage
 ```js
-validate('22').meetsTreadDepth().finish();
+const validation = simplyValid(['meetsTreadDepth']);
+
+validation('22');
 ```
 
 ## **no** Methods
@@ -368,7 +445,9 @@ Checks if our value contains any special characters
 
 #### Usage
 ```js
-validate('Chicken').noSpecials().finish();
+const validation = simplyValid(['noSpecials']);
+
+validation('Chicken');
 ```
 
 ### noNumbers
@@ -376,5 +455,17 @@ Verifies our value contains no numbers
 
 #### Usage
 ```js
-validate('Chicken').noNumbers().finish();
+const validation = simplyValid(['noNumbers']);
+
+validation('Chicken');
+```
+
+### noLetters
+Verifies our value contains no letters
+
+#### Usage
+```js
+const validation = simplyValid(['noLetters']);
+
+validation('1123');
 ```

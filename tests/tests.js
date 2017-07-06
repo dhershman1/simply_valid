@@ -308,3 +308,11 @@ test('Test noNumbers()', t => {
 	t.notOk(custom('chicken1').isValid, 'Invalid value contained numbers');
 	t.end();
 });
+
+test('Test noLetters()', t => {
+	const custom = validate(['noLetters']);
+
+	t.ok(custom('1123').isValid, 'Returned OK no Letters');
+	t.notOk(custom('chicken1').isValid, 'Invalid value contained letters');
+	t.end();
+});

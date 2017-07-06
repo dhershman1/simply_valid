@@ -10,3 +10,6 @@
 > - Changed the `toMatch` property to `equalTo` in the options
 > - Organized Methods based on their types `has`, `is`, etc...
 > - This allowed large amounts of code cleanup in the main index file
+> - Changed `matchesGiven` to `isEqual`
+> - Removed `matchesCustom`
+> - Added method `noLetters`
