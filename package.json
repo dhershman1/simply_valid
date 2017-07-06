@@ -1,6 +1,6 @@
 {
   "name": "simply_valid",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "a simple data driven validation utility library",
   "main": "dist/simply_valid.umd.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "prepublish": "rollup -c",
-    "test": "npm run prepublish && tape tests/tests.js | tap-spec"
+    "test": "rollup -c && tape tests/tests.js | tap-spec"
   },
   "repository": {
     "type": "git",
