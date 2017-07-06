@@ -23,7 +23,7 @@ function extend(...objs) {
 const methods = extend({}, hasMethods, isMethods, matchMethods, meetsMethods, noMethods);
 
 export default (methodArr, options) => {
-	let defaults = {
+	const defaults = {
 		maxLength: 20,
 		minLength: 1,
 		basePattern: '',

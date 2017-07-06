@@ -6,10 +6,11 @@
 
 A simple to use data driven validation system
 
-**NOTE: Only supports IE 9+**
-
 ## Contents
-* [Custom Function](#setting-methods-to-a-custom-function)
+* [Options](#options)
+* [Defaults](#defaults)
+* [Browser Support](#browser-support)
+* [Usage](#usage)
 * [Methods](#methods)
   * [Has Methods](#has-methods)
   * [Match Methods](#match-methods)
@@ -28,13 +29,32 @@ You can find the changelog here: https://github.com/dhershman1/simply_valid/blob
 
 ## Options
 
-- `minLength` - `Number`: The minimum length of a value `Default: 1`
-- `maxLength` - `Number`: The maximum length of a value `Default: 20`
+- `minLength` - `Number`: The minimum length of a value
+- `maxLength` - `Number`: The maximum length of a value
 - `basePattern` - `Regex`: The base regex pattern you want to match
 - `antiPattern` - `Regex`: The base regex pattern you want to ensure does NOT get a match
 - `emailPattern` - `Regex`: The pattern used to match emails (There is a default pattern set already)
 - `vinPattern` - `Regex`: The pattern used to match VINs (There is a default pattern set already)
 - `equalTo` - `String|Number`: The value you want to match against when calling basic match methods
+
+## Defaults
+
+```js
+const defaults = {
+  maxLength: 20,
+  minLength: 1,
+  basePattern: '',
+  antiPattern: '',
+  vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
+  emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
+  equalTo: ''
+};
+```
+
+## Browser Support
+![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) |
+--- | --- | --- | --- | --- | --- |
+Latest ✔ | Latest ✔ | Untested | Untested | Latest ✔ | 9+ ✔
 
 ## Usage
 Using Standardized JS
