@@ -70,11 +70,11 @@ If some of your validation methods fail you should expect the following:
 
 ```js
 {
-	isValid: false,
-	story: [{
-		test: 'Test Name',
-		value: 'Values it failed on'
-	}]
+  isValid: false,
+  story: [{
+    test: 'Test Name',
+    value: 'Values it failed on'
+  }]
 }
 ```
 
@@ -90,13 +90,13 @@ validation(1);
 // Output: {isValid: true}
 validation(-1);
 /*
-	{
-		isValid: false,
-		story: [{
-			test: 'isPositive',
-			value: -1
-		}]
-	}
+  {
+    isValid: false,
+    story: [{
+      test: 'isPositive',
+      value: -1
+    }]
+  }
  */
 ```
 
@@ -112,7 +112,7 @@ const validation = simplyValid(['hasCustom'], {
 validation('CoolKid112');
 // Output: {isValid: true}
 validation(11123, {
-	basePattern: /[0-9]/
+  basePattern: /[0-9]/
 });
 // Output: {isValid: true}
 ```
@@ -199,7 +199,7 @@ Checks if the value matches the `basePattern` option
 #### Usage
 ```js
 const validation = simplyValid(['matchesPattern'], {
-	basePattern: /[a-z][0-9]/ig
+  basePattern: /[a-z][0-9]/ig
 });
 
 validation('CoolKid112');
@@ -211,7 +211,7 @@ Verifies a value does not match the `antiPattern` option
 #### Usage
 ```js
 const validation = simplyValid(['matchesPattern'], {
-	antiPattern: /[0-9]/g
+  antiPattern: /[0-9]/g
 });
 
 validation('CoolKid');
@@ -256,7 +256,7 @@ Replaces `matchGiven`, does what it says runs a `strict` compare test on the val
 
 ```js
 const validation = simplyValid(['isEqual'], {
-	equalTo: 'CoolKid112'
+  equalTo: 'CoolKid112'
 });
 
 validation('CoolKid112');
@@ -390,8 +390,8 @@ Checks if our value meets our desired length uses the `minLength` and `maxLength
 #### Usage
 ```js
 const validation = simplyValid(['meetsLength'], {
-	minLength: 1,
-	maxLength: 20
+  minLength: 1,
+  maxLength: 20
 });
 
 validation('Chicken');
