@@ -3,6 +3,7 @@ import * as isMethods from './is/index';
 import * as matchMethods from './match/index';
 import * as meetsMethods from './meets/index';
 import * as noMethods from './no/index';
+import * as multi from './multi/index';
 
 const extend = (...args) => {
 
@@ -18,7 +19,7 @@ const extend = (...args) => {
 };
 
 // Our collection of validation methods extend them so we get their methods and thats it
-const methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods);
+const methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods, multi);
 
 export default (methodArr, options) => {
 	// Set our default options that can be overwritten if needed.
@@ -42,6 +43,7 @@ export default (methodArr, options) => {
 		const customOpts = extend(opts, calledOpts);
 
 		methodArr.forEach(currMethod => {
+			customOpts.type = currMethod;
 			if (methods[currMethod](val, customOpts)) {
 				// If something comes back as a failure we need to push it into the story
 				story.push({

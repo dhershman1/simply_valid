@@ -24,14 +24,23 @@ const validationTypes = {
 	]
 };
 
-export default (val, type) => {
+const find = (val, type) => {
 	const validate = validationTypes[type];
 
 	for (let i = 0; i < validate.length; i++) {
-		if (validate[i](val)) {
+		if (validate[i](val).isValid) {
 			return true;
 		}
 	}
 
 	return false;
+};
+
+export const creditCard = (val) => {
+	return find(val, 'creditCard');
+};
+
+export const date = (val) => {
+	return find(val, 'date');
+
 };

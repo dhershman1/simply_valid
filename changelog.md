@@ -9,8 +9,7 @@
 > - Added `isAboveMin` which just validates the value is above the `minLength` option
 > - Added new validation method type `multi` which runs multiple validations in a single function for you (requested)
 >   - Supports currently credit cards and dates it runs all of those types of validations
->   - When calling the multi type you would run `multi(val, type)`
->   - `type` in this case can be `creditCard` or `date` currently
+>   - It's used just like the other methods `validation([creditCard], options)` 
 
 ## v2.0.0 - Quality of Life update
 

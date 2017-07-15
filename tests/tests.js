@@ -324,10 +324,23 @@ test('Test creditCard()', t => {
 	t.ok(custom('6011111111111117').isValid, 'Discover Card validated');
 	t.ok(custom('5555555555554444').isValid, 'Master Card validated');
 	t.ok(custom('4012888888881881').isValid, 'Visa Card validated');
+
+	t.end();
+});
+
+test('Test date()', t => {
+	const custom = validate(['date']);
+
+	t.ok(custom('2017-03-28').isValid, 'Returns that this is indeed a proper date');
+	t.ok(custom('03-28-2017').isValid, 'US standard date validated');
+	t.ok(custom('03-28').isValid, 'Standard short date validated');
+
+	t.end();
 });
 
 test('Test simple stack of methods', t => {
 	const custom = validate(['noSpecials', 'noNumbers']);
+
 
 	t.ok(custom('Cool').isValid, 'No specials or numbers passed');
 	t.notOk(custom('Cool12').isValid, 'Failed because numbers');
