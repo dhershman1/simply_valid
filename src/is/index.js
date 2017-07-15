@@ -26,6 +26,14 @@ export const isLicensePlate = (val) => (!(/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|
 
 export const isVisaCard = (val) => (!(/^4[0-9]{15}$/).test(val));
 
+export const isVisaPanCard = (val) => (!(/^4[0-9]{18}$/).test(val));
+
 export const isMasterCard = (val) => (!(/^5[1-5][0-9]{14}$/).test(val));
 
 export const isAmericanExpressCard = (val) => (!(/^3(4|7)[0-9]{13}$/).test(val));
+
+export const isDiscoverCard = (val) => (!(/^6[0-9]{15}$/).test(val));
+
+export const isBelowMax = (val, {maxLength}) => (val < maxLength);
+
+export const isAboveMin = (val, {minLength}) => (val > minLength);

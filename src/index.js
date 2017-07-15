@@ -4,25 +4,24 @@ import * as matchMethods from './match/index';
 import * as meetsMethods from './meets/index';
 import * as noMethods from './no/index';
 
-function extend(...objs) {
-	let extended = {};
+const extend = (...args) => {
 
-	for (let key in objs) {
-		let arg = objs[key];
+	return args.reduce((acc, x) => {
+		let key = '';
 
-		for (let prop in arg) {
-			if (Object.prototype.hasOwnProperty.call(arg, prop)) {
-				extended[prop] = arg[prop];
-			}
+		for (key in x) {
+			acc[key] = x[key];
 		}
-	}
 
-	return extended;
-}
+		return acc;
+	}, {});
+};
 
-const methods = extend({}, hasMethods, isMethods, matchMethods, meetsMethods, noMethods);
+// Our collection of validation methods extend them so we get their methods and thats it
+const methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods);
 
 export default (methodArr, options) => {
+	// Set our default options that can be overwritten if needed.
 	const defaults = {
 		maxLength: 20,
 		minLength: 1,
@@ -33,23 +32,28 @@ export default (methodArr, options) => {
 		equalTo: ''
 	};
 
-	// This acts as our fallback global options
-	const opts = extend({}, defaults, options);
-
+	// Collect and set a good portion of options to keep a global set
+	const opts = extend(defaults, options);
 
 	return (val, calledOpts = {}) => {
+		// Initialize an empty story on call
 		let story = [];
-		const customOpts = extend({}, opts, calledOpts);
+		// Create a custom options object in case options are being changed per call
+		const customOpts = extend(opts, calledOpts);
 
 		methodArr.forEach(currMethod => {
 			if (methods[currMethod](val, customOpts)) {
+				// If something comes back as a failure we need to push it into the story
 				story.push({
+					// What test did we fail on
 					test: currMethod,
+					// The value used when the failure happened
 					value: val
 				});
 			}
 		});
 
+		// If story has any kind of length, then something failed so send that back
 		if (story.length) {
 			return {
 				isValid: false,

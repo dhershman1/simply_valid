@@ -317,6 +317,15 @@ test('Test noLetters()', t => {
 	t.end();
 });
 
+test('Test creditCard()', t => {
+	const custom = validate(['creditCard']);
+
+	t.ok(custom('378282246310005').isValid, 'American Express Card validated');
+	t.ok(custom('6011111111111117').isValid, 'Discover Card validated');
+	t.ok(custom('5555555555554444').isValid, 'Master Card validated');
+	t.ok(custom('4012888888881881').isValid, 'Visa Card validated');
+});
+
 test('Test simple stack of methods', t => {
 	const custom = validate(['noSpecials', 'noNumbers']);
 
