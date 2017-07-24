@@ -1,13 +1,19 @@
 import {
+	isAmericanExpressCard,
+	isCAPostalCode,
+	isDate,
+	isDateProper,
+	isDateShort,
+	isDiscoverCard,
+	isMasterCard,
 	isVisaCard,
 	isVisaPanCard,
-	isDiscoverCard,
-	isAmericanExpressCard,
-	isMasterCard,
-	isDate,
-	isDateShort,
-	isDateProper
+	isZip
 } from '../is/index';
+import {
+	meetsCVN,
+	meetsCVNAmex
+} from '../meets/index';
 
 const validationTypes = {
 	creditCard: [
@@ -21,14 +27,22 @@ const validationTypes = {
 		isDate,
 		isDateShort,
 		isDateProper
+	],
+	cvn: [
+		meetsCVN,
+		meetsCVNAmex
+	],
+	zipPost: [
+		isZip,
+		isCAPostalCode
 	]
 };
 
-const find = (val, type) => {
-	const validate = validationTypes[type];
+const executeValidation = (val, type) => {
+	const validationList = validationTypes[type];
 
-	for (let i = 0; i < validate.length; i++) {
-		if (validate[i](val).isValid) {
+	for (let i = 0; i < validationList.length; i++) {
+		if (validationList[i](val).isValid) {
 			return true;
 		}
 	}
@@ -36,11 +50,10 @@ const find = (val, type) => {
 	return false;
 };
 
-export const creditCard = (val) => {
-	return find(val, 'creditCard');
-};
+export const creditCard = val => executeValidation(val, 'creditCard');
 
-export const date = (val) => {
-	return find(val, 'date');
+export const date = val => executeValidation(val, 'date');
 
-};
+export const cvn = val => executeValidation(val, 'cvn');
+
+export const zipPost = val => executeValidation(val, 'zipPost');

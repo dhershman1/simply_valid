@@ -1,35 +1,37 @@
+/* eslint-disable max-len */
 import * as hasMethods from './has/index';
 import * as isMethods from './is/index';
 import * as matchMethods from './match/index';
 import * as meetsMethods from './meets/index';
+import * as multiMethods from './multi/index';
 import * as noMethods from './no/index';
-import * as multi from './multi/index';
 
-const extend = (...args) => {
+const extend = (...args) => args.reduce((acc, x) => {
+	let key = '';
 
-	return args.reduce((acc, x) => {
-		let key = '';
+	for (key in x) {
+		acc[key] = x[key];
+	}
 
-		for (key in x) {
-			acc[key] = x[key];
-		}
-
-		return acc;
-	}, {});
-};
+	return acc;
+}, {});
 
 // Our collection of validation methods extend them so we get their methods and thats it
-const methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods, multi);
+const methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods, multiMethods);
 
 export default (methodArr, options) => {
 	// Set our default options that can be overwritten if needed.
 	const defaults = {
+		max: Infinity,
+		min: -Infinity,
 		maxLength: 20,
 		minLength: 1,
 		basePattern: '',
 		antiPattern: '',
 		vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
 		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
+		// Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
+		passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/,
 		equalTo: ''
 	};
 
@@ -38,7 +40,7 @@ export default (methodArr, options) => {
 
 	return (val, calledOpts = {}) => {
 		// Initialize an empty story on call
-		let story = [];
+		const story = [];
 		// Create a custom options object in case options are being changed per call
 		const customOpts = extend(opts, calledOpts);
 

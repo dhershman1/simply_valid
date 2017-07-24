@@ -196,6 +196,18 @@ test('Test isVisaCard()', t => {
 	t.end();
 });
 
+test('Test isVisaPanCard()', t => {
+	const custom = validate(['isVisaPanCard']);
+
+	t.ok(custom('4111111111111111222').isValid, 'Returned OK This is a Visa card format');
+	t.notOk(custom('5111111111111111222').isValid, 'Invalid lead number');
+	t.notOk(custom('411111111111111112222').isValid, 'Invalid to long');
+	t.notOk(custom('411111111111111222').isValid, 'Invalid to short');
+	t.notOk(custom('55544444444444GGF').isValid, 'Invalid bad start number and has letters');
+	t.notOk(custom('4111111111111GGF').isValid, 'Invalid bad has letters');
+	t.end();
+});
+
 test('Test isMasterCard()', t => {
 	const custom = validate(['isMasterCard']);
 
@@ -218,6 +230,38 @@ test('Test isAmericanExpressCard()', t => {
 	t.notOk(custom('3411111111111111').isValid, 'Invalid to long');
 	t.notOk(custom('34111111111111').isValid, 'Invalid to short');
 	t.notOk(custom('34111111111111GG').isValid, 'Invalid to short');
+	t.end();
+});
+
+test('Test isDiscoverCard()', t => {
+	const custom = validate(['isDiscoverCard']);
+
+	t.ok(custom('6111111111111111').isValid, 'Returned OK This is a Discover card format');
+	t.notOk(custom('5111111111111111').isValid, 'Invalid lead number');
+	t.notOk(custom('41111111111111111').isValid, 'Invalid to long');
+	t.notOk(custom('411111111111111').isValid, 'Invalid to short');
+	t.notOk(custom('55544444444444GGF').isValid, 'Invalid bad start number and has letters');
+	t.notOk(custom('4111111111111GGF').isValid, 'Invalid bad has letters');
+	t.end();
+});
+
+test('Test isBelowMax()', t => {
+	const custom = validate(['isBelowMax'], {
+		max: 8
+	});
+
+	t.ok(custom('7').isValid, 'Returned OK This is below max');
+	t.notOk(custom('9').isValid, 'Invalid exceeds/matches max');
+	t.end();
+});
+
+test('Test isAboveMin()', t => {
+	const custom = validate(['isAboveMin'], {
+		min: 4
+	});
+
+	t.ok(custom('5').isValid, 'Returned OK This is above min');
+	t.notOk(custom('3').isValid, 'Invalid below min');
 	t.end();
 });
 
@@ -261,6 +305,17 @@ test('Test meetsLength()', t => {
 	t.end();
 });
 
+test('Test meetsMinMax()', t => {
+	const custom = validate(['meetsMinMax'], {
+		max: 5,
+		min: 0
+	});
+
+	t.ok(custom(3).isValid, 'Returns OK within our min/max');
+	t.notOk(custom(6).isValid, 'Invalid exceeds max');
+	t.end();
+});
+
 test('Test meetsYearStandard()', t => {
 	const custom = validate(['meetsYearStandard']);
 
@@ -279,6 +334,10 @@ test('Test meetsCVN()', t => {
 });
 
 test('Test meetsCVNAmex()', t => {
+	const custom = validate(['meetsCVNAmex']);
+
+	t.ok(custom('5301').isValid, 'Is an Amex CVN');
+	t.notOk(custom('201').isValid, 'Invalid format for Amex CVN');
 	t.end();
 });
 
@@ -287,6 +346,14 @@ test('Test meetsTreadDepth()', t => {
 
 	t.ok(custom('12').isValid, 'Proper tread depth format');
 	t.notOk(custom('AA').isValid, 'Invalid tread depth format');
+	t.end();
+});
+
+test('Test meetsPassReq()', t => {
+	const custom = validate(['meetsPassReq']);
+
+	t.ok(custom('cOol12$d').isValid, 'Meets Password requirement');
+	t.notOk(custom('AA').isValid, 'Invalid Does not meet password requirement');
 	t.end();
 });
 
@@ -334,6 +401,24 @@ test('Test date()', t => {
 	t.ok(custom('2017-03-28').isValid, 'Returns that this is indeed a proper date');
 	t.ok(custom('03-28-2017').isValid, 'US standard date validated');
 	t.ok(custom('03-28').isValid, 'Standard short date validated');
+
+	t.end();
+});
+
+test('Test cvn()', t => {
+	const custom = validate(['cvn']);
+
+	t.ok(custom('2115').isValid, 'Returns that this is indeed a proper date');
+	t.ok(custom('211').isValid, 'US standard date validated');
+
+	t.end();
+});
+
+test('Test zipPost()', t => {
+	const custom = validate(['zipPost']);
+
+	t.ok(custom(testData.zip).isValid, 'Returns valid us zip');
+	t.ok(custom('K1A 0B1').isValid, 'Returns valid Canada Zip');
 
 	t.end();
 });

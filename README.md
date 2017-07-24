@@ -6,12 +6,15 @@
 
 A simple to use data driven validation system
 
+Have a suggestion? Feel free to post them over in the github issues section and I will happily check them out!
+
 ## Contents
 * [Options](#options)
 * [Defaults](#defaults)
 * [Browser Support](#browser-support)
 * [Usage](#usage)
 * [Methods](#methods)
+  * [Multi Methods](#multi-methods)
   * [Has Methods](#has-methods)
   * [Match Methods](#match-methods)
   * [Is Methods](#is-methods)
@@ -29,24 +32,30 @@ You can find the changelog here: https://github.com/dhershman1/simply_valid/blob
 
 ## Options
 
-- `minLength` - `Number`: The minimum length of a value
+- `max` - `Number`: The maximum of a value
+- `min` - `Number`: The minimum of a value
 - `maxLength` - `Number`: The maximum length of a value
+- `minLength` - `Number`: The minimum length of a value
 - `basePattern` - `Regex`: The base regex pattern you want to match
 - `antiPattern` - `Regex`: The base regex pattern you want to ensure does NOT get a match
 - `emailPattern` - `Regex`: The pattern used to match emails (There is a default pattern set already)
 - `vinPattern` - `Regex`: The pattern used to match VINs (There is a default pattern set already)
+- `passwordPattern` - `Regex`: The pattern used to validate a password string (Has a default pattern set already)
 - `equalTo` - `String|Number`: The value you want to match against when calling basic match methods
 
 ## Defaults
 
 ```js
 const defaults = {
+  max: Infinity,
+  min: -Infinity,
   maxLength: 20,
   minLength: 1,
   basePattern: '',
   antiPattern: '',
   vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
   emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
+  passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/,
   equalTo: ''
 };
 ```
@@ -135,6 +144,65 @@ validation(11123, {
   basePattern: /[0-9]/
 });
 // Output: {isValid: true}
+```
+
+## multi Methods
+
+`Multi` methods take a combination of validation methods and run them against a value
+
+### creditCard
+Validates that the value is any kind of credit card
+
+Runs the following methods: `isVisaCard`, `isVisaPanCard`, `isDiscoverCard`, `isAmericanExpressCard`, `isMasterCard`
+
+#### Usage
+```js
+const validation = validate(['creditCard']);
+
+validation('378282246310005'); // American Express
+validation('4012888888881881'); // Visa
+validation('6011111111111117'); // Discover
+validation('5555555555554444'); // Master Card
+```
+
+### date
+Validates that the value is some kind of date, proper, standard, or short
+
+Runs the following methods: `isDate`, `isDateProper`, `isDateShort`
+
+#### Usage
+```js
+const validation = validate(['date']);
+
+validation('2017-03-28'); // Proper Date
+validation('03-28-2017'); // Standard Date
+validation('03-28'); // Short Date
+```
+
+### cvn
+Validates that the given value matches some kind of cvn pattern
+
+Runs the following methods: `meetsCVNAmex`, `meetsCVN`
+
+#### Usage
+```js
+const validation = validate(['cvn']);
+
+validation('2115'); // CVN Amex
+validation('211'); // CVN
+```
+
+### zipPost
+Validates that the given value matches some kind of US zip or CA postal code pattern
+
+Runs the following methods: `isZip`, `isCAPostalCode`
+
+#### Usage
+```js
+const validation = validate(['zipPost']);
+
+validation('11445'); // US Zip Code
+validation('K1A 0B1'); // CA Postal Code
 ```
 
 ## **has** Methods
@@ -382,6 +450,16 @@ const validation = simplyValid(['isVisaCard']);
 validation('4111111111111111');
 ```
 
+### isVisaPanCard
+Checks if the value is a visa pan card value
+
+#### Usage
+```js
+const validation = simplyValid(['isVisaPanCard']);
+
+validation('4111111111111111222');
+```
+
 ### isMasterCard
 Checks if the value is a proper MasterCard format
 
@@ -402,6 +480,40 @@ const validation = simplyValid(['isAmericanExpressCard']);
 validation('341111111111111');
 ```
 
+### isDiscoverCard
+Checks if the value is a proper Discover card format
+
+#### Usage
+```js
+const validation = simplyValid(['isDiscoverCard']);
+
+validation('6111111111111111');
+```
+
+### isBelowMax
+Checks if the value is below our maxLength
+
+#### Usage
+```js
+const validation = simplyValid(['isBelowMax'], {
+  maxLength: 20
+});
+
+validation('12345');
+```
+
+### isAboveMin
+Checks if the value is above our minLength
+
+#### Usage
+```js
+const validation = simplyValid(['isAboveMin'], {
+  minLength: 2
+});
+
+validation('12345');
+```
+
 ## **meets** Methods
 
 ### meetsLength
@@ -415,6 +527,19 @@ const validation = simplyValid(['meetsLength'], {
 });
 
 validation('Chicken');
+```
+
+### meetsMinMax
+Checks if our value meets within our `min` and `max` properties in options
+
+#### Usage
+```js
+const validation = simplyValid(['meetsMinMax'], {
+  min: 1,
+  max: 20
+});
+
+validation('15');
 ```
 
 ### meetsYearStandard
@@ -456,6 +581,16 @@ Checks if our value meets a tread depth format
 const validation = simplyValid(['meetsTreadDepth']);
 
 validation('22');
+```
+
+### meetsPassReq
+Checks if our value meets the `passwordPattern` option regex
+
+#### Usage
+```js
+const validation = simplyValid(['meetsPassReq']);
+
+validation('cOol12$d');
 ```
 
 ## **no** Methods

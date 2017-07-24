@@ -3,13 +3,20 @@
 ## v2.1.0
 
 > - Optimized the built in `extend` function
+> - Added `passwordPattern` option for regex pass matching
 > - Added `isVisaPanCard` which checks for the new PAN visa number length
 > - Added `isDiscoverCard` which does as you expect and validates a dicover card number
-> - Added `isBelowMax` which just validates the value is below the `maxLength` option
-> - Added `isAboveMin` which just validates the value is above the `minLength` option
+> - Added `isBelowMax` which just validates the value is below the `max` option
+> - Added `isAboveMin` which just validates the value is above the `min` option
+> - Added `meetsMinMax` which verifies that the valid is between the `min` and `max` options
+> - Added `meetsPassReq` which validates the value against the `passwordPattern` option
 > - Added new validation method type `multi` which runs multiple validations in a single function for you (requested)
 >   - Supports currently credit cards and dates it runs all of those types of validations
->   - It's used just like the other methods `validation([creditCard], options)` 
+>   - It's used just like the other methods `validation(['multiMethod'], options)`
+>   - Current Methods: `creditCard`, `date`, `cvn`, `zipPost`
+> - Optimized/Cleaned up overall code
+>   - ES6 cleanup
+>   - Stricter eslint rules added to help organize things
 
 ## v2.0.0 - Quality of Life update
 
