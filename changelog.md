@@ -11,7 +11,6 @@
 > - Added `meetsMinMax` which verifies that the valid is between the `min` and `max` options
 > - Added `meetsPassReq` which validates the value against the `passwordPattern` option
 > - Added new validation method type `multi` which runs multiple validations in a single function for you (requested)
->   - Supports currently credit cards and dates it runs all of those types of validations
 >   - It's used just like the other methods `validation(['multiMethod'], options)`
 >   - Current Methods: `creditCard`, `date`, `cvn`, `zipPost`
 > - Optimized/Cleaned up overall code
