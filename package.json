@@ -1,13 +1,23 @@
 {
   "name": "simply_valid",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "a simple data driven validation utility library",
   "main": "dist/simply_valid.umd.js",
+  "module": "src/index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "prepublish": "rollup -c",
+    "compile:has": "rollup -i tests/has.js -o tests/dist/has.cjs.js -f cjs -g tape",
+    "compile:is": "rollup -i tests/is.js -o tests/dist/is.cjs.js -f cjs -g tape",
+    "compile:match": "rollup -i tests/match.js -o tests/dist/match.cjs.js -f cjs -g tape",
+    "compile:meets": "rollup -i tests/meets.js -o tests/dist/meets.cjs.js -f cjs -g tape",
+    "compile:multi": "rollup -i tests/multi.js -o tests/dist/multi.cjs.js -f cjs -g tape",
+    "compile:no": "rollup -i tests/no.js -o tests/dist/no.cjs.js -f cjs -g tape",
+    "build:all": "npm-run-all --parallel compile:*",
+    "test:methods": "npm run build:all && tape tests/dist/*.cjs.js | tap-spec",
+    "test:multi": "npm run build:all && tape tests/dist/multi.cjs.js | tap-spec",
     "test": "rollup -c && tape tests/tests.js | tap-spec"
   },
   "repository": {

@@ -5,6 +5,13 @@ import * as matchMethods from './match/index';
 import * as meetsMethods from './meets/index';
 import * as multiMethods from './multi/index';
 import * as noMethods from './no/index';
+// Export our methods so they can be tree shaken when someone brings in simply_valid
+export * from './has/index';
+export * from './is/index';
+export * from './match/index';
+export * from './meets/index';
+export * from './multi/index';
+export * from './no/index';
 
 const extend = (...args) => args.reduce((acc, x) => {
 	let key = '';
@@ -17,9 +24,9 @@ const extend = (...args) => args.reduce((acc, x) => {
 }, {});
 
 // Our collection of validation methods extend them so we get their methods and thats it
-const methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods, multiMethods);
 
-export default (methodArr, options) => {
+export const simplyValid = (methodArr, options) => {
+	const methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods, multiMethods);
 	// Set our default options that can be overwritten if needed.
 	const defaults = {
 		max: Infinity,
@@ -46,7 +53,7 @@ export default (methodArr, options) => {
 
 		methodArr.forEach(currMethod => {
 			customOpts.type = currMethod;
-			if (methods[currMethod](val, customOpts)) {
+			if (!methods[currMethod](val, customOpts)) {
 				// If something comes back as a failure we need to push it into the story
 				story.push({
 					// What test did we fail on

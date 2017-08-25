@@ -1,5 +1,11 @@
 # Change Log v2+
 
+## v2.2.0
+
+> - Changed the logic flow so it actually makes sense
+> - Should fix a number of issues with false positives if you experienced any
+> - Added the ability to destructure so you can call methods strictly (also allowing for better tree shaking)
+
 ## v2.1.0
 
 > - Optimized the built in `extend` function

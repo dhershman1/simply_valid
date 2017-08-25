@@ -42,9 +42,11 @@ const executeValidation = (val, type) => {
 	const validationList = validationTypes[type];
 
 	for (let i = 0; i < validationList.length; i++) {
-		if (validationList[i](val).isValid) {
+		if (!validationList[i](val)) {
 			return true;
 		}
+
+		continue;
 	}
 
 	return false;

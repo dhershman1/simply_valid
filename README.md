@@ -68,16 +68,18 @@ Latest ✔ | Latest ✔ | Untested | Untested | Latest ✔ | 9+ ✔
 ## Usage
 Using Standardized JS
 ```js
-import simplyValid from 'simply_valid';
+import {simplyValid} from 'simply_valid';
 
-simplyValid([methods], options);
+const validation = simplyValid([methods], options);
 ```
 
 Using commonjs
 ```js
-var validation = require('simply_valid');
+const {simplyValid} = require('simply_valid');
+// OR
+const simplyValid = require('simply_valid').simplyValid;
 
-validation([methods], options);
+const validation = simplyValid([methods], options);
 // See Below for a full usage example
 ```
 
@@ -85,11 +87,13 @@ In the browser
 ```html
 <script src="path/to/dist/simplyValid.umd.js"></script>
 <script>
-simplyValid([methods], options);
+  var validation = simplyValid([methods], options);
 </script>
 ```
 
 ## Methods
+
+As of **v2.2.0** methods can be called directly
 
 All methods return one of the following:
 
@@ -107,17 +111,17 @@ If some of your validation methods fail you should expect the following:
 }
 ```
 
-**You can also stack validation methods**
+**You can stack validation methods**
 
 You can set multiple validation methods to your function, like so:
 
 ```js
-import simplyValid from 'simply_valid';
+import {simplyValid} from 'simply_valid';
 
-const validation = simplyValid(['hasValue', 'isPositive']);
-validation(1);
+const validate = simplyValid(['hasValue', 'isPositive']);
+validate(1);
 // Output: {isValid: true}
-validation(-1);
+validate(-1);
 /*
   {
     isValid: false,
@@ -129,18 +133,20 @@ validation(-1);
  */
 ```
 
-**You can Also set options as needed on the fly per call**
+**You can set options on the fly per call**
 
 This is useful if you need to set dynamic regex or dynamic options for your data.
 
 ```js
-const validation = simplyValid(['hasCustom'], {
+import {simplyValid} from 'simply_valid';
+
+const validate = simplyValid(['hasCustom'], {
   basePattern: /[A-Z]/
 });
 
-validation('CoolKid112');
+validate('CoolKid112');
 // Output: {isValid: true}
-validation(11123, {
+validate(11123, {
   basePattern: /[0-9]/
 });
 // Output: {isValid: true}
@@ -150,6 +156,8 @@ validation(11123, {
 
 `Multi` methods take a combination of validation methods and run them against a value
 
+All multi methods take only a `val` param
+
 ### creditCard
 Validates that the value is any kind of credit card
 
@@ -157,7 +165,17 @@ Runs the following methods: `isVisaCard`, `isVisaPanCard`, `isDiscoverCard`, `is
 
 #### Usage
 ```js
-const validation = validate(['creditCard']);
+import {creditCard} from 'simply_valid';
+
+creditCard('378282246310005'); // American Express
+creditCard('4012888888881881'); // Visa
+creditCard('6011111111111117'); // Discover
+creditCard('5555555555554444'); // Master Card
+
+// OR
+import {validation} from 'simply_valid';
+
+const validation = simplyValid(['creditCard']);
 
 validation('378282246310005'); // American Express
 validation('4012888888881881'); // Visa
@@ -172,7 +190,16 @@ Runs the following methods: `isDate`, `isDateProper`, `isDateShort`
 
 #### Usage
 ```js
-const validation = validate(['date']);
+import {date} from 'simply_valid';
+
+date('2017-03-28'); // Proper Date
+date('03-28-2017'); // Standard Date
+date('03-28'); // Short Date
+
+// OR
+import {validation} from 'simply_valid';
+
+const validation = simplyValid(['date']);
 
 validation('2017-03-28'); // Proper Date
 validation('03-28-2017'); // Standard Date
@@ -186,7 +213,15 @@ Runs the following methods: `meetsCVNAmex`, `meetsCVN`
 
 #### Usage
 ```js
-const validation = validate(['cvn']);
+import {cvn} from 'simply_valid';
+
+cvn('2115'); // CVN Amex
+cvn('211') // CVN
+
+// OR
+import {simplyValid} from 'simply_valid';
+
+const validation = simplyValid(['cvn']);
 
 validation('2115'); // CVN Amex
 validation('211'); // CVN
@@ -199,7 +234,15 @@ Runs the following methods: `isZip`, `isCAPostalCode`
 
 #### Usage
 ```js
-const validation = validate(['zipPost']);
+import {zipPost} from 'simply_valid';
+
+zipPost('11445'); // US Zip Code
+zipPost('K1A 0B1'); // CA Postal Code
+
+// OR
+import {simplyValid} from 'simply_valid';
+
+const validation = simplyValid(['zipPost']);
 
 validation('11445'); // US Zip Code
 validation('K1A 0B1'); // CA Postal Code
@@ -212,6 +255,13 @@ Checks if the value is actually a value
 
 #### Usage
 ```js
+import {hasValue} from 'simply_valid';
+
+hasValue('CoolKid112');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['hasValue']);
 
 validation('CoolKid112');
@@ -222,6 +272,13 @@ Checks if the value has a number
 
 #### Usage
 ```js
+import {hasNumbers} from 'simply_valid';
+
+hasNumber('CoolKid112');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['hasNumbers']);
 
 validation('CoolKid112');
@@ -232,6 +289,13 @@ Checks if the value has a letter
 
 #### Usage
 ```js
+import {hasLetter} from 'simply_valid';
+
+hasLetter('CoolKid112');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['hasLetters']);
 
 validation('CoolKid112');
@@ -242,6 +306,15 @@ Checks if the value contains a character within your `basePattern` value
 
 #### Usage
 ```js
+import {hasCustom} from 'simply_valid';
+
+hasCustom('CoolKid112', {
+  basePattern: /[A-Z]/
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['hasCustom'], {
   basePattern: /[A-Z]/
 });
@@ -254,6 +327,12 @@ Checks if the value contains numbers or special characters
 
 #### Usage
 ```js
+import {hasNumbersOrSpecials} from 'simply_valid';
+
+hasNumbersOrSpecials('CoolKid112');
+
+// OR
+import {simplyValid} from 'simply_valid';
 const validation = simplyValid(['hasNumbersOrSpecials']);
 
 validation('CoolKid112');
@@ -264,6 +343,12 @@ Checks if the value contains any special characters
 
 #### Usage
 ```js
+import {hasSpecialCharacters} from 'simply_valid';
+
+hasSpecialCharacters('CoolKid112');
+
+// OR
+import {simplyValid} from 'simply_valid';
 const validation = simplyValid(['hasSpecialCharacters']);
 
 validation('CoolKid112');
@@ -274,6 +359,12 @@ Checks if the value contains a upper and lower case character
 
 #### Usage
 ```js
+import {hasUpperAndLowerCase} from 'simply_valid';
+
+hasUpperAndLowerCase('CoolKid112');
+
+// OR
+import {simplyValid} from 'simply_valid';
 const validation = simplyValid(['hasUpperAndLowerCase']);
 
 validation('CoolKid112');
@@ -286,6 +377,15 @@ Checks if the value matches the `basePattern` option
 
 #### Usage
 ```js
+import {matchesPattern} from 'simply_valid';
+
+matchesPattern('CoolKid112', {
+  basePattern: /[a-z][0-9]/ig
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['matchesPattern'], {
   basePattern: /[a-z][0-9]/ig
 });
@@ -298,7 +398,15 @@ Verifies a value does not match the `antiPattern` option
 
 #### Usage
 ```js
-const validation = simplyValid(['matchesPattern'], {
+import {doesNotMatch} from 'simply_valid';
+
+doesNotMatch('CoolKid112', {
+  antiPattern: /[0-9]/g
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+const validation = simplyValid(['doesNotMatch'], {
   antiPattern: /[0-9]/g
 });
 
@@ -312,6 +420,13 @@ Checks if the value is a valid date (US)
 
 #### Usage
 ```js
+import {isDate} from 'simply_valid';
+
+isDate('03-28-2017');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isDate']);
 
 validation('03-28-2017');
@@ -322,6 +437,13 @@ Checks if the value is a valid date (US) in short tense
 
 #### Usage
 ```js
+import {isDateShort} from 'simply_valid';
+
+isDateShort('03-28');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isDateShort']);
 
 validation('03-28');
@@ -332,6 +454,13 @@ Checks if the value is a valid date (US) in proper format
 
 #### Usage
 ```js
+import {isDateProper} from 'simply_valid';
+
+isDateProper('2017-03-28');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isDateProper']);
 
 validation('2017-03-28');
@@ -343,6 +472,15 @@ Replaces `matchGiven`, does what it says runs a `strict` compare test on the val
 #### Usage
 
 ```js
+import {isEqual} from 'simply_valid';
+
+isEqual('CoolKid112', {
+  equalTo: 'CoolKid112'
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isEqual'], {
   equalTo: 'CoolKid112'
 });
@@ -355,6 +493,13 @@ Checks if the value is a valid email uses the `emailPattern` option to validate 
 
 #### Usage
 ```js
+import {isEmail} from 'simply_valid';
+
+isEmail('coolKid112@aim.com');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isEmail']);
 
 validation('cOoLkId112@aol.com');
@@ -365,6 +510,13 @@ Checks if the value is a number
 
 #### Usage
 ```js
+import {isNumber} from 'simply_valid';
+
+isNumber('112');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isNumber']);
 
 validation('112');
@@ -375,6 +527,13 @@ Checks if the value is both a number **AND** that it is positive
 
 #### Usage
 ```js
+import {isPositive} from 'simply_valid';
+
+isPositive('112');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isPositive']);
 
 validation('112');
@@ -385,6 +544,13 @@ Checks if the value is both a number **AND** that it is negative
 
 #### Usage
 ```js
+import {isNegative} from 'simply_valid';
+
+isNegative('-122');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isNegative']);
 
 validation('-112');
@@ -395,6 +561,13 @@ Checks if the value matches a license plate format
 
 #### Usage
 ```js
+import {isLicensePlate} from 'simply_valid';
+
+isLicensePlate('SSS1829');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isLicensePlate']);
 
 validation('SSS1829');
@@ -405,9 +578,16 @@ Checks if the value matches a proper phone length (accepts both formatted and un
 
 #### Usage
 ```js
+import {isPhone} from 'simply_valid';
+
+isPhone('555-555-5555');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isPhone']);
 
-validation('440-555-7799');
+validation('555-555-5555');
 ```
 
 ### isZip
@@ -415,9 +595,16 @@ Checks if the value matches a proper zip code format
 
 #### Usage
 ```js
+import {isZip} from 'simply_valid';
+
+isZip('55555');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isZip']);
 
-validation('44114');
+validation('55555');
 ```
 
 ### isCAPostalCode
@@ -425,6 +612,13 @@ Checks if the value matches a proper Canada postal code format
 
 #### Usage
 ```js
+import {isCAPostalCode} from 'simply_valid';
+
+isCAPostalCode('K1A0B1');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isCAPostalCode']);
 
 validation('K1A0B1');
@@ -435,6 +629,13 @@ Checks if the value is a valid VIN uses the property `vinPattern` in options
 
 #### Usage
 ```js
+import {isVin} from 'simply_valid';
+
+isVin('JM1CW2BL8C0127808');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isVin']);
 
 validation('JM1CW2BL8C0127808');
@@ -445,6 +646,13 @@ Checks if the value is a proper Visa card format
 
 #### Usage
 ```js
+import {isVisaCard} from 'simply_valid';
+
+isVisaCard('4111111111111111');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isVisaCard']);
 
 validation('4111111111111111');
@@ -455,6 +663,13 @@ Checks if the value is a visa pan card value
 
 #### Usage
 ```js
+import {isVisaPanCard} from 'simply_valid';
+
+isVisaPanCard('4111111111111111222');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isVisaPanCard']);
 
 validation('4111111111111111222');
@@ -465,6 +680,14 @@ Checks if the value is a proper MasterCard format
 
 #### Usage
 ```js
+import {isMasterCard} from 'simply_valid';
+
+isMasterCard('5511111111111111');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
+
 const validation = simplyValid(['isMasterCard']);
 
 validation('5511111111111111');
@@ -475,6 +698,13 @@ Checks if the value is a proper American Express card format
 
 #### Usage
 ```js
+import {isAmericanExpressCard} from 'simply_valid';
+
+isAmericanExpressCard('34111111111111');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isAmericanExpressCard']);
 
 validation('341111111111111');
@@ -485,6 +715,13 @@ Checks if the value is a proper Discover card format
 
 #### Usage
 ```js
+import {isDiscoverCard} from 'simply_valid';
+
+isDiscoverCard('611111111111111');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isDiscoverCard']);
 
 validation('6111111111111111');
@@ -495,8 +732,17 @@ Checks if the value is below our maxLength
 
 #### Usage
 ```js
+import {isBelowMax} from 'simply_valid';
+
+isBelowMax('12', {
+  max: 20
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isBelowMax'], {
-  maxLength: 20
+  max: 20
 });
 
 validation('12345');
@@ -507,6 +753,15 @@ Checks if the value is above our minLength
 
 #### Usage
 ```js
+import {isAboveMin} from 'simply_valid';
+
+isAboveMin('12', {
+  min: 2
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['isAboveMin'], {
   minLength: 2
 });
@@ -521,6 +776,16 @@ Checks if our value meets our desired length uses the `minLength` and `maxLength
 
 #### Usage
 ```js
+import {meetsLength} from 'simply_valid';
+
+meetsLength('chicken', {
+  minLength: 1,
+  maxLength: 20
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['meetsLength'], {
   minLength: 1,
   maxLength: 20
@@ -534,6 +799,16 @@ Checks if our value meets within our `min` and `max` properties in options
 
 #### Usage
 ```js
+import {meetsMinMax} from 'simply_valid';
+
+meetsMinMax('15', {
+  min: 1,
+  max: 20
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['meetsMinMax'], {
   min: 1,
   max: 20
@@ -547,6 +822,14 @@ Checks if our value meets the proper 2 or 4 digit year standard
 
 #### Usage
 ```js
+import {meetsYearStandard} from 'simply_valid';
+
+meetsYearStandard('2017');
+meetsYearStandard('17');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['meetsYearStandard']);
 
 validation('2017');
@@ -558,6 +841,13 @@ Checks if our value is a proper CVN
 
 #### Usage
 ```js
+import {meetsCVN} from 'simply_valid';
+
+meetsCVN('333');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['meetsCVN']);
 
 validation('333');
@@ -568,6 +858,13 @@ Checks if our value is a proper Amex CVN
 
 #### Usage
 ```js
+import {meetsCVNAmex} from 'simply_valid';
+
+meetsCVNAmex('3343');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['meetsCVNAmex']);
 
 validation('3343');
@@ -578,6 +875,13 @@ Checks if our value meets a tread depth format
 
 #### Usage
 ```js
+import {meetsTreadDepth} from 'simply_valid';
+
+meetsTreadDepth('22');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['meetsTreadDepth']);
 
 validation('22');
@@ -588,6 +892,15 @@ Checks if our value meets the `passwordPattern` option regex
 
 #### Usage
 ```js
+import {meetsPassReq} from 'simply_valid';
+
+meetsPassReq('cOol12$d', {
+  passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
+});
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['meetsPassReq']);
 
 validation('cOol12$d');
@@ -600,6 +913,13 @@ Checks if our value contains any special characters
 
 #### Usage
 ```js
+import {noSpecials} from 'simply_valid';
+
+noSpecials('Chicken');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['noSpecials']);
 
 validation('Chicken');
@@ -610,6 +930,13 @@ Verifies our value contains no numbers
 
 #### Usage
 ```js
+import {noNumbers} from 'simply_valid';
+
+noNumbers('Chicken');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['noNumbers']);
 
 validation('Chicken');
@@ -620,6 +947,13 @@ Verifies our value contains no letters
 
 #### Usage
 ```js
+import {noLetters} from 'simply_valid';
+
+noLetters('1123');
+
+// OR
+import {simplyValid} from 'simply_valid';
+
 const validation = simplyValid(['noLetters']);
 
 validation('1123');
