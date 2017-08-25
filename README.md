@@ -66,6 +66,10 @@ const defaults = {
 Latest ✔ | Latest ✔ | Untested | Untested | Latest ✔ | 9+ ✔
 
 ## Usage
+As of **v2.2.0** you will need to call the `simplyValid` property from the module to use the method array pattern.
+
+However you can also call any of the built in validation methods the same way if you only need one or two. Making tree shaking that much better
+
 Using Standardized JS
 ```js
 import {simplyValid} from 'simply_valid';
