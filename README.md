@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dhershman1/simply_valid.svg?branch=master)](https://travis-ci.org/dhershman1/simply_valid)
+[![npm](https://img.shields.io/npm/v/simply_valid.svg?style=flat)](https://www.npmjs.com/package/simply_valid) [![Downloads](https://img.shields.io/npm/dm/simply_valid.svg?style=flat)](https://www.npmjs.com/package/simply_valid) [![dependencies Status](https://david-dm.org/dhershman1/simply_valid/status.svg)](https://david-dm.org/dhershman1/simply_valid) [![devDependencies Status](https://david-dm.org/dhershman1/simply_valid/dev-status.svg)](https://david-dm.org/dhershman1/simply_valid?type=dev) [![Build Status](https://travis-ci.org/dhershman1/simply_valid.svg?branch=master)](https://travis-ci.org/dhershman1/simply_valid)
 
 # Simply Valid
 
