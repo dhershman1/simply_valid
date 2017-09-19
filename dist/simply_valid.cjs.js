@@ -1,8 +1,6 @@
 'use strict';
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var test = _interopDefault(require('tape'));
+Object.defineProperty(exports, '__esModule', { value: true });
 
 var hasValue = function (val) { return val && val.length !== 0; };
 
@@ -241,37 +239,118 @@ var noMethods = Object.freeze({
 	noLetters: noLetters
 });
 
-test('Test meetsCVN', t => {
-	t.ok(meetsCVN);
-	t.end();
-});
+/* eslint-disable max-len */
+var extend = function () {
+	var args = [], len = arguments.length;
+	while ( len-- ) args[ len ] = arguments[ len ];
 
-test('Test meetsCVNAmex', t => {
-	t.ok(meetsCVNAmex);
-	t.end();
-});
+	return args.reduce(function (acc, x) {
+	var key = '';
 
-test('Test meetsLength', t => {
-	t.ok(meetsLength);
-	t.end();
-});
+	for (key in x) {
+		acc[key] = x[key];
+	}
 
-test('Test meetsMinMax', t => {
-	t.ok(meetsMinMax);
-	t.end();
-});
+	return acc;
+}, {});
+};
 
-test('Test meetsPassReq', t => {
-	t.ok(meetsPassReq);
-	t.end();
-});
+// Our collection of validation methods extend them so we get their methods and thats it
 
-test('Test meetsTreadDepth', t => {
-	t.ok(meetsTreadDepth);
-	t.end();
-});
+var simplyValid = function (methodArr, options) {
+	var methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods, multiMethods);
+	// Set our default options that can be overwritten if needed.
+	var defaults = {
+		max: Infinity,
+		min: -Infinity,
+		maxLength: 20,
+		minLength: 1,
+		basePattern: '',
+		antiPattern: '',
+		vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
+		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
+		// Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
+		passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/,
+		equalTo: ''
+	};
 
-test('Test meetsYearStandard', t => {
-	t.ok(meetsYearStandard);
-	t.end();
-});
+	// Collect and set a good portion of options to keep a global set
+	var opts = extend(defaults, options);
+
+	return function (val, calledOpts) {
+		if ( calledOpts === void 0 ) calledOpts = {};
+
+		// Initialize an empty story on call
+		var story = [];
+		// Create a custom options object in case options are being changed per call
+		var customOpts = extend(opts, calledOpts);
+
+		methodArr.forEach(function (currMethod) {
+			customOpts.type = currMethod;
+			if (!methods[currMethod](val, customOpts)) {
+				// If something comes back as a failure we need to push it into the story
+				story.push({
+					// What test did we fail on
+					test: currMethod,
+					// The value used when the failure happened
+					value: val
+				});
+			}
+		});
+
+		// If story has any kind of length, then something failed so send that back
+		if (story.length) {
+			return {
+				isValid: false,
+				story: story
+			};
+		}
+
+		return {isValid: true};
+	};
+};
+
+exports.simplyValid = simplyValid;
+exports.hasValue = hasValue;
+exports.hasNumbers = hasNumbers;
+exports.hasLetters = hasLetters;
+exports.hasCustom = hasCustom;
+exports.hasSpecialCharacters = hasSpecialCharacters;
+exports.hasNumbersOrSpecials = hasNumbersOrSpecials;
+exports.hasUpperAndLowerCase = hasUpperAndLowerCase;
+exports.isDate = isDate;
+exports.isDateShort = isDateShort;
+exports.isDateProper = isDateProper;
+exports.isEqual = isEqual;
+exports.isEmail = isEmail;
+exports.isNumber = isNumber;
+exports.isPositive = isPositive;
+exports.isNegative = isNegative;
+exports.isVin = isVin;
+exports.isZip = isZip;
+exports.isCAPostalCode = isCAPostalCode;
+exports.isPhone = isPhone;
+exports.isLicensePlate = isLicensePlate;
+exports.isVisaCard = isVisaCard;
+exports.isVisaPanCard = isVisaPanCard;
+exports.isMasterCard = isMasterCard;
+exports.isAmericanExpressCard = isAmericanExpressCard;
+exports.isDiscoverCard = isDiscoverCard;
+exports.isBelowMax = isBelowMax;
+exports.isAboveMin = isAboveMin;
+exports.matchesPattern = matchesPattern;
+exports.doesNotMatch = doesNotMatch;
+exports.meetsLength = meetsLength;
+exports.meetsMinMax = meetsMinMax;
+exports.meetsYearStandard = meetsYearStandard;
+exports.meetsCVN = meetsCVN;
+exports.meetsCVNAmex = meetsCVNAmex;
+exports.meetsTreadDepth = meetsTreadDepth;
+exports.meetsPassReq = meetsPassReq;
+exports.creditCard = creditCard;
+exports.date = date;
+exports.cvn = cvn;
+exports.zipPost = zipPost;
+exports.noSpecials = noSpecials;
+exports.noNumbers = noNumbers;
+exports.noLetters = noLetters;

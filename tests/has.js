@@ -6,7 +6,7 @@ import {
 	hasSpecialCharacters,
 	hasUpperAndLowerCase,
 	hasValue
-} from '../src/index.js';
+} from '../dist/simply_valid.umd.js';
 import test from 'tape';
 
 test('Test hasCustom', t => {

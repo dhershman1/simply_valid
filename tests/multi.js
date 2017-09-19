@@ -3,7 +3,7 @@ import {
 	cvn,
 	date,
 	zipPost
-} from '../src/index';
+} from '../dist/simply_valid.cjs.js';
 import test from 'tape';
 
 test('Test creditCard', t => {

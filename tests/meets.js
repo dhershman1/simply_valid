@@ -6,7 +6,7 @@ import {
 	meetsPassReq,
 	meetsTreadDepth,
 	meetsYearStandard
-} from '../src/index.js';
+} from '../dist/simply_valid.cjs.js';
 import test from 'tape';
 
 test('Test meetsCVN', t => {

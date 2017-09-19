@@ -1,6 +1,6 @@
 {
   "name": "simply_valid",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "a simple data driven validation utility library",
   "main": "dist/simply_valid.umd.js",
   "module": "src/index.js",
@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "prepublish": "rollup -c",
+    "prepublish": "rollup -c && rollup --config rollup.config.module.js",
     "compile:has": "rollup -i tests/has.js -o tests/dist/has.cjs.js -f cjs -g tape",
     "compile:is": "rollup -i tests/is.js -o tests/dist/is.cjs.js -f cjs -g tape",
     "compile:match": "rollup -i tests/match.js -o tests/dist/match.cjs.js -f cjs -g tape",

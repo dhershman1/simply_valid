@@ -19,7 +19,7 @@ import {
 	isVisaCard,
 	isVisaPanCard,
 	isZip
-} from '../src/index.js';
+} from '../dist/simply_valid.cjs.js';
 import test from 'tape';
 
 test('Testing isDate', t => {
