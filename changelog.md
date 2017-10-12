@@ -1,5 +1,21 @@
 # Change Log v2+
 
+## v2.3.0
+
+> - Simply_valid lost its roots of being simple, so I am hoping to bring it back to that
+> - **BREAKING CHANGES**
+>   - Removed `matchesPattern` method
+>   - Removed `doesNotMatch` method
+>   - Removed `isEqual` method
+>   - Removed `hasCustom` method
+>   - Removed `meetsLength` method
+> - Dropped the options in our object that those methods used
+>   - Removed `maxLength` option
+>   - Removed `minLength` option
+>   - Removed `basePattern` option
+>   - Removed `antiPattern` option
+>   - Removed `equalTo` option
+
 ## v2.2.0
 
 > - Changed the logic flow so it actually makes sense

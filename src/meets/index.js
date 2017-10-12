@@ -1,5 +1,3 @@
-export const meetsLength = (val, {minLength, maxLength}) => val.length >= minLength && val.length <= maxLength;
-
 export const meetsMinMax = (val, {min, max}) => !isNaN(val) && (Number(val) >= min && Number(val) <= max);
 
 export const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val);

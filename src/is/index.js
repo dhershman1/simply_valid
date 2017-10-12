@@ -5,8 +5,6 @@ export const isDateShort = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2]
 
 export const isDateProper = val => (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val);
 
-export const isEqual = (val, {equalTo}) => val === equalTo;
-
 export const isEmail = (val, {emailPattern}) => emailPattern.test(val);
 
 export const isNumber = val => !isNaN(val);

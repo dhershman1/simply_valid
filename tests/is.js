@@ -8,7 +8,6 @@ import {
 	isDateShort,
 	isDiscoverCard,
 	isEmail,
-	isEqual,
 	isLicensePlate,
 	isMasterCard,
 	isNegative,
@@ -34,11 +33,6 @@ test('Testing isDateShort', t => {
 
 test('Testing isDateProper', t => {
 	t.ok(isDateProper);
-	t.end();
-});
-
-test('Testing isEqual', t => {
-	t.ok(isEqual);
 	t.end();
 });
 

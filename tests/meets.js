@@ -1,7 +1,6 @@
 import {
 	meetsCVN,
 	meetsCVNAmex,
-	meetsLength,
 	meetsMinMax,
 	meetsPassReq,
 	meetsTreadDepth,
@@ -16,11 +15,6 @@ test('Test meetsCVN', t => {
 
 test('Test meetsCVNAmex', t => {
 	t.ok(meetsCVNAmex);
-	t.end();
-});
-
-test('Test meetsLength', t => {
-	t.ok(meetsLength);
 	t.end();
 });
 

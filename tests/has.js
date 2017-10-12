@@ -1,5 +1,4 @@
 import {
-	hasCustom,
 	hasLetters,
 	hasNumbers,
 	hasNumbersOrSpecials,
@@ -8,11 +7,6 @@ import {
 	hasValue
 } from '../dist/simply_valid.umd.js';
 import test from 'tape';
-
-test('Test hasCustom', t => {
-	t.ok(hasCustom);
-	t.end();
-});
 
 test('Test hasLetters', t => {
 	t.ok(hasLetters);

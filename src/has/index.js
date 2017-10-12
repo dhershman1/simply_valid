@@ -5,8 +5,6 @@ export const hasNumbers = val => val.search(/[0-9]/) !== -1;
 
 export const hasLetters = val => val.search(/[A-Z]/i) !== -1;
 
-export const hasCustom = (val, {basePattern}) => val.search(basePattern) !== -1;
-
 export const hasSpecialCharacters = val => val.search(/\W/) !== -1;
 
 export const hasNumbersOrSpecials = val => hasNumbers(val) || hasSpecialCharacters(val);

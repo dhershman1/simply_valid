@@ -265,46 +265,6 @@ test('Test isAboveMin()', t => {
 	t.end();
 });
 
-test('Test matchesPattern()', t => {
-	const custom = validate(['matchesPattern'], {
-		basePattern: /[a-z]/i
-	});
-
-	t.ok(custom('Chicken').isValid, 'Given value matches pattern');
-	t.notOk(custom('123456').isValid, 'Given value does not match pattern');
-	t.end();
-});
-
-test('Test doesNotMatch()', t => {
-	const custom = validate(['doesNotMatch']);
-
-	t.notOk(custom('CoolKid112', {
-		antiPattern: /[A-Z]/ig
-	}).isValid, 'Given value matched anti pattern');
-	t.ok(custom('CoolKid112', {
-		antiPattern: /\s/ig
-	}).isValid, 'Given value did not get a match in anti pattern');
-	t.end();
-});
-
-test('Test meetsLength()', t => {
-	const custom = validate(['meetsLength']);
-
-	t.ok(custom(testData.zip, {
-		maxLength: 5,
-		minLength: 5
-	}).isValid, 'Returns OK within our length limits');
-	t.notOk(custom(testData.zip, {
-		maxLength: 6,
-		minLength: 6
-	}).isValid, 'Invalid does not meet min length');
-	t.notOk(custom(testData.zip, {
-		maxLength: 4,
-		minLength: 4
-	}).isValid, 'Invalid does not meet max length');
-	t.end();
-});
-
 test('Test meetsMinMax()', t => {
 	const custom = validate(['meetsMinMax'], {
 		max: 5,

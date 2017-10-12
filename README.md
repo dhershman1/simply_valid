@@ -16,7 +16,6 @@ Have a suggestion? Feel free to post them over in the github issues section and 
 * [Methods](#methods)
   * [Multi Methods](#multi-methods)
   * [Has Methods](#has-methods)
-  * [Match Methods](#match-methods)
   * [Is Methods](#is-methods)
   * [Meets Methods](#meets-methods)
   * [No Methods](#no-methods)
@@ -135,25 +134,6 @@ validate(-1);
     }]
   }
  */
-```
-
-**You can set options on the fly per call**
-
-This is useful if you need to set dynamic regex or dynamic options for your data.
-
-```js
-import {simplyValid} from 'simply_valid';
-
-const validate = simplyValid(['hasCustom'], {
-  basePattern: /[A-Z]/
-});
-
-validate('CoolKid112');
-// Output: {isValid: true}
-validate(11123, {
-  basePattern: /[0-9]/
-});
-// Output: {isValid: true}
 ```
 
 ## multi Methods
@@ -305,27 +285,6 @@ const validation = simplyValid(['hasLetters']);
 validation('CoolKid112');
 ```
 
-### hasCustom
-Checks if the value contains a character within your `basePattern` value
-
-#### Usage
-```js
-import {hasCustom} from 'simply_valid';
-
-hasCustom('CoolKid112', {
-  basePattern: /[A-Z]/
-});
-
-// OR
-import {simplyValid} from 'simply_valid';
-
-const validation = simplyValid(['hasCustom'], {
-  basePattern: /[A-Z]/
-});
-
-validation('CoolKid112');
-```
-
 ### hasNumbersOrSpecials
 Checks if the value contains numbers or special characters
 
@@ -372,49 +331,6 @@ import {simplyValid} from 'simply_valid';
 const validation = simplyValid(['hasUpperAndLowerCase']);
 
 validation('CoolKid112');
-```
-
-## **match** Methods
-
-### matchesPattern
-Checks if the value matches the `basePattern` option
-
-#### Usage
-```js
-import {matchesPattern} from 'simply_valid';
-
-matchesPattern('CoolKid112', {
-  basePattern: /[a-z][0-9]/ig
-});
-
-// OR
-import {simplyValid} from 'simply_valid';
-
-const validation = simplyValid(['matchesPattern'], {
-  basePattern: /[a-z][0-9]/ig
-});
-
-validation('CoolKid112');
-```
-
-### doesNotMatch
-Verifies a value does not match the `antiPattern` option
-
-#### Usage
-```js
-import {doesNotMatch} from 'simply_valid';
-
-doesNotMatch('CoolKid112', {
-  antiPattern: /[0-9]/g
-});
-
-// OR
-import {simplyValid} from 'simply_valid';
-const validation = simplyValid(['doesNotMatch'], {
-  antiPattern: /[0-9]/g
-});
-
-validation('CoolKid');
 ```
 
 ## **is** Methods
@@ -468,28 +384,6 @@ import {simplyValid} from 'simply_valid';
 const validation = simplyValid(['isDateProper']);
 
 validation('2017-03-28');
-```
-
-### isEqual
-Replaces `matchGiven`, does what it says runs a `strict` compare test on the value
-
-#### Usage
-
-```js
-import {isEqual} from 'simply_valid';
-
-isEqual('CoolKid112', {
-  equalTo: 'CoolKid112'
-});
-
-// OR
-import {simplyValid} from 'simply_valid';
-
-const validation = simplyValid(['isEqual'], {
-  equalTo: 'CoolKid112'
-});
-
-validation('CoolKid112');
 ```
 
 ### isEmail
@@ -771,31 +665,6 @@ const validation = simplyValid(['isAboveMin'], {
 });
 
 validation('12345');
-```
-
-## **meets** Methods
-
-### meetsLength
-Checks if our value meets our desired length uses the `minLength` and `maxLength` properties in options
-
-#### Usage
-```js
-import {meetsLength} from 'simply_valid';
-
-meetsLength('chicken', {
-  minLength: 1,
-  maxLength: 20
-});
-
-// OR
-import {simplyValid} from 'simply_valid';
-
-const validation = simplyValid(['meetsLength'], {
-  minLength: 1,
-  maxLength: 20
-});
-
-validation('Chicken');
 ```
 
 ### meetsMinMax
