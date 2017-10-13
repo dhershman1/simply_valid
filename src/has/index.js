@@ -1,12 +1,12 @@
 
 export const hasValue = val => val && val.length !== 0;
 
-export const hasNumbers = val => val.search(/[0-9]/) !== -1;
+export const hasNumbers = val => (/[0-9]/).test(val);
 
-export const hasLetters = val => val.search(/[A-Z]/i) !== -1;
+export const hasLetters = val => (/[A-Z]/i).test(val);
 
-export const hasSpecialCharacters = val => val.search(/\W/) !== -1;
+export const hasSpecialCharacters = val => (/\W/).test(val);
 
 export const hasNumbersOrSpecials = val => hasNumbers(val) || hasSpecialCharacters(val);
 
-export const hasUpperAndLowerCase = val => val.search(/[A-Z]/) !== -1 && val.search(/[a-z]/) !== -1;
+export const hasUpperAndLowerCase = val => (/[A-Z]/).test(val) && (/[a-z]/).test(val);

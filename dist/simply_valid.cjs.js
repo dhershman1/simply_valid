@@ -4,28 +4,21 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var hasValue = function (val) { return val && val.length !== 0; };
 
-var hasNumbers = function (val) { return val.search(/[0-9]/) !== -1; };
+var hasNumbers = function (val) { return (/[0-9]/).test(val); };
 
-var hasLetters = function (val) { return val.search(/[A-Z]/i) !== -1; };
+var hasLetters = function (val) { return (/[A-Z]/i).test(val); };
 
-var hasCustom = function (val, ref) {
-	var basePattern = ref.basePattern;
-
-	return val.search(basePattern) !== -1;
-};
-
-var hasSpecialCharacters = function (val) { return val.search(/\W/) !== -1; };
+var hasSpecialCharacters = function (val) { return (/\W/).test(val); };
 
 var hasNumbersOrSpecials = function (val) { return hasNumbers(val) || hasSpecialCharacters(val); };
 
-var hasUpperAndLowerCase = function (val) { return val.search(/[A-Z]/) !== -1 && val.search(/[a-z]/) !== -1; };
+var hasUpperAndLowerCase = function (val) { return (/[A-Z]/).test(val) && (/[a-z]/).test(val); };
 
 
 var hasMethods = Object.freeze({
 	hasValue: hasValue,
 	hasNumbers: hasNumbers,
 	hasLetters: hasLetters,
-	hasCustom: hasCustom,
 	hasSpecialCharacters: hasSpecialCharacters,
 	hasNumbersOrSpecials: hasNumbersOrSpecials,
 	hasUpperAndLowerCase: hasUpperAndLowerCase
@@ -37,12 +30,6 @@ var isDate = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1
 var isDateShort = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val); };
 
 var isDateProper = function (val) { return (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val); };
-
-var isEqual = function (val, ref) {
-	var equalTo = ref.equalTo;
-
-	return val === equalTo;
-};
 
 var isEmail = function (val, ref) {
 	var emailPattern = ref.emailPattern;
@@ -97,7 +84,6 @@ var isMethods = Object.freeze({
 	isDate: isDate,
 	isDateShort: isDateShort,
 	isDateProper: isDateProper,
-	isEqual: isEqual,
 	isEmail: isEmail,
 	isNumber: isNumber,
 	isPositive: isPositive,
@@ -115,31 +101,6 @@ var isMethods = Object.freeze({
 	isBelowMax: isBelowMax,
 	isAboveMin: isAboveMin
 });
-
-var matchesPattern = function (val, ref) {
-	var basePattern = ref.basePattern;
-
-	return basePattern.test(val);
-};
-
-var doesNotMatch = function (val, ref) {
-	var antiPattern = ref.antiPattern;
-
-	return !antiPattern.test(val);
-};
-
-
-var matchMethods = Object.freeze({
-	matchesPattern: matchesPattern,
-	doesNotMatch: doesNotMatch
-});
-
-var meetsLength = function (val, ref) {
-	var minLength = ref.minLength;
-	var maxLength = ref.maxLength;
-
-	return val.length >= minLength && val.length <= maxLength;
-};
 
 var meetsMinMax = function (val, ref) {
 	var min = ref.min;
@@ -164,7 +125,6 @@ var meetsPassReq = function (val, ref) {
 
 
 var meetsMethods = Object.freeze({
-	meetsLength: meetsLength,
 	meetsMinMax: meetsMinMax,
 	meetsYearStandard: meetsYearStandard,
 	meetsCVN: meetsCVN,
@@ -196,7 +156,7 @@ var validationTypes = {
 	]
 };
 
-var executeValidation = function (val, type) {
+var run = function (val, type) {
 	var validationList = validationTypes[type];
 
 	for (var i = 0; i < validationList.length; i++) {
@@ -210,13 +170,13 @@ var executeValidation = function (val, type) {
 	return false;
 };
 
-var creditCard = function (val) { return executeValidation(val, 'creditCard'); };
+var creditCard = function (val) { return run(val, 'creditCard'); };
 
-var date = function (val) { return executeValidation(val, 'date'); };
+var date = function (val) { return run(val, 'date'); };
 
-var cvn = function (val) { return executeValidation(val, 'cvn'); };
+var cvn = function (val) { return run(val, 'cvn'); };
 
-var zipPost = function (val) { return executeValidation(val, 'zipPost'); };
+var zipPost = function (val) { return run(val, 'zipPost'); };
 
 
 var multiMethods = Object.freeze({
@@ -258,20 +218,15 @@ var extend = function () {
 // Our collection of validation methods extend them so we get their methods and thats it
 
 var simplyValid = function (methodArr, options) {
-	var methods = extend(hasMethods, isMethods, matchMethods, meetsMethods, noMethods, multiMethods);
+	var methods = extend(hasMethods, isMethods, meetsMethods, noMethods, multiMethods);
 	// Set our default options that can be overwritten if needed.
 	var defaults = {
 		max: Infinity,
 		min: -Infinity,
-		maxLength: 20,
-		minLength: 1,
-		basePattern: '',
-		antiPattern: '',
 		vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
 		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
 		// Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
-		passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/,
-		equalTo: ''
+		passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
 	};
 
 	// Collect and set a good portion of options to keep a global set
@@ -314,14 +269,12 @@ exports.simplyValid = simplyValid;
 exports.hasValue = hasValue;
 exports.hasNumbers = hasNumbers;
 exports.hasLetters = hasLetters;
-exports.hasCustom = hasCustom;
 exports.hasSpecialCharacters = hasSpecialCharacters;
 exports.hasNumbersOrSpecials = hasNumbersOrSpecials;
 exports.hasUpperAndLowerCase = hasUpperAndLowerCase;
 exports.isDate = isDate;
 exports.isDateShort = isDateShort;
 exports.isDateProper = isDateProper;
-exports.isEqual = isEqual;
 exports.isEmail = isEmail;
 exports.isNumber = isNumber;
 exports.isPositive = isPositive;
@@ -338,9 +291,6 @@ exports.isAmericanExpressCard = isAmericanExpressCard;
 exports.isDiscoverCard = isDiscoverCard;
 exports.isBelowMax = isBelowMax;
 exports.isAboveMin = isAboveMin;
-exports.matchesPattern = matchesPattern;
-exports.doesNotMatch = doesNotMatch;
-exports.meetsLength = meetsLength;
 exports.meetsMinMax = meetsMinMax;
 exports.meetsYearStandard = meetsYearStandard;
 exports.meetsCVN = meetsCVN;

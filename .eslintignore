@@ -1,1 +1,2 @@
 tests/dist
+src/**/*.cjs.js

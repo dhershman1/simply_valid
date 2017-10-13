@@ -1,61 +1,61 @@
 import {
-	isAmericanExpressCard,
-	isCAPostalCode,
-	isDate,
-	isDateProper,
-	isDateShort,
-	isDiscoverCard,
-	isMasterCard,
-	isVisaCard,
-	isVisaPanCard,
-	isZip
+  isAmericanExpressCard,
+  isCAPostalCode,
+  isDate,
+  isDateProper,
+  isDateShort,
+  isDiscoverCard,
+  isMasterCard,
+  isVisaCard,
+  isVisaPanCard,
+  isZip
 } from '../is/index';
 import {
-	meetsCVN,
-	meetsCVNAmex
+  meetsCVN,
+  meetsCVNAmex
 } from '../meets/index';
 
 const validationTypes = {
-	creditCard: [
-		isVisaCard,
-		isVisaPanCard,
-		isDiscoverCard,
-		isAmericanExpressCard,
-		isMasterCard
-	],
-	date: [
-		isDate,
-		isDateShort,
-		isDateProper
-	],
-	cvn: [
-		meetsCVN,
-		meetsCVNAmex
-	],
-	zipPost: [
-		isZip,
-		isCAPostalCode
-	]
+  creditCard: [
+    isVisaCard,
+    isVisaPanCard,
+    isDiscoverCard,
+    isAmericanExpressCard,
+    isMasterCard
+  ],
+  date: [
+    isDate,
+    isDateShort,
+    isDateProper
+  ],
+  cvn: [
+    meetsCVN,
+    meetsCVNAmex
+  ],
+  zipPost: [
+    isZip,
+    isCAPostalCode
+  ]
 };
 
-const executeValidation = (val, type) => {
-	const validationList = validationTypes[type];
+const run = (val, type) => {
+  const validationList = validationTypes[type];
 
-	for (let i = 0; i < validationList.length; i++) {
-		if (!validationList[i](val)) {
-			return true;
-		}
+  for (let i = 0; i < validationList.length; i++) {
+    if (validationList[i](val)) {
+      return true;
+    }
 
-		continue;
-	}
+    continue;
+  }
 
-	return false;
+  return false;
 };
 
-export const creditCard = val => executeValidation(val, 'creditCard');
+export const creditCard = val => run(val, 'creditCard');
 
-export const date = val => executeValidation(val, 'date');
+export const date = val => run(val, 'date');
 
-export const cvn = val => executeValidation(val, 'cvn');
+export const cvn = val => run(val, 'cvn');
 
-export const zipPost = val => executeValidation(val, 'zipPost');
+export const zipPost = val => run(val, 'zipPost');

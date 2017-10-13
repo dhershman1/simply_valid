@@ -1,5 +1,7 @@
 export default {
-	entry: 'tests/tests-imports.js',
-	format: 'cjs',
-	dest: 'tests/tests-imports.cjs.js'
+  input: 'tests/tests-imports.js',
+  output: {
+    format: 'cjs',
+    file: 'tests/tests-imports.cjs.js'
+  }
 };

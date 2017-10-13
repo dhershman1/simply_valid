@@ -1,11 +1,20 @@
 /* eslint-disable max-len */
+const emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
+const vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
+
 export const isDate = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m).test(val);
 
 export const isDateShort = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val);
 
 export const isDateProper = val => (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val);
 
-export const isEmail = (val, {emailPattern}) => emailPattern.test(val);
+export const isEmail = (val, email = emailRegex) => {
+  if (email.emailPattern) {
+    return email.emailPattern.test(val);
+  }
+
+  return email.test(val);
+};
 
 export const isNumber = val => !isNaN(val);
 
@@ -13,7 +22,13 @@ export const isPositive = val => !isNaN(val) && Number(val) >= 0;
 
 export const isNegative = val => !isNaN(val) && Number(val) < 0;
 
-export const isVin = (val, {vinPattern}) => vinPattern.test(val);
+export const isVin = (val, vin = vinRegex) => {
+  if (vin.vinPattern) {
+    return vin.vinPattern.test(val);
+  }
+
+  return vin.test(val);
+};
 
 export const isZip = val => (/^\d{5}(-\d{4})?$/).test(val);
 
@@ -33,6 +48,18 @@ export const isAmericanExpressCard = val => (/^3(4|7)[0-9]{13}$/).test(val);
 
 export const isDiscoverCard = val => (/^6[0-9]{15}$/).test(val);
 
-export const isBelowMax = (val, {max}) => !isNaN(val) && Number(val) < max;
+export const isBelowMax = (val, m = Infinity) => {
+  if (m.max) {
+    return !isNaN(val) && Number(val) < m.max;
+  }
 
-export const isAboveMin = (val, {min}) => !isNaN(val) && Number(val) > min;
+  return !isNaN(val) && Number(val) < m;
+};
+
+export const isAboveMin = (val, m = -Infinity) => {
+  if (m.min) {
+    return !isNaN(val) && Number(val) > m.min;
+  }
+
+  return !isNaN(val) && Number(val) > m;
+};
