@@ -1,2 +1,2 @@
-tests/dist
+src/tests/dist
 src/**/*.cjs.js

@@ -17,7 +17,7 @@ module.exports = {
 		'array-callback-return': ['error'],
 		'block-scoped-var': ['error'],
 		'class-methods-use-this': ['error'],
-		'complexity': ['error', 3],
+		'complexity': ['error', 4],
 		'consistent-return': ['error'],
 		'curly': ['error', 'multi-line'],
 		'default-case': ['error'],
@@ -125,7 +125,7 @@ module.exports = {
 		'max-params': ['error', {
 			'max': 3
 		}],
-		'multiline-ternary': ['error'],
+		'multiline-ternary': ['error', 'never'],
 		'new-cap': ['error'],
 		'new-parens': ['error'],
 		'newline-after-var': ['error'],

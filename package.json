@@ -9,16 +9,18 @@
   },
   "scripts": {
     "prepare": "rollup -c && rollup --config rollup.config.module.js",
-    "compile:has": "rollup -i src/has/tests.js -o src/has/has.cjs.js -f cjs -g tape",
-    "compile:is": "rollup -i src/is/tests.js -o src/is/is.cjs.js -f cjs -g tape",
-    "compile:meets": "rollup -i src/meets/tests.js -o src/meets/meets.cjs.js -f cjs -g tape",
-    "compile:multi": "rollup -i src/multi/tests.js -o src/multi/multi.cjs.js -f cjs -g tape",
-    "compile:no": "rollup -i src/no/tests.js -o src/no/no.cjs.js -f cjs -g tape",
+    "compile:has": "rollup -i src/has/tests.js -o src/tests/dist/has.cjs.js -f cjs -g tape",
+    "compile:is": "rollup -i src/is/tests.js -o src/tests/dist/is.cjs.js -f cjs -g tape",
+    "compile:meets": "rollup -i src/meets/tests.js -o src/tests/dist/meets.cjs.js -f cjs -g tape",
+    "compile:multi": "rollup -i src/multi/tests.js -o src/tests/dist/multi.cjs.js -f cjs -g tape",
+    "compile:no": "rollup -i src/no/tests.js -o src/tests/dist/no.cjs.js -f cjs -g tape",
     "build:all": "npm-run-all --parallel compile:*",
     "test:methods": "npm run build:all && tape src/**/*.cjs.js | tap-spec",
+    "test:all": "tape src/tests/{dist/*.cjs.js,tests.js} | tap-spec",
+    "test:main": "rollup -c && tape src/tests/tests.js | tap-spec",
     "test:no": "tape tests/dist/no.cjs.js | tap-spec",
     "test:multi": "npm run build:all && tape tests/dist/multi.cjs.js | tap-spec",
-    "test": "rollup -c && tape tests/tests.js | tap-spec"
+    "test": "rollup -c && npm-run-all --parallel compile:* && npm run test:all"
   },
   "repository": {
     "type": "git",
