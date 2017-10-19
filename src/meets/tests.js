@@ -24,21 +24,21 @@ test('Test meetsCVNAmex', t => {
 
 test('Test meetsMinMax', t => {
   t.ok(meetsMinMax);
-  t.ok(meetsMinMax(3, {
+  t.ok(meetsMinMax({
     min: 0,
     max: 5
-  }), 'Returns OK within our min/max');
-  t.notOk(meetsMinMax(6, {
+  })(3), 'Returns OK within our min/max');
+  t.notOk(meetsMinMax({
     min: 0,
     max: 5
-  }), 'Invalid exceeds max');
+  })(6), 'Invalid exceeds max');
   t.end();
 });
 
 test('Test meetsPassReq', t => {
   t.ok(meetsPassReq);
-  t.ok(meetsPassReq('cOol12$d'), 'Meets Password requirement');
-  t.notOk(meetsPassReq('AA'), 'Invalid Does not meet password requirement');
+  t.ok(meetsPassReq()('cOol12$d'), 'Meets Password requirement');
+  t.notOk(meetsPassReq()('AA'), 'Invalid Does not meet password requirement');
   t.end();
 });
 

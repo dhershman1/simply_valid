@@ -8,14 +8,14 @@ const testData = {
   address: '1132 Cool St'
 };
 
-test('Test schema', t => {
+test('Test String Schema', t => {
   const validate = simplyValid({
     schema: 'hasValue'
   });
 
-  console.log(validate('test'));
-  console.log(validate(''));
   t.ok(validate);
+  t.ok(validate('cool').isValid, 'Validation passed');
+  t.notOk(validate('').isValid, 'Empty string is not valid');
   t.end();
 });
 
@@ -27,13 +27,70 @@ test('Test Object Schema', t => {
     }
   });
 
-  console.log(validate(testData));
-  console.log(validate({
+  t.ok(validate);
+  t.ok(validate(testData).isValid, 'Object is a valid object');
+  t.notOk(validate({
     zip: 'cool',
     address: '112 test St'
+  }).isValid, 'Object is invalid');
+  t.end();
+});
+
+test('Test Array Schema', t => {
+  const validate = simplyValid({
+    schema: ['isNumber', 'isPositive']
+  });
+
+  t.ok(validate);
+  t.ok(validate('5').isValid, 'Number is valid and positive');
+  t.notOk(validate('-4').isValid, 'Number is negative and not valid');
+  t.end();
+});
+
+// test('Test nested Object', t => {
+//   const validate = simplyValid({
+//     schema: {
+//       test: ['isPositive'],
+//       zip: ['hasValue', 'hasNumbers'],
+//       address: ['hasLetters']
+//     }
+//   });
+
+//   t.ok(validate);
+//   t.ok(validate({
+//     test: '4',
+//     info: {
+//       zip: '44432',
+//       address: '4432 Test St'
+//     }
+//   }).isValid, 'Valid nested object');
+//   t.end();
+// });
+
+test('Test nested object with arrays', t => {
+  const validate = simplyValid({
+    schema: {
+      arraytest: ['isPositive'],
+      zip: ['hasValue', 'hasNumbers'],
+      address: ['hasLetters']
+    }
+  });
+
+  console.log(validate({
+    test: {
+      arraytest: ['3', '2', '1', '5']
+    },
+    info: {
+      zip: '44564',
+      moreInfo: {
+        address: '11234 Test Rd'
+      }
+    }
   }));
+
   t.ok(validate);
   t.end();
+
 });
 
 // test('Test hasValue()', t => {

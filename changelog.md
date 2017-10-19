@@ -20,6 +20,7 @@
 >   - `cvn`
 >   - `date`
 >   - `zipPost`
+> - Calling methods individually is now curried so you will need to call it once to set settings and then again with your data
 
 ### New
 

@@ -1,1 +1,507 @@
-!function(t,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):t.simplyValid=n()}(this,function(){"use strict";var t=function(t){return/[0-9]/.test(t)},n=function(t){return/\W/.test(t)},e=Object.freeze({hasValue:function(t){return t&&0!==t.length},hasNumbers:t,hasLetters:function(t){return/[A-Z]/i.test(t)},hasSpecialCharacters:n,hasNumbersOrSpecials:function(e){return t(e)||n(e)},hasUpperAndLowerCase:function(t){return/[A-Z]/.test(t)&&/[a-z]/.test(t)}}),r=/^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,i=/^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,u=function(t){return/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m.test(t)},a=function(t){return/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m.test(t)},s=function(t){return/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m.test(t)},o=function(t){return/^\d{5}(-\d{4})?$/.test(t)},c=function(t){return/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i.test(t)},f=function(t){return/^4[0-9]{15}$/.test(t)},d=function(t){return/^4[0-9]{18}$/.test(t)},m=function(t){return/^5[1-5][0-9]{14}$/.test(t)},l=function(t){return/^3(4|7)[0-9]{13}$/.test(t)},p=function(t){return/^6[0-9]{15}$/.test(t)},h=Object.freeze({isDate:u,isDateShort:a,isDateProper:s,isEmail:function(t,n){return void 0===n&&(n=r),n.emailPattern?n.emailPattern.test(t):n.test(t)},isNumber:function(t){return!isNaN(t)},isPositive:function(t){return!isNaN(t)&&Number(t)>=0},isNegative:function(t){return!isNaN(t)&&Number(t)<0},isVin:function(t,n){return void 0===n&&(n=i),n.vinPattern?n.vinPattern.test(t):n.test(t)},isZip:o,isCAPostalCode:c,isPhone:function(t){return/^[0-9]{10}$/.test(t.replace(/\W/g,""))},isLicensePlate:function(t){return/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i.test(t)},isVisaCard:f,isVisaPanCard:d,isMasterCard:m,isAmericanExpressCard:l,isDiscoverCard:p,isBelowMax:function(t,n){return void 0===n&&(n=1/0),n.max?!isNaN(t)&&Number(t)<n.max:!isNaN(t)&&Number(t)<n},isAboveMin:function(t,n){return void 0===n&&(n=-1/0),n.min?!isNaN(t)&&Number(t)>n.min:!isNaN(t)&&Number(t)>n}}),v=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/,N=function(t){return 3===t.length&&/[0-9]/.test(t)},$=function(t){return 4===t.length&&/[0-9]/.test(t)},b=Object.freeze({meetsMinMax:function(t,n){var e=n.min;void 0===e&&(e=-1/0);var r=n.max;return void 0===r&&(r=1/0),!isNaN(t)&&Number(t)>=e&&Number(t)<=r},meetsYearStandard:function(t){return/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/.test(t)},meetsCVN:N,meetsCVNAmex:$,meetsTreadDepth:function(t){return/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i.test(t)},meetsPassReq:function(t,n){return void 0===n&&(n=v),n.passwordPattern?n.passwordPattern.test(t):n.test(t)}}),A={creditCard:[f,d,p,l,m],date:[u,a,s],cvn:[N,$],zipPost:[o,c]},y=function(t,n){for(var e=A[n],r=0;r<e.length;r++)if(e[r](t))return!0;return!1},P=Object.freeze({creditCard:function(t){return y(t,"creditCard")},date:function(t){return y(t,"date")},cvn:function(t){return y(t,"cvn")},zipPost:function(t){return y(t,"zipPost")}}),w=Object.freeze({noSpecials:function(t){return null===t.match(/\W/)},noNumbers:function(t){return null===t.match(/[0-9]/)},noLetters:function(t){return null===t.match(/[A-Z]/i)}}),z=function(t){return"[object Object]"===Object.prototype.toString.call(t)},j=function(){for(var t=[],n=arguments.length;n--;)t[n]=arguments[n];return t.reduce(function(t,n){var e="";for(e in n)t[e]=n[e];return t},{})},C=function(t,n){for(var e in t)Object.prototype.hasOwnProperty.call(t,e)&&(z(t[e])&&C(t[e]),n(t[e],e))},V=function(t){return Array.isArray(t)?t:void 0===t?[]:[t]},O=function(t){var n={isValid:!0,story:[]};for(var e in t)if(!t[e].isValid){var r=t[e].story[0];r.propName=e,n.story.push(r)}return n.story.length?(n.isValid=!1,n):n},Z=j({},e,h,b,w,P),g=function(t,n,e){var r=[];return e.forEach(function(e){Z[e](t,n)||r.push({test:e,value:t})}),r.length?{isValid:!1,story:r}:{isValid:!0}},x=function(t,n,e){var r={};return C(t,function(t,i){Object.prototype.hasOwnProperty.call(e,i)&&(r[i]=g(t,n,e[i]))}),O(r)},S=function(t,n,e){var r={};return C(t,function(t,i){r[i]=g(t,n,e)}),r},M=function(t,n,e){return z(e)?x(t,n,e):Array.isArray(e)?S(t,n,e):g(t,n,V(e))},D=function(t,n,e){var r={};return t.forEach(function(t){r[t]=g(t,n,e)}),r};return function(t){return function(n){var e=j({},{schema:[],max:1/0,min:-1/0,vinPattern:/^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,emailPattern:/^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,passwordPattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/},t);return z(n)?M(n,e,e.schema):Array.isArray(n)?D(n,e,V(e.schema)):g(n,e,V(e.schema))}}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.simplyValid = factory());
+}(this, (function () { 'use strict';
+
+var hasValue = function (val) { return val && val.length !== 0; };
+
+var hasNumbers = function (val) { return (/[0-9]/).test(val); };
+
+var hasLetters = function (val) { return (/[A-Z]/i).test(val); };
+
+var hasSpecialCharacters = function (val) { return (/\W/).test(val); };
+
+var hasNumbersOrSpecials = function (val) { return hasNumbers(val) || hasSpecialCharacters(val); };
+
+var hasUpperAndLowerCase = function (val) { return (/[A-Z]/).test(val) && (/[a-z]/).test(val); };
+
+
+var hasMethods = Object.freeze({
+	hasValue: hasValue,
+	hasNumbers: hasNumbers,
+	hasLetters: hasLetters,
+	hasSpecialCharacters: hasSpecialCharacters,
+	hasNumbersOrSpecials: hasNumbersOrSpecials,
+	hasUpperAndLowerCase: hasUpperAndLowerCase
+});
+
+var isObject = function (x) { return Object.prototype.toString.call(x) === '[object Object]'; };
+
+
+
+var extend = function () {
+  var args = [], len = arguments.length;
+  while ( len-- ) args[ len ] = arguments[ len ];
+
+  return args.reduce(function (acc, x) {
+  var key = '';
+
+  for (key in x) {
+    acc[key] = x[key];
+  }
+
+  return acc;
+}, {});
+};
+
+var each = function (obj, cb) {
+  for (var prop in obj) {
+    console.log(obj[prop]);
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      if (typeof obj[prop] === 'object') {
+        each(obj[prop], cb);
+      }
+      cb(obj[prop], prop);
+    }
+  }
+
+};
+
+var ensureArray = function (val) {
+  if (Array.isArray(val)) {
+    return val;
+  }
+
+  if (val === void 0) {
+    return [];
+  }
+
+  return [val];
+};
+
+var format = function (obj) {
+  var results = {
+    isValid: true,
+    story: []
+  };
+
+  for (var prop in obj) {
+    if (obj[prop].isValid) {
+      continue;
+    }
+
+    var ref = obj[prop].story;
+    var story = ref[0];
+
+    story.propName = prop;
+    results.story.push(story);
+  }
+
+  if (results.story.length) {
+    results.isValid = false;
+
+    return results;
+  }
+
+  return results;
+};
+
+var validateSchema = function (schema) {
+  if (Array.isArray(schema) && schema.length) {
+    return true;
+  }
+
+  if (isObject(schema) && Object.keys(schema).length) {
+    return true;
+  }
+
+  return Boolean(schema.length);
+};
+
+var luhn = function (val) {
+  var numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+  var len = val.length;
+  var bit = 1;
+  var sum = 0;
+  var num = 0;
+
+  while (len) {
+    num = parseInt(val.charAt(--len), 10);
+    sum += (bit ^= 1) ? numArr[num] : num; // eslint-disable-line
+  }
+
+  return sum && sum % 10 === 0;
+};
+
+/* eslint-disable max-len */
+
+var emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
+var vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
+
+var isDate = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m).test(val); };
+
+var isDateShort = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val); };
+
+var isDateProper = function (val) { return (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val); };
+
+var isEmail = function (email) {
+  if ( email === void 0 ) email = emailRegex;
+
+  return function (val) {
+  if (email.emailPattern) {
+    return email.emailPattern.test(val);
+  }
+
+  return email.test(val);
+};
+};
+
+var isNumber = function (val) { return !isNaN(val); };
+
+var isPositive = function (val) { return !isNaN(val) && Number(val) >= 0; };
+
+var isNegative = function (val) { return !isNaN(val) && Number(val) < 0; };
+
+var isVin = function (vin) {
+  if ( vin === void 0 ) vin = vinRegex;
+
+  return function (val) {
+  if (vin.vinPattern) {
+    return vin.vinPattern.test(val);
+  }
+
+  return vin.test(val);
+};
+};
+
+var isZip = function (val) { return (/^\d{5}(-\d{4})?$/).test(val); };
+
+var isCAPostalCode = function (val) { return (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val); };
+
+var isPhone = function (val) { return (/^[0-9]{10}$/).test(val.replace(/\W/g, '')); };
+
+var isLicensePlate = function (val) { return (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i).test(val); };
+
+var isVisaCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^4[0-9]{15}$/).test(val);
+};
+};
+
+var isVisaPanCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^4[0-9]{18}$/).test(val);
+};
+};
+
+var isMasterCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^5[1-5][0-9]{14}$/).test(val);
+};
+};
+
+var isAmericanExpressCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^3(4|7)[0-9]{13}$/).test(val);
+};
+};
+
+var isDiscoverCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^6[0-9]{15}$/).test(val);
+};
+};
+
+var isBelowMax = function (m) {
+  if ( m === void 0 ) m = Infinity;
+
+  return function (val) {
+  if (m.max) {
+    return !isNaN(val) && Number(val) < m.max;
+  }
+
+  return !isNaN(val) && Number(val) < m;
+};
+};
+
+var isAboveMin = function (m) {
+  if ( m === void 0 ) m = -Infinity;
+
+  return function (val) {
+  if (m.min) {
+    return !isNaN(val) && Number(val) > m.min;
+  }
+
+  return !isNaN(val) && Number(val) > m;
+};
+};
+
+
+var isMethods = Object.freeze({
+	isDate: isDate,
+	isDateShort: isDateShort,
+	isDateProper: isDateProper,
+	isEmail: isEmail,
+	isNumber: isNumber,
+	isPositive: isPositive,
+	isNegative: isNegative,
+	isVin: isVin,
+	isZip: isZip,
+	isCAPostalCode: isCAPostalCode,
+	isPhone: isPhone,
+	isLicensePlate: isLicensePlate,
+	isVisaCard: isVisaCard,
+	isVisaPanCard: isVisaPanCard,
+	isMasterCard: isMasterCard,
+	isAmericanExpressCard: isAmericanExpressCard,
+	isDiscoverCard: isDiscoverCard,
+	isBelowMax: isBelowMax,
+	isAboveMin: isAboveMin
+});
+
+/* eslint-disable max-len */
+var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+
+var meetsMinMax = function (ref) {
+  var min = ref.min; if ( min === void 0 ) min = -Infinity;
+  var max = ref.max; if ( max === void 0 ) max = Infinity;
+
+  return function (val) { return !isNaN(val) && (Number(val) >= min && Number(val) <= max); };
+};
+
+var meetsYearStandard = function (val) { return (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val); };
+
+var meetsCVN = function (val) { return val.length === 3 && (/[0-9]/).test(val); };
+
+var meetsCVNAmex = function (val) { return val.length === 4 && (/[0-9]/).test(val); };
+
+var meetsTreadDepth = function (val) { return (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val); };
+
+var meetsPassReq = function (pass) {
+  if ( pass === void 0 ) pass = passwordRegex;
+
+  return function (val) {
+  if (pass.passwordPattern) {
+    return pass.passwordPattern.test(val);
+  }
+
+  return pass.test(val);
+};
+};
+
+
+var meetsMethods = Object.freeze({
+	meetsMinMax: meetsMinMax,
+	meetsYearStandard: meetsYearStandard,
+	meetsCVN: meetsCVN,
+	meetsCVNAmex: meetsCVNAmex,
+	meetsTreadDepth: meetsTreadDepth,
+	meetsPassReq: meetsPassReq
+});
+
+var validationTypes = {
+  creditCard: [
+    isVisaCard,
+    isVisaPanCard,
+    isDiscoverCard,
+    isAmericanExpressCard,
+    isMasterCard
+  ],
+  date: [
+    isDate,
+    isDateShort,
+    isDateProper
+  ],
+  cvn: [
+    meetsCVN,
+    meetsCVNAmex
+  ],
+  zipPost: [
+    isZip,
+    isCAPostalCode
+  ]
+};
+
+var run = function (val, type) {
+  var validationList = validationTypes[type];
+
+  for (var i = 0; i < validationList.length; i++) {
+    if (validationList[i](val)) {
+      return true;
+    }
+
+    continue;
+  }
+
+  return false;
+};
+
+var creditCard = function (val) { return run(val, 'creditCard'); };
+
+var date = function (val) { return run(val, 'date'); };
+
+var cvn = function (val) { return run(val, 'cvn'); };
+
+var zipPost = function (val) { return run(val, 'zipPost'); };
+
+
+var multiMethods = Object.freeze({
+	creditCard: creditCard,
+	date: date,
+	cvn: cvn,
+	zipPost: zipPost
+});
+
+var noSpecials = function (val) { return val.match(/\W/) === null; };
+
+var noNumbers = function (val) { return val.match(/[0-9]/) === null; };
+
+var noLetters = function (val) { return val.match(/[A-Z]/i) === null; };
+
+
+var noMethods = Object.freeze({
+	noSpecials: noSpecials,
+	noNumbers: noNumbers,
+	noLetters: noLetters
+});
+
+/* eslint-disable max-len */
+var methods = extend({}, hasMethods, isMethods, meetsMethods, noMethods, multiMethods);
+
+var runValidate = function (data, options, useMethods) {
+  var story = [];
+  var curriedMethods = [
+    'isBelowMax',
+    'isAboveMin',
+    'isEmail',
+    'isVin',
+    'isVisaCard',
+    'isVisaPanCard',
+    'isMasterCard',
+    'isAmericanExpressCard',
+    'isDiscoverCard',
+    'meetsPassReq',
+    'meetsMinMax'
+  ];
+
+  useMethods.forEach(function (currMethod) {
+    var methodFn = methods[currMethod];
+    var isValid = curriedMethods.indexOf(currMethod) !== -1 ? methodFn(options)(data) : methodFn(data, options);
+
+    if (!isValid) {
+      // If something comes back as a failure we need to push it into the story
+      story.push({
+        // What test did we fail on
+        test: currMethod,
+        // The value used when the failure happened
+        value: data
+      });
+    }
+  });
+
+  if (story.length) {
+    return {
+      isValid: false,
+      story: story
+    };
+  }
+
+  return { isValid: true };
+};
+
+var validWhere = function (obj, opts, useMethods) {
+  var results = {};
+
+  each(obj, function (val, prop) {
+    if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
+      console.log(val);
+      results[prop] = runValidate(val, opts, useMethods[prop]);
+    }
+  });
+
+  return format(results);
+};
+
+var allValidWhere = function (obj, opts, useMethods) {
+  var results = {};
+
+  each(obj, function (val, prop) {
+    results[prop] = runValidate(val, opts, useMethods);
+  });
+
+  return results;
+};
+
+var validateObj = function (data, opts, useMethods) {
+  if (isObject(useMethods)) {
+    return validWhere(data, opts, useMethods);
+  }
+
+  if (Array.isArray(useMethods)) {
+    return allValidWhere(data, opts, useMethods);
+  }
+
+  // Assume it's a string at this point
+  return runValidate(data, opts, ensureArray(useMethods));
+};
+
+var validateArr = function (data, opts, useMethods) {
+  var results = {};
+
+  data.forEach(function (val) {
+    results[val] = runValidate(val, opts, useMethods);
+  });
+
+  return results;
+};
+
+var simplyValid = function (options) { return function (data) {
+  var defaults = {
+    schema: [],
+    strictCard: false,
+    max: Infinity,
+    min: -Infinity,
+    vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
+    emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
+    passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
+  };
+  var opts = extend({}, defaults, options);
+
+  if (!validateSchema(opts.schema)) {
+    throw new Error('No schema provided for validation');
+  }
+
+  if (isObject(data)) {
+    return validateObj(data, opts, opts.schema);
+  }
+  if (Array.isArray(data)) {
+    return validateArr(data, opts, ensureArray(opts.schema));
+  }
+
+  return runValidate(data, opts, ensureArray(opts.schema));
+}; };
+
+return simplyValid;
+
+})));

@@ -9,7 +9,6 @@ export default {
     file: 'dist/simply_valid.umd.js'
   },
   plugins: [
-    buble(),
-    uglify()
+    buble()
   ]
 };

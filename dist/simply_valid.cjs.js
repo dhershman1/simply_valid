@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var hasValue = function (val) { return val && val.length !== 0; };
 
 var hasNumbers = function (val) { return (/[0-9]/).test(val); };
@@ -24,17 +22,122 @@ var hasMethods = Object.freeze({
 	hasUpperAndLowerCase: hasUpperAndLowerCase
 });
 
+var isObject = function (x) { return Object.prototype.toString.call(x) === '[object Object]'; };
+
+var extend = function () {
+  var args = [], len = arguments.length;
+  while ( len-- ) args[ len ] = arguments[ len ];
+
+  return args.reduce(function (acc, x) {
+  var key = '';
+
+  for (key in x) {
+    acc[key] = x[key];
+  }
+
+  return acc;
+}, {});
+};
+
+var each = function (obj, cb) {
+  for (var prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      if (isObject(obj[prop])) {
+        each(obj[prop]);
+      }
+      cb(obj[prop], prop);
+    }
+  }
+
+};
+
+var ensureArray = function (val) {
+  if (Array.isArray(val)) {
+    return val;
+  }
+
+  if (val === void 0) {
+    return [];
+  }
+
+  return [val];
+};
+
+var format = function (obj) {
+  var results = {
+    isValid: true,
+    story: []
+  };
+
+  for (var prop in obj) {
+    if (obj[prop].isValid) {
+      continue;
+    }
+
+    var ref = obj[prop].story;
+    var story = ref[0];
+
+    story.propName = prop;
+    results.story.push(story);
+  }
+
+  if (results.story.length) {
+    results.isValid = false;
+
+    return results;
+  }
+
+  return results;
+};
+
+var validateSchema = function (schema) {
+  if (Array.isArray(schema) && schema.length) {
+    return true;
+  }
+
+  if (isObject(schema) && Object.keys(schema).length) {
+    return true;
+  }
+
+  return Boolean(schema.length);
+};
+
+var luhn = function (val) {
+  var numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+  var len = val.length;
+  var bit = 1;
+  var sum = 0;
+  var num = 0;
+
+  while (len) {
+    num = parseInt(val.charAt(--len), 10);
+    sum += (bit ^= 1) ? numArr[num] : num; // eslint-disable-line
+  }
+
+  return sum && sum % 10 === 0;
+};
+
 /* eslint-disable max-len */
+
+var emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
+var vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
+
 var isDate = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m).test(val); };
 
 var isDateShort = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val); };
 
 var isDateProper = function (val) { return (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val); };
 
-var isEmail = function (val, ref) {
-	var emailPattern = ref.emailPattern;
+var isEmail = function (email) {
+  if ( email === void 0 ) email = emailRegex;
 
-	return emailPattern.test(val);
+  return function (val) {
+  if (email.emailPattern) {
+    return email.emailPattern.test(val);
+  }
+
+  return email.test(val);
+};
 };
 
 var isNumber = function (val) { return !isNaN(val); };
@@ -43,10 +146,16 @@ var isPositive = function (val) { return !isNaN(val) && Number(val) >= 0; };
 
 var isNegative = function (val) { return !isNaN(val) && Number(val) < 0; };
 
-var isVin = function (val, ref) {
-	var vinPattern = ref.vinPattern;
+var isVin = function (vin) {
+  if ( vin === void 0 ) vin = vinRegex;
 
-	return vinPattern.test(val);
+  return function (val) {
+  if (vin.vinPattern) {
+    return vin.vinPattern.test(val);
+  }
+
+  return vin.test(val);
+};
 };
 
 var isZip = function (val) { return (/^\d{5}(-\d{4})?$/).test(val); };
@@ -57,26 +166,88 @@ var isPhone = function (val) { return (/^[0-9]{10}$/).test(val.replace(/\W/g, ''
 
 var isLicensePlate = function (val) { return (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i).test(val); };
 
-var isVisaCard = function (val) { return (/^4[0-9]{15}$/).test(val); };
+var isVisaCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
 
-var isVisaPanCard = function (val) { return (/^4[0-9]{18}$/).test(val); };
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
 
-var isMasterCard = function (val) { return (/^5[1-5][0-9]{14}$/).test(val); };
-
-var isAmericanExpressCard = function (val) { return (/^3(4|7)[0-9]{13}$/).test(val); };
-
-var isDiscoverCard = function (val) { return (/^6[0-9]{15}$/).test(val); };
-
-var isBelowMax = function (val, ref) {
-	var max = ref.max;
-
-	return !isNaN(val) && Number(val) < max;
+  return (/^4[0-9]{15}$/).test(val);
+};
 };
 
-var isAboveMin = function (val, ref) {
-	var min = ref.min;
+var isVisaPanCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
 
-	return !isNaN(val) && Number(val) > min;
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^4[0-9]{18}$/).test(val);
+};
+};
+
+var isMasterCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^5[1-5][0-9]{14}$/).test(val);
+};
+};
+
+var isAmericanExpressCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^3(4|7)[0-9]{13}$/).test(val);
+};
+};
+
+var isDiscoverCard = function (strict) {
+  if ( strict === void 0 ) strict = true;
+
+  return function (val) {
+  if (strict) {
+    return luhn(val);
+  }
+
+  return (/^6[0-9]{15}$/).test(val);
+};
+};
+
+var isBelowMax = function (m) {
+  if ( m === void 0 ) m = Infinity;
+
+  return function (val) {
+  if (m.max) {
+    return !isNaN(val) && Number(val) < m.max;
+  }
+
+  return !isNaN(val) && Number(val) < m;
+};
+};
+
+var isAboveMin = function (m) {
+  if ( m === void 0 ) m = -Infinity;
+
+  return function (val) {
+  if (m.min) {
+    return !isNaN(val) && Number(val) > m.min;
+  }
+
+  return !isNaN(val) && Number(val) > m;
+};
 };
 
 
@@ -102,11 +273,14 @@ var isMethods = Object.freeze({
 	isAboveMin: isAboveMin
 });
 
-var meetsMinMax = function (val, ref) {
-	var min = ref.min;
-	var max = ref.max;
+/* eslint-disable max-len */
+var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
 
-	return !isNaN(val) && (Number(val) >= min && Number(val) <= max);
+var meetsMinMax = function (ref) {
+  var min = ref.min; if ( min === void 0 ) min = -Infinity;
+  var max = ref.max; if ( max === void 0 ) max = Infinity;
+
+  return function (val) { return !isNaN(val) && (Number(val) >= min && Number(val) <= max); };
 };
 
 var meetsYearStandard = function (val) { return (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val); };
@@ -117,10 +291,16 @@ var meetsCVNAmex = function (val) { return val.length === 4 && (/[0-9]/).test(va
 
 var meetsTreadDepth = function (val) { return (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val); };
 
-var meetsPassReq = function (val, ref) {
-	var passwordPattern = ref.passwordPattern;
+var meetsPassReq = function (pass) {
+  if ( pass === void 0 ) pass = passwordRegex;
 
-	return passwordPattern.test(val);
+  return function (val) {
+  if (pass.passwordPattern) {
+    return pass.passwordPattern.test(val);
+  }
+
+  return pass.test(val);
+};
 };
 
 
@@ -134,40 +314,40 @@ var meetsMethods = Object.freeze({
 });
 
 var validationTypes = {
-	creditCard: [
-		isVisaCard,
-		isVisaPanCard,
-		isDiscoverCard,
-		isAmericanExpressCard,
-		isMasterCard
-	],
-	date: [
-		isDate,
-		isDateShort,
-		isDateProper
-	],
-	cvn: [
-		meetsCVN,
-		meetsCVNAmex
-	],
-	zipPost: [
-		isZip,
-		isCAPostalCode
-	]
+  creditCard: [
+    isVisaCard,
+    isVisaPanCard,
+    isDiscoverCard,
+    isAmericanExpressCard,
+    isMasterCard
+  ],
+  date: [
+    isDate,
+    isDateShort,
+    isDateProper
+  ],
+  cvn: [
+    meetsCVN,
+    meetsCVNAmex
+  ],
+  zipPost: [
+    isZip,
+    isCAPostalCode
+  ]
 };
 
 var run = function (val, type) {
-	var validationList = validationTypes[type];
+  var validationList = validationTypes[type];
 
-	for (var i = 0; i < validationList.length; i++) {
-		if (!validationList[i](val)) {
-			return true;
-		}
+  for (var i = 0; i < validationList.length; i++) {
+    if (validationList[i](val)) {
+      return true;
+    }
 
-		continue;
-	}
+    continue;
+  }
 
-	return false;
+  return false;
 };
 
 var creditCard = function (val) { return run(val, 'creditCard'); };
@@ -200,107 +380,118 @@ var noMethods = Object.freeze({
 });
 
 /* eslint-disable max-len */
-var extend = function () {
-	var args = [], len = arguments.length;
-	while ( len-- ) args[ len ] = arguments[ len ];
+var methods = extend({}, hasMethods, isMethods, meetsMethods, noMethods, multiMethods);
 
-	return args.reduce(function (acc, x) {
-	var key = '';
+var runValidate = function (data, options, useMethods) {
+  var story = [];
+  var curriedMethods = [
+    'isBelowMax',
+    'isAboveMin',
+    'isEmail',
+    'isVin',
+    'isVisaCard',
+    'isVisaPanCard',
+    'isMasterCard',
+    'isAmericanExpressCard',
+    'isDiscoverCard',
+    'meetsPassReq',
+    'meetsMinMax'
+  ];
 
-	for (key in x) {
-		acc[key] = x[key];
-	}
+  useMethods.forEach(function (currMethod) {
+    var methodFn = methods[currMethod];
+    var isValid = curriedMethods.indexOf(currMethod) !== -1 ? methodFn(options)(data) : methodFn(data, options);
 
-	return acc;
-}, {});
+    if (isValid) {
+      // If something comes back as a failure we need to push it into the story
+      story.push({
+        // What test did we fail on
+        test: currMethod,
+        // The value used when the failure happened
+        value: data
+      });
+    }
+  });
+
+  if (story.length) {
+    return {
+      isValid: false,
+      story: story
+    };
+  }
+
+  return { isValid: true };
 };
 
-// Our collection of validation methods extend them so we get their methods and thats it
+var validWhere = function (obj, opts, useMethods) {
+  var results = {};
 
-var simplyValid = function (methodArr, options) {
-	var methods = extend(hasMethods, isMethods, meetsMethods, noMethods, multiMethods);
-	// Set our default options that can be overwritten if needed.
-	var defaults = {
-		max: Infinity,
-		min: -Infinity,
-		vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
-		emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
-		// Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
-		passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
-	};
+  each(obj, function (val, prop) {
+    if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
+      results[prop] = runValidate(val, opts, useMethods[prop]);
+    }
+  });
 
-	// Collect and set a good portion of options to keep a global set
-	var opts = extend(defaults, options);
-
-	return function (val, calledOpts) {
-		if ( calledOpts === void 0 ) calledOpts = {};
-
-		// Initialize an empty story on call
-		var story = [];
-		// Create a custom options object in case options are being changed per call
-		var customOpts = extend(opts, calledOpts);
-
-		methodArr.forEach(function (currMethod) {
-			customOpts.type = currMethod;
-			if (!methods[currMethod](val, customOpts)) {
-				// If something comes back as a failure we need to push it into the story
-				story.push({
-					// What test did we fail on
-					test: currMethod,
-					// The value used when the failure happened
-					value: val
-				});
-			}
-		});
-
-		// If story has any kind of length, then something failed so send that back
-		if (story.length) {
-			return {
-				isValid: false,
-				story: story
-			};
-		}
-
-		return {isValid: true};
-	};
+  return format(results);
 };
 
-exports.simplyValid = simplyValid;
-exports.hasValue = hasValue;
-exports.hasNumbers = hasNumbers;
-exports.hasLetters = hasLetters;
-exports.hasSpecialCharacters = hasSpecialCharacters;
-exports.hasNumbersOrSpecials = hasNumbersOrSpecials;
-exports.hasUpperAndLowerCase = hasUpperAndLowerCase;
-exports.isDate = isDate;
-exports.isDateShort = isDateShort;
-exports.isDateProper = isDateProper;
-exports.isEmail = isEmail;
-exports.isNumber = isNumber;
-exports.isPositive = isPositive;
-exports.isNegative = isNegative;
-exports.isVin = isVin;
-exports.isZip = isZip;
-exports.isCAPostalCode = isCAPostalCode;
-exports.isPhone = isPhone;
-exports.isLicensePlate = isLicensePlate;
-exports.isVisaCard = isVisaCard;
-exports.isVisaPanCard = isVisaPanCard;
-exports.isMasterCard = isMasterCard;
-exports.isAmericanExpressCard = isAmericanExpressCard;
-exports.isDiscoverCard = isDiscoverCard;
-exports.isBelowMax = isBelowMax;
-exports.isAboveMin = isAboveMin;
-exports.meetsMinMax = meetsMinMax;
-exports.meetsYearStandard = meetsYearStandard;
-exports.meetsCVN = meetsCVN;
-exports.meetsCVNAmex = meetsCVNAmex;
-exports.meetsTreadDepth = meetsTreadDepth;
-exports.meetsPassReq = meetsPassReq;
-exports.creditCard = creditCard;
-exports.date = date;
-exports.cvn = cvn;
-exports.zipPost = zipPost;
-exports.noSpecials = noSpecials;
-exports.noNumbers = noNumbers;
-exports.noLetters = noLetters;
+var allValidWhere = function (obj, opts, useMethods) {
+  var results = {};
+
+  each(obj, function (val, prop) {
+    results[prop] = runValidate(val, opts, useMethods);
+  });
+
+  return results;
+};
+
+var validateObj = function (data, opts, useMethods) {
+  if (isObject(useMethods)) {
+    return validWhere(data, opts, useMethods);
+  }
+
+  if (Array.isArray(useMethods)) {
+    return allValidWhere(data, opts, useMethods);
+  }
+
+  // Assume it's a string at this point
+  return runValidate(data, opts, ensureArray(useMethods));
+};
+
+var validateArr = function (data, opts, useMethods) {
+  var results = {};
+
+  data.forEach(function (val) {
+    results[val] = runValidate(val, opts, useMethods);
+  });
+
+  return results;
+};
+
+var simplyValid = function (options) { return function (data) {
+  var defaults = {
+    schema: [],
+    strictCard: false,
+    max: Infinity,
+    min: -Infinity,
+    vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
+    emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
+    passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
+  };
+  var opts = extend({}, defaults, options);
+
+  if (!validateSchema(opts.schema)) {
+    throw new Error('No schema provided for validation');
+  }
+
+  if (isObject(data)) {
+    return validateObj(data, opts, opts.schema);
+  }
+  if (Array.isArray(data)) {
+    return validateArr(data, opts, ensureArray(opts.schema));
+  }
+
+  return runValidate(data, opts, ensureArray(opts.schema));
+}; };
+
+module.exports = simplyValid;

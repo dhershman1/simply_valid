@@ -529,7 +529,8 @@ Checks if the value is a valid VIN uses the property `vinPattern` in options
 ```js
 import {isVin} from 'simply_valid';
 
-isVin('JM1CW2BL8C0127808');
+// You can set a custom regex or leave it empty to use the default one
+isVin(vinRegex)('JM1CW2BL8C0127808');
 
 // OR
 import {simplyValid} from 'simply_valid';

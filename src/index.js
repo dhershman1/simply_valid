@@ -28,7 +28,7 @@ const runValidate = (data, options, useMethods) => {
     const methodFn = methods[currMethod];
     const isValid = curriedMethods.indexOf(currMethod) !== -1 ? methodFn(options)(data) : methodFn(data, options);
 
-    if (isValid) {
+    if (!isValid) {
       // If something comes back as a failure we need to push it into the story
       story.push({
         // What test did we fail on

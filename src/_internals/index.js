@@ -1,5 +1,7 @@
 export const isObject = x => Object.prototype.toString.call(x) === '[object Object]';
 
+export const isIterable = x => typeof x === 'object';
+
 export const extend = (...args) => args.reduce((acc, x) => {
   let key = '';
 
@@ -13,8 +15,8 @@ export const extend = (...args) => args.reduce((acc, x) => {
 export const each = (obj, cb) => {
   for (const prop in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-      if (isObject(obj[prop])) {
-        each(obj[prop]);
+      if (typeof obj[prop] === 'object') {
+        each(obj[prop], cb);
       }
       cb(obj[prop], prop);
     }

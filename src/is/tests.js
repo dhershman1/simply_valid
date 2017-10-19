@@ -56,15 +56,15 @@ test('Testing isDateProper', t => {
 
 test('Testing isEmail', t => {
   t.ok(isEmail);
-  t.ok(isEmail('coolkid17@AAAAAAHHHHHHHHHHHH.com'), 'valid yet annoying email address');
-  t.ok(isEmail('coolkid778@aol.com'), 'Returned OK This is a email');
-  t.ok(isEmail('IamEmail@cool.com'), 'That is indeed an email');
-  t.notOk(isEmail('notEmail'), 'Indeed it is NOT an email');
-  t.notOk(isEmail('coolkid77'), 'Returns invalid its not an email');
-  t.notOk(isEmail('coolkid77@gmail'), 'Returns invalid email address format');
-  t.notOk(isEmail('coolkid77@gmailcom'), 'Returns invalid email address format');
-  t.notOk(isEmail('coolkid77@gmail-com'), 'Returns invalid email address format');
-  t.notOk(isEmail('coolkid77gmail.com'), 'Returns invalid email address format');
+  t.ok(isEmail()('coolkid17@AAAAAAHHHHHHHHHHHH.com'), 'valid yet annoying email address');
+  t.ok(isEmail()('coolkid778@aol.com'), 'Returned OK This is a email');
+  t.ok(isEmail()('IamEmail@cool.com'), 'That is indeed an email');
+  t.notOk(isEmail()('notEmail'), 'Indeed it is NOT an email');
+  t.notOk(isEmail()('coolkid77'), 'Returns invalid its not an email');
+  t.notOk(isEmail()('coolkid77@gmail'), 'Returns invalid email address format');
+  t.notOk(isEmail()('coolkid77@gmailcom'), 'Returns invalid email address format');
+  t.notOk(isEmail()('coolkid77@gmail-com'), 'Returns invalid email address format');
+  t.notOk(isEmail()('coolkid77gmail.com'), 'Returns invalid email address format');
   t.end();
 });
 
@@ -96,9 +96,9 @@ test('Testing isNegative', t => {
 
 test('Testing isVin', t => {
   t.ok(isVin);
-  t.ok(isVin('JM1CW2BL8C0127808'), 'Returned OK This is a VIN');
-  t.notOk(isVin('JM1CW2BL8C012780865'), 'Returned not valid, too long to be vin');
-  t.notOk(isVin('112'), 'Returned not valid, not a vin');
+  t.ok(isVin()('JM1CW2BL8C0127808'), 'Returned OK This is a VIN');
+  t.notOk(isVin()('JM1CW2BL8C012780865'), 'Returned not valid, too long to be vin');
+  t.notOk(isVin()('112'), 'Returned not valid, not a vin');
   t.end();
 });
 
@@ -139,70 +139,70 @@ test('Testing isLicensePlate', t => {
 
 test('Testing isVisaCard', t => {
   t.ok(isVisaCard);
-  t.ok(isVisaCard('4111111111111111'), 'Returned OK This is a Visa card format');
-  t.notOk(isVisaCard('5111111111111111'), 'Invalid lead number');
-  t.notOk(isVisaCard('41111111111111111'), 'Invalid to long');
-  t.notOk(isVisaCard('411111111111111'), 'Invalid to short');
-  t.notOk(isVisaCard('55544444444444GGF'), 'Invalid bad start number and has letters');
-  t.notOk(isVisaCard('4111111111111GGF'), 'Invalid bad has letters');
+  t.ok(isVisaCard(false)('4111111111111111'), 'Returned OK This is a Visa card format');
+  t.notOk(isVisaCard(false)('5111111111111111'), 'Invalid lead number');
+  t.notOk(isVisaCard(false)('41111111111111111'), 'Invalid to long');
+  t.notOk(isVisaCard(false)('411111111111111'), 'Invalid to short');
+  t.notOk(isVisaCard(false)('55544444444444GGF'), 'Invalid bad start number and has letters');
+  t.notOk(isVisaCard(false)('4111111111111GGF'), 'Invalid bad has letters');
   t.end();
 });
 
 test('Testing isVisaPanCard', t => {
   t.ok(isVisaPanCard);
-  t.ok(isVisaPanCard('4111111111111111222'), 'Returned OK This is a Visa card format');
-  t.notOk(isVisaPanCard('5111111111111111222'), 'Invalid lead number');
-  t.notOk(isVisaPanCard('411111111111111112222'), 'Invalid to long');
-  t.notOk(isVisaPanCard('411111111111111222'), 'Invalid to short');
-  t.notOk(isVisaPanCard('55544444444444GGF'), 'Invalid bad start number and has letters');
-  t.notOk(isVisaPanCard('4111111111111GGF'), 'Invalid bad has letters');
+  t.ok(isVisaPanCard(false)('4111111111111111222'), 'Returned OK This is a Visa card format');
+  t.notOk(isVisaPanCard(false)('5111111111111111222'), 'Invalid lead number');
+  t.notOk(isVisaPanCard(false)('411111111111111112222'), 'Invalid to long');
+  t.notOk(isVisaPanCard(false)('411111111111111222'), 'Invalid to short');
+  t.notOk(isVisaPanCard(false)('55544444444444GGF'), 'Invalid bad start number and has letters');
+  t.notOk(isVisaPanCard(false)('4111111111111GGF'), 'Invalid bad has letters');
   t.end();
 });
 
 test('Testing isMasterCard', t => {
   t.ok(isMasterCard);
-  t.ok(isMasterCard('5511111111111111'), 'Returned OK This is a MasterCard format');
-  t.notOk(isMasterCard('5711111111111111'), 'Invalid 2nd digit (not 1-5)');
-  t.notOk(isMasterCard('7511111111111111'), 'Invalid 1st digit (not 5)');
-  t.notOk(isMasterCard('55511111111111111'), 'Invalid to long');
-  t.notOk(isMasterCard('551111111111111'), 'Invalid to short');
-  t.notOk(isMasterCard('551111111111111G'), 'Invalid to short');
-  t.notOk(isMasterCard('5511111111111111GG'), 'Invalid to short');
+  t.ok(isMasterCard(false)('5511111111111111'), 'Returned OK This is a MasterCard format');
+  t.notOk(isMasterCard(false)('5711111111111111'), 'Invalid 2nd digit (not 1-5)');
+  t.notOk(isMasterCard(false)('7511111111111111'), 'Invalid 1st digit (not 5)');
+  t.notOk(isMasterCard(false)('55511111111111111'), 'Invalid to long');
+  t.notOk(isMasterCard(false)('551111111111111'), 'Invalid to short');
+  t.notOk(isMasterCard(false)('551111111111111G'), 'Invalid to short');
+  t.notOk(isMasterCard(false)('5511111111111111GG'), 'Invalid to short');
   t.end();
 });
 
 test('Testing isAmericanExpressCard', t => {
   t.ok(isAmericanExpressCard);
-  t.ok(isAmericanExpressCard('341111111111111'), 'Returned valid format');
-  t.notOk(isAmericanExpressCard('381111111111111'), 'Invalid 2nd digit (not 4 or 7)');
-  t.notOk(isAmericanExpressCard('541111111111111'), 'Invalid 1st digit (not 3)');
-  t.notOk(isAmericanExpressCard('3411111111111111'), 'Invalid to long');
-  t.notOk(isAmericanExpressCard('34111111111111'), 'Invalid to short');
-  t.notOk(isAmericanExpressCard('34111111111111GG'), 'Invalid to short');
+  t.ok(isAmericanExpressCard(false)('341111111111111'), 'Returned valid format');
+  t.notOk(isAmericanExpressCard(false)('381111111111111'), 'Invalid 2nd digit (not 4 or 7)');
+  t.notOk(isAmericanExpressCard(false)('541111111111111'), 'Invalid 1st digit (not 3)');
+  t.notOk(isAmericanExpressCard(false)('3411111111111111'), 'Invalid to long');
+  t.notOk(isAmericanExpressCard(false)('34111111111111'), 'Invalid to short');
+  t.notOk(isAmericanExpressCard(false)('34111111111111GG'), 'Invalid to short');
   t.end();
 });
 
 test('Testing isDiscoverCard', t => {
   t.ok(isDiscoverCard);
-  t.ok(isDiscoverCard('6111111111111111'), 'Returned OK This is a Discover card format');
-  t.notOk(isDiscoverCard('5111111111111111'), 'Invalid lead number');
-  t.notOk(isDiscoverCard('41111111111111111'), 'Invalid to long');
-  t.notOk(isDiscoverCard('411111111111111'), 'Invalid to short');
-  t.notOk(isDiscoverCard('55544444444444GGF'), 'Invalid bad start number and has letters');
-  t.notOk(isDiscoverCard('4111111111111GGF'), 'Invalid bad has letters');
+  t.ok(isDiscoverCard(false)('6111111111111111'), 'Returned OK This is a Discover card format');
+  t.notOk(isDiscoverCard(false)('5111111111111111'), 'Invalid lead number');
+  t.notOk(isDiscoverCard(false)('41111111111111111'), 'Invalid to long');
+  t.notOk(isDiscoverCard(false)('411111111111111'), 'Invalid to short');
+  t.notOk(isDiscoverCard(false)('55544444444444GGF'), 'Invalid bad start number and has letters');
+  t.notOk(isDiscoverCard(false)('4111111111111GGF'), 'Invalid bad has letters');
   t.end();
 });
 
 test('Testing isBelowMax', t => {
   t.ok(isBelowMax);
-  t.ok(isBelowMax('7', 8), 'Returned OK This is below max');
-  t.notOk(isBelowMax('9', 8), 'Invalid exceeds/matches max');
+  t.ok(isBelowMax(8)('7'), 'Returned OK This is below max');
+  t.notOk(isBelowMax(8)('9'), 'Invalid exceeds/matches max');
   t.end();
 });
 
 test('Testing isAboveMin', t => {
   t.ok(isAboveMin);
-  t.ok(isAboveMin('5', 4), 'Returned OK This is above min');
-  t.notOk(isAboveMin('3', 4), 'Invalid below min');
+  t.ok(isAboveMin(4)('5'), 'Returned OK This is above min');
+  t.notOk(isAboveMin(4)('3'), 'Invalid below min');
   t.end();
 });

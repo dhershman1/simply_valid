@@ -7,7 +7,7 @@ var test = _interopDefault(require('tape'));
 /* eslint-disable max-len */
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
 
-const meetsMinMax = (val, { min = -Infinity, max = Infinity }) => !isNaN(val) && (Number(val) >= min && Number(val) <= max);
+const meetsMinMax = ({ min = -Infinity, max = Infinity }) => val => !isNaN(val) && (Number(val) >= min && Number(val) <= max);
 
 const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val);
 
@@ -17,7 +17,7 @@ const meetsCVNAmex = val => val.length === 4 && (/[0-9]/).test(val);
 
 const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val);
 
-const meetsPassReq = (val, pass = passwordRegex) => {
+const meetsPassReq = (pass = passwordRegex) => val => {
   if (pass.passwordPattern) {
     return pass.passwordPattern.test(val);
   }
@@ -41,21 +41,21 @@ test('Test meetsCVNAmex', t => {
 
 test('Test meetsMinMax', t => {
   t.ok(meetsMinMax);
-  t.ok(meetsMinMax(3, {
+  t.ok(meetsMinMax({
     min: 0,
     max: 5
-  }), 'Returns OK within our min/max');
-  t.notOk(meetsMinMax(6, {
+  })(3), 'Returns OK within our min/max');
+  t.notOk(meetsMinMax({
     min: 0,
     max: 5
-  }), 'Invalid exceeds max');
+  })(6), 'Invalid exceeds max');
   t.end();
 });
 
 test('Test meetsPassReq', t => {
   t.ok(meetsPassReq);
-  t.ok(meetsPassReq('cOol12$d'), 'Meets Password requirement');
-  t.notOk(meetsPassReq('AA'), 'Invalid Does not meet password requirement');
+  t.ok(meetsPassReq()('cOol12$d'), 'Meets Password requirement');
+  t.notOk(meetsPassReq()('AA'), 'Invalid Does not meet password requirement');
   t.end();
 });
 
