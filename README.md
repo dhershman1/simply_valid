@@ -12,7 +12,7 @@ Have a suggestion? Feel free to post them over in the github issues section and 
 
 I felt like Simply_Valid lost what I originally created it for at the beginning, which is the ability to actually be `Simple` I was lucky enough to run into a few use cases where using simply_valid actually became more of a chore, and the more I looked at it or tweaked it the further it drifted from being `Simple`.
 
-The goal for v3.0.0 is a complete re work to get back to the roots of why I built this module, as well as to address a lot of the pain points I personally have run into while attempting to use it. Pain points like not being able to validate against an object, or an array, making it more functional, better UMD support and making it do a lot of the lifting on it's end that really the user shouldn't have to worry about. All that while still dilvering the same type of return you'd expect no matter how you are using it. 
+The goal for v3.0.0 is a complete re work to get back to the roots of why I built this module, as well as to address a lot of the pain points I personally have run into while attempting to use it. Pain points like not being able to validate against an object, or an array, making it more functional, better UMD support and making it do a lot of the lifting on it's end that really the user shouldn't have to worry about. All that while still dilvering the same type of return you'd expect no matter how you are using it.
 
 I am proud to say that I think I am back at that point where simply_valid is true to it's simple to use data driven validation. I hope you as well will find v3.0.0 to be a much needed release and thank you for the continued support!
 
@@ -105,14 +105,14 @@ In the browser
 
   // Or
   var validate = simplyValid(options);
-  
+
   validate(data);
 </script>
 ```
 
 ## Schema
 
-New in v3.0.0 is simply_valids support for a new `schema` system this is set in the options passed in on your first call, the `schema` can be an `Object`, `Array`, or `String` This replaces the old methods array parameter in v2.x.x. 
+New in v3.0.0 is simply_valids support for a new `schema` system this is set in the options passed in on your first call, the `schema` can be an `Object`, `Array`, or `String` This replaces the old methods array parameter in v2.x.x.
 
 You can pass schema an `Array` of methods just like passing it an array of methods from v2.x.x
 
@@ -180,7 +180,7 @@ I tried to keep it so you can always expect the same level of return no matter h
   isValid: false,
   story: [{
     test: 'isNumber',
-    value: 'cool' 
+    value: 'cool'
   }]
 }
 // For failing object validation
@@ -196,7 +196,7 @@ I tried to keep it so you can always expect the same level of return no matter h
 
 ## Methods
 
-**NOTE** v3.0.0 will temporarily be dropping `multi` style methods. I would like to rethink the approach and re add them later on 
+**NOTE** v3.0.0 will temporarily be dropping `multi` style methods. I would like to rethink the approach and re add them later on
 
 ## **has** Methods
 
@@ -373,11 +373,15 @@ validation('2017-03-28');
 ### isEmail
 Checks if the value is a valid email uses the `emailPattern` option to validate against
 
+#### Arguments
+
+- `emailPattern` - Regex pattern to validate the email again, already has a default set (see above)
+
 #### Usage
 ```js
 import {isEmail} from 'simply_valid';
 
-isEmail('coolKid112@aim.com');
+isEmail()('coolKid112@aim.com');
 
 // OR
 import {simplyValid} from 'simply_valid';
@@ -525,6 +529,10 @@ validation('K1A0B1');
 ### isVin
 Checks if the value is a valid VIN uses the property `vinPattern` in options
 
+#### Arguments
+
+- `vinPattern` - Used to set the regex pattern to validate against (has one by default)
+
 #### Usage
 ```js
 import {isVin} from 'simply_valid';
@@ -544,6 +552,10 @@ validation('JM1CW2BL8C0127808');
 
 ### isVisaCard
 Checks if the value is a proper Visa card format
+
+#### Arguments
+
+- `strictCard` - Used to set if the value should be ran in the luhn algorithm or not
 
 #### Usage
 ```js
@@ -569,6 +581,10 @@ validation('4111111111111111');
 ### isVisaPanCard
 Checks if the value is a visa pan card value
 
+#### Arguments
+
+- `strictCard` - Used to set if the value should be ran in the luhn algorithm or not
+
 #### Usage
 ```js
 import {isVisaPanCard} from 'simply_valid';
@@ -592,6 +608,10 @@ validation('4111111111111111222');
 
 ### isMasterCard
 Checks if the value is a proper MasterCard format
+
+#### Arguments
+
+- `strictCard` - Used to set if the value should be ran in the luhn algorithm or not
 
 #### Usage
 ```js
@@ -619,6 +639,10 @@ validation('5511111111111111');
 ### isAmericanExpressCard
 Checks if the value is a proper American Express card format
 
+#### Arguments
+
+- `strictCard` - Used to set if the value should be ran in the luhn algorithm or not
+
 #### Usage
 ```js
 import {isAmericanExpressCard} from 'simply_valid';
@@ -644,6 +668,10 @@ validation('341111111111111');
 ### isDiscoverCard
 Checks if the value is a proper Discover card format
 
+#### Arguments
+
+- `strictCard` - Used to set if the value should be ran in the luhn algorithm or not
+
 #### Usage
 ```js
 import {isDiscoverCard} from 'simply_valid';
@@ -668,6 +696,10 @@ validation('6111111111111111');
 
 ### isBelowMax
 Checks if the value is below our maxLength
+
+#### Arguments
+
+- `max` - The maxium value to validate against
 
 #### Usage
 ```js
@@ -695,6 +727,10 @@ validation('12345');
 ### isAboveMin
 Checks if the value is above our minLength
 
+#### Arguments
+
+- `min` - The minimum value to validate against
+
 #### Usage
 ```js
 import {isAboveMin} from 'simply_valid';
@@ -721,6 +757,11 @@ validation('12345');
 
 ### meetsMinMax
 Checks if our value meets within our `min` and `max` properties in options
+
+#### Arguments
+
+- `max` - The maxium value to validate against
+- `min` - The minimum value to validate against
 
 #### Usage
 ```js
@@ -823,6 +864,8 @@ validation('22');
 
 ### meetsPassReq
 Checks if our value meets the `passwordPattern` option regex
+
+- `passPattern` - The regex pattern to match against (has a default)
 
 #### Usage
 ```js

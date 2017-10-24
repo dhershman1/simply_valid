@@ -41,4 +41,4 @@
 > - Created an esm folder that will export all of the methods if you are importing only methods
 > - When using methods individually they are now curried, so you call it once with the settings and then again with the data
 > - Overall improvements in how the module is used
-> - Performance boosts overall
+> - Quality of life improvements to make things simple again
