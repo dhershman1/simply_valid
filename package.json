@@ -1,6 +1,6 @@
 {
   "name": "simply_valid",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "a simple data driven validation utility library",
   "main": "dist/simply_valid.umd.js",
   "module": "esm/index.js",

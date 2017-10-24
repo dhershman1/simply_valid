@@ -1,5 +1,15 @@
 # Change Log v3
 
+## v3.0.1
+
+> - Fixed some over zealous code
+> - Removed un needed logic checks for looping data
+> - Simplified the need for looping
+> - Fix for esm folder
+> - Clean up imports
+> - Improved flow with curry functions
+> - Turn Compressed builds back on
+
 ## v3.0.0
 
 ### BREAKING CHANGES

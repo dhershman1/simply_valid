@@ -1,64 +1,20 @@
 /* eslint-disable max-len */
-import * as hasMethods from './has/index';
-import * as isMethods from './is/index';
-import * as meetsMethods from './meets/index';
-import * as multiMethods from './multi/index';
-import * as noMethods from './no/index';
+import * as methods from './esm/index';
 import { each, ensureArray, extend, format, isObject, validateSchema } from './_internals/index';
 
-const methods = extend({}, hasMethods, isMethods, meetsMethods, noMethods, multiMethods);
+let setMethods = {};
 
-const curriedMethods = [
-  'isBelowMax',
-  'isAboveMin',
-  'isEmail',
-  'isVin',
-  'isVisaCard',
-  'isVisaPanCard',
-  'isMasterCard',
-  'isAmericanExpressCard',
-  'isDiscoverCard',
-  'meetsPassReq',
-  'meetsMinMax'
-];
+const setup = opts => {
+  const results = {};
 
-const checkCurried = (options, currMethod, data) => {
-  const methodFn = methods[currMethod];
+  for (const prop in methods) {
+    const func = methods[prop];
 
-  if (curriedMethods.indexOf(currMethod) !== -1) {
-    return methodFn(options)(data);
-  }
-
-  return methodFn(data, options);
-};
-
-const validateArr = (data, options, useMethods) => {
-  const results = { isValid: true };
-  const story = [];
-
-  data.forEach(val => {
-
-    useMethods.forEach(currMethod => {
-      const isValid = checkCurried(options, currMethod, val);
-
-      if (!isValid) {
-        // If something comes back as a failure we need to push it into the story
-        story.push({
-          // What test did we fail on
-          test: currMethod,
-          // The value used when the failure happened
-          value: data
-        });
-      }
-    });
-
-  });
-
-  if (story.length) {
-    return {
-      isValid: false,
-      story
-    };
+    if (typeof func('test') === 'function') {
+      results[prop] = func(opts);
+    } else {
+      results[prop] = func;
+    }
   }
 
   return results;
@@ -68,7 +24,7 @@ const validate = (data, options, useMethods) => {
   const story = [];
 
   useMethods.forEach(currMethod => {
-    const isValid = checkCurried(options, currMethod, data);
+    const isValid = setMethods[currMethod](data);
 
     if (!isValid) {
       // If something comes back as a failure we need to push it into the story
@@ -96,19 +52,13 @@ const validWhere = (obj, opts, useMethods) => {
 
   if (isObject(useMethods)) {
     each(obj, (val, prop) => {
-      if (Array.isArray(val)) {
-        results[prop] = validateArr(val, opts, useMethods[prop]);
-      } else if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
+      if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
         results[prop] = validate(val, opts, useMethods[prop]);
       }
     });
   } else {
     each(obj, (val, prop) => {
-      if (Array.isArray(val)) {
-        results[prop] = validateArr(val, opts, useMethods);
-      } else {
-        results[prop] = validate(val, opts, useMethods);
-      }
+      results[prop] = validate(val, opts, useMethods);
     });
   }
 
@@ -150,6 +100,8 @@ const simplyValid = options => data => {
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
   };
   const opts = extend({}, defaults, options);
+
+  setMethods = setup(opts);
 
   if (!validateSchema(opts.schema)) {
     throw new Error('No schema provided for validation');
