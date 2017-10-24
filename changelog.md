@@ -38,6 +38,7 @@
 ### Improvements
 
 > - Removed the use of the `search` method since it has very little support
+>    - Should fix support for IE
 > - Created an esm folder that will export all of the methods if you are importing only methods
 > - When using methods individually they are now curried, so you call it once with the settings and then again with the data
 > - Overall improvements in how the module is used
