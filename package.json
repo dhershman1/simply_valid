@@ -8,9 +8,10 @@
     "test": "tests"
   },
   "scripts": {
-    "prepare": "rollup -c && rollup --config rollup.config.module.js",
+    "prepare": "rollup -c",
     "compile:has": "rollup -i src/has/tests.js -o src/tests/dist/has.cjs.js -f cjs -g tape",
     "compile:is": "rollup -i src/is/tests.js -o src/tests/dist/is.cjs.js -f cjs -g tape",
+    "compile:internals": "rollup -i src/_internals/tests.js -o src/tests/dist/internals.cjs.js -f cjs -g tape",
     "compile:meets": "rollup -i src/meets/tests.js -o src/tests/dist/meets.cjs.js -f cjs -g tape",
     "broken:multi": "rollup -i src/multi/tests.js -o src/tests/dist/multi.cjs.js -f cjs -g tape",
     "compile:no": "rollup -i src/no/tests.js -o src/tests/dist/no.cjs.js -f cjs -g tape",
@@ -20,7 +21,9 @@
     "test:main": "rollup -c && tape src/tests/tests.js | tap-spec",
     "test:no": "tape tests/dist/no.cjs.js | tap-spec",
     "test:multi": "npm run build:all && tape tests/dist/multi.cjs.js | tap-spec",
-    "test": "rollup -c && npm-run-all --parallel compile:* && npm run test:all"
+    "test:internals": "npm run compile:internals && tape src/tests/dist/internals.cjs.js | tap-spec",
+    "test": "rollup -c && npm-run-all --parallel compile:* && npm run test:all",
+    "lint": "eslint ./src"
   },
   "repository": {
     "type": "git",

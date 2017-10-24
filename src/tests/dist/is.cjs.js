@@ -4,15 +4,51 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var test = _interopDefault(require('tape'));
 
+/**
+ * Extend or merge an object
+ * @param {Object} args The objects to combine
+ */
+
+
+/**
+ * Safety measure to ensure an array is always present
+ * @param {*} val value to ensure is an array
+ */
+
+
+/**
+ * Recursively iterate through an object or array and return the values
+ * @param {Object} obj Object to iterate through
+ * @param {Function} cb callback to send values back to
+ */
+
+
+/**
+ * Formats the results object sent back to the user
+ * @param {Object} obj Object to be formatted
+ */
+
+
+/**
+ * Validates the sent in schema is useable
+ * @param {*} schema The schema value to validate
+ */
+
+
+/**
+ * Validates a credit card using the luhn algorithm
+ * @param {String} val The card number string to validate
+ */
 const luhn = val => {
   const numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
-  let len = val.length;
+  const stringVal = String(val);
+  let len = stringVal.length;
   let bit = 1;
   let sum = 0;
   let num = 0;
 
   while (len) {
-    num = parseInt(val.charAt(--len), 10);
+    num = parseInt(stringVal.charAt(--len), 10);
     sum += (bit ^= 1) ? numArr[num] : num; // eslint-disable-line
   }
 

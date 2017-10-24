@@ -1,5 +1,7 @@
 changelog-1.x.x.md
 changelog.md
 README-1.x.x.md
+old-readmes/
+changelog-old.md
 .travis.yml
 bitbucket-pipelines.yml

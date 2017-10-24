@@ -28,8 +28,10 @@ var hasMethods = Object.freeze({
 
 var isObject = function (x) { return Object.prototype.toString.call(x) === '[object Object]'; };
 
-
-
+/**
+ * Extend or merge an object
+ * @param {Object} args The objects to combine
+ */
 var extend = function () {
   var args = [], len = arguments.length;
   while ( len-- ) args[ len ] = arguments[ len ];
@@ -45,19 +47,10 @@ var extend = function () {
 }, {});
 };
 
-var each = function (obj, cb) {
-  for (var prop in obj) {
-    console.log(obj[prop]);
-    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-      if (typeof obj[prop] === 'object') {
-        each(obj[prop], cb);
-      }
-      cb(obj[prop], prop);
-    }
-  }
-
-};
-
+/**
+ * Safety measure to ensure an array is always present
+ * @param {*} val value to ensure is an array
+ */
 var ensureArray = function (val) {
   if (Array.isArray(val)) {
     return val;
@@ -70,6 +63,33 @@ var ensureArray = function (val) {
   return [val];
 };
 
+/**
+ * Recursively iterate through an object or array and return the values
+ * @param {Object} obj Object to iterate through
+ * @param {Function} cb callback to send values back to
+ */
+var each = function (data, cb) {
+  var i = 0;
+  var keys = Object.keys(data);
+  var len = keys.length;
+
+  for (i; i < len; i++) {
+    var prop = keys[i];
+
+    if (Object.prototype.hasOwnProperty.call(data, prop)) {
+      if (typeof data[prop] === 'object') {
+        each(data[prop], cb);
+        continue;
+      }
+      cb(data[prop], prop);
+    }
+  }
+};
+
+/**
+ * Formats the results object sent back to the user
+ * @param {Object} obj Object to be formatted
+ */
 var format = function (obj) {
   var results = {
     isValid: true,
@@ -97,6 +117,10 @@ var format = function (obj) {
   return results;
 };
 
+/**
+ * Validates the sent in schema is useable
+ * @param {*} schema The schema value to validate
+ */
 var validateSchema = function (schema) {
   if (Array.isArray(schema) && schema.length) {
     return true;
@@ -109,15 +133,20 @@ var validateSchema = function (schema) {
   return Boolean(schema.length);
 };
 
+/**
+ * Validates a credit card using the luhn algorithm
+ * @param {String} val The card number string to validate
+ */
 var luhn = function (val) {
   var numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
-  var len = val.length;
+  var stringVal = String(val);
+  var len = stringVal.length;
   var bit = 1;
   var sum = 0;
   var num = 0;
 
   while (len) {
-    num = parseInt(val.charAt(--len), 10);
+    num = parseInt(stringVal.charAt(--len), 10);
     sum += (bit ^= 1) ? numArr[num] : num; // eslint-disable-line
   }
 
@@ -389,25 +418,67 @@ var noMethods = Object.freeze({
 /* eslint-disable max-len */
 var methods = extend({}, hasMethods, isMethods, meetsMethods, noMethods, multiMethods);
 
-var runValidate = function (data, options, useMethods) {
+var curriedMethods = [
+  'isBelowMax',
+  'isAboveMin',
+  'isEmail',
+  'isVin',
+  'isVisaCard',
+  'isVisaPanCard',
+  'isMasterCard',
+  'isAmericanExpressCard',
+  'isDiscoverCard',
+  'meetsPassReq',
+  'meetsMinMax'
+];
+
+var checkCurried = function (options, currMethod, data) {
+  var methodFn = methods[currMethod];
+
+  if (curriedMethods.indexOf(currMethod) !== -1) {
+    return methodFn(options)(data);
+  }
+
+  return methodFn(data, options);
+};
+
+var validateArr = function (data, options, useMethods) {
+  var results = { isValid: true };
   var story = [];
-  var curriedMethods = [
-    'isBelowMax',
-    'isAboveMin',
-    'isEmail',
-    'isVin',
-    'isVisaCard',
-    'isVisaPanCard',
-    'isMasterCard',
-    'isAmericanExpressCard',
-    'isDiscoverCard',
-    'meetsPassReq',
-    'meetsMinMax'
-  ];
+
+  data.forEach(function (val) {
+
+    useMethods.forEach(function (currMethod) {
+      var isValid = checkCurried(options, currMethod, val);
+
+      if (!isValid) {
+        // If something comes back as a failure we need to push it into the story
+        story.push({
+          // What test did we fail on
+          test: currMethod,
+          // The value used when the failure happened
+          value: data
+        });
+      }
+    });
+
+  });
+
+  if (story.length) {
+    return {
+      isValid: false,
+      story: story
+    };
+  }
+
+  return results;
+};
+
+var validate = function (data, options, useMethods) {
+  var story = [];
 
   useMethods.forEach(function (currMethod) {
-    var methodFn = methods[currMethod];
-    var isValid = curriedMethods.indexOf(currMethod) !== -1 ? methodFn(options)(data) : methodFn(data, options);
+    var isValid = checkCurried(options, currMethod, data);
 
     if (!isValid) {
       // If something comes back as a failure we need to push it into the story
@@ -433,47 +504,49 @@ var runValidate = function (data, options, useMethods) {
 var validWhere = function (obj, opts, useMethods) {
   var results = {};
 
-  each(obj, function (val, prop) {
-    if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
-      console.log(val);
-      results[prop] = runValidate(val, opts, useMethods[prop]);
-    }
-  });
+  if (isObject(useMethods)) {
+    each(obj, function (val, prop) {
+      if (Array.isArray(val)) {
+        results[prop] = validateArr(val, opts, useMethods[prop]);
+      } else if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
+        results[prop] = validate(val, opts, useMethods[prop]);
+      }
+    });
+  } else {
+    each(obj, function (val, prop) {
+      if (Array.isArray(val)) {
+        results[prop] = validateArr(val, opts, useMethods);
+      } else {
+        results[prop] = validate(val, opts, useMethods);
+      }
+    });
+  }
 
   return format(results);
 };
 
-var allValidWhere = function (obj, opts, useMethods) {
-  var results = {};
-
-  each(obj, function (val, prop) {
-    results[prop] = runValidate(val, opts, useMethods);
-  });
-
-  return results;
-};
-
-var validateObj = function (data, opts, useMethods) {
-  if (isObject(useMethods)) {
+var runSchemaObj = function (data, opts, useMethods) {
+  if (isObject(useMethods) || Array.isArray(useMethods)) {
     return validWhere(data, opts, useMethods);
   }
 
-  if (Array.isArray(useMethods)) {
-    return allValidWhere(data, opts, useMethods);
-  }
-
   // Assume it's a string at this point
-  return runValidate(data, opts, ensureArray(useMethods));
+  return validate(data, opts, ensureArray(useMethods));
 };
 
-var validateArr = function (data, opts, useMethods) {
+var runSchemaArr = function (data, opts, useMethods) {
   var results = {};
+  var arrResults = [];
 
   data.forEach(function (val) {
-    results[val] = runValidate(val, opts, useMethods);
+    if (isObject(val)) {
+      arrResults.push(runSchemaObj(val, opts, useMethods));
+    } else {
+      results[val] = validate(val, opts, ensureArray(useMethods));
+    }
   });
 
-  return results;
+  return Object.keys(results).length ? results : format(arrResults);
 };
 
 var simplyValid = function (options) { return function (data) {
@@ -493,13 +566,13 @@ var simplyValid = function (options) { return function (data) {
   }
 
   if (isObject(data)) {
-    return validateObj(data, opts, opts.schema);
+    return runSchemaObj(data, opts, opts.schema);
   }
   if (Array.isArray(data)) {
-    return validateArr(data, opts, ensureArray(opts.schema));
+    return runSchemaArr(data, opts, opts.schema);
   }
 
-  return runValidate(data, opts, ensureArray(opts.schema));
+  return validate(data, opts, ensureArray(opts.schema));
 }; };
 
 return simplyValid;

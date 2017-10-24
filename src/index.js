@@ -8,25 +8,67 @@ import { each, ensureArray, extend, format, isObject, validateSchema } from './_
 
 const methods = extend({}, hasMethods, isMethods, meetsMethods, noMethods, multiMethods);
 
-const runValidate = (data, options, useMethods) => {
+const curriedMethods = [
+  'isBelowMax',
+  'isAboveMin',
+  'isEmail',
+  'isVin',
+  'isVisaCard',
+  'isVisaPanCard',
+  'isMasterCard',
+  'isAmericanExpressCard',
+  'isDiscoverCard',
+  'meetsPassReq',
+  'meetsMinMax'
+];
+
+const checkCurried = (options, currMethod, data) => {
+  const methodFn = methods[currMethod];
+
+  if (curriedMethods.indexOf(currMethod) !== -1) {
+    return methodFn(options)(data);
+  }
+
+  return methodFn(data, options);
+};
+
+const validateArr = (data, options, useMethods) => {
+  const results = { isValid: true };
   const story = [];
-  const curriedMethods = [
-    'isBelowMax',
-    'isAboveMin',
-    'isEmail',
-    'isVin',
-    'isVisaCard',
-    'isVisaPanCard',
-    'isMasterCard',
-    'isAmericanExpressCard',
-    'isDiscoverCard',
-    'meetsPassReq',
-    'meetsMinMax'
-  ];
+
+  data.forEach(val => {
+
+    useMethods.forEach(currMethod => {
+      const isValid = checkCurried(options, currMethod, val);
+
+      if (!isValid) {
+        // If something comes back as a failure we need to push it into the story
+        story.push({
+          // What test did we fail on
+          test: currMethod,
+          // The value used when the failure happened
+          value: data
+        });
+      }
+    });
+
+  });
+
+  if (story.length) {
+    return {
+      isValid: false,
+      story
+    };
+  }
+
+  return results;
+};
+
+const validate = (data, options, useMethods) => {
+  const story = [];
 
   useMethods.forEach(currMethod => {
-    const methodFn = methods[currMethod];
-    const isValid = curriedMethods.indexOf(currMethod) !== -1 ? methodFn(options)(data) : methodFn(data, options);
+    const isValid = checkCurried(options, currMethod, data);
 
     if (!isValid) {
       // If something comes back as a failure we need to push it into the story
@@ -52,46 +94,49 @@ const runValidate = (data, options, useMethods) => {
 const validWhere = (obj, opts, useMethods) => {
   const results = {};
 
-  each(obj, (val, prop) => {
-    if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
-      results[prop] = runValidate(val, opts, useMethods[prop]);
-    }
-  });
+  if (isObject(useMethods)) {
+    each(obj, (val, prop) => {
+      if (Array.isArray(val)) {
+        results[prop] = validateArr(val, opts, useMethods[prop]);
+      } else if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
+        results[prop] = validate(val, opts, useMethods[prop]);
+      }
+    });
+  } else {
+    each(obj, (val, prop) => {
+      if (Array.isArray(val)) {
+        results[prop] = validateArr(val, opts, useMethods);
+      } else {
+        results[prop] = validate(val, opts, useMethods);
+      }
+    });
+  }
 
   return format(results);
 };
 
-const allValidWhere = (obj, opts, useMethods) => {
-  const results = {};
-
-  each(obj, (val, prop) => {
-    results[prop] = runValidate(val, opts, useMethods);
-  });
-
-  return results;
-};
-
-const validateObj = (data, opts, useMethods) => {
-  if (isObject(useMethods)) {
+const runSchemaObj = (data, opts, useMethods) => {
+  if (isObject(useMethods) || Array.isArray(useMethods)) {
     return validWhere(data, opts, useMethods);
   }
 
-  if (Array.isArray(useMethods)) {
-    return allValidWhere(data, opts, useMethods);
-  }
-
   // Assume it's a string at this point
-  return runValidate(data, opts, ensureArray(useMethods));
+  return validate(data, opts, ensureArray(useMethods));
 };
 
-const validateArr = (data, opts, useMethods) => {
+const runSchemaArr = (data, opts, useMethods) => {
   const results = {};
+  const arrResults = [];
 
   data.forEach(val => {
-    results[val] = runValidate(val, opts, useMethods);
+    if (isObject(val)) {
+      arrResults.push(runSchemaObj(val, opts, useMethods));
+    } else {
+      results[val] = validate(val, opts, ensureArray(useMethods));
+    }
   });
 
-  return results;
+  return Object.keys(results).length ? results : format(arrResults);
 };
 
 const simplyValid = options => data => {
@@ -111,13 +156,13 @@ const simplyValid = options => data => {
   }
 
   if (isObject(data)) {
-    return validateObj(data, opts, opts.schema);
+    return runSchemaObj(data, opts, opts.schema);
   }
   if (Array.isArray(data)) {
-    return validateArr(data, opts, ensureArray(opts.schema));
+    return runSchemaArr(data, opts, opts.schema);
   }
 
-  return runValidate(data, opts, ensureArray(opts.schema));
+  return validate(data, opts, ensureArray(opts.schema));
 };
 
 export default simplyValid;
