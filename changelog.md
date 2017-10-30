@@ -1,5 +1,12 @@
 # Change Log v3
 
+## v3.0.2
+**NOTE: 3.1.0 will be coming out soon which will introduce much better method handling and destructing etc...**
+
+> - Small file organization changes
+> - Tweak the `.npmignore` file
+> - Drop the testing rollup configs since they're no longer needed
+
 ## v3.0.1
 
 > - Fixed some over zealous code
