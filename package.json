@@ -26,6 +26,7 @@
     "test:internals": "npm run compile:internals && tape src/tests/dist/internals.cjs.js | tap-spec",
     "test:all": "tape src/tests/{dist/*.cjs.js,tests.js} | tap-spec",
     "test": "npm-run-all --parallel compile:tests:* && npm run test:all",
+    "cleanup": "rimraf {esm,has,is,meets,no,index.js}",
     "lint": "eslint ./src"
   },
   "repository": {
@@ -49,6 +50,7 @@
   "homepage": "https://github.com/dhershman1/simply_valid",
   "devDependencies": {
     "npm-run-all": "4.1.1",
+    "rimraf": "^2.6.2",
     "rollup": "0.50.0",
     "rollup-plugin-buble": "0.16.0",
     "rollup-plugin-uglify": "2.0.1",
