@@ -1,10 +1,10 @@
-changelog.md
 old-readmes/
 old-changelogs/
 .travis.yml
 bitbucket-pipelines.yml
-README.md
 rollup.config.js
 .eslintrc.js
 .eslintignore
 .gitignore
+src/
+configs/

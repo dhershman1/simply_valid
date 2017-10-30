@@ -32,6 +32,7 @@ I am proud to say that I think I am back at that point where simply_valid is tru
 ## Changelog
 
 **Make sure to check the changelog for breaking changes!**
+**You can view old changelogs inside of the `old-changelogs` folder**
 
 You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
 
@@ -197,6 +198,15 @@ I tried to keep it so you can always expect the same level of return no matter h
 ## Methods
 
 **NOTE** v3.0.0 will temporarily be dropping `multi` style methods. I would like to rethink the approach and re add them later on
+
+**With the introduction of v3.1.0 you can now request method objects**
+
+- `simply_valid/has` - Return the `has` methods
+- `simply_valid/is` - Return the `is` methods
+- `simply_valid/meets` - Return the `meets` methods
+- `simply_valid/no` - Return the `no` methods
+- `simply_valid/esm` - Return `all` methods
+- `simply_valid` - Returns the validation functionality built into `Simply_Valid`
 
 ## **has** Methods
 

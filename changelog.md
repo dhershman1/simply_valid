@@ -1,7 +1,17 @@
 # Change Log v3
 
+## 3.1.0
+
+> - Introduction to better destructuring, and requiring support
+> - Introduced the ability to do `simply_valid/{{method}}`
+>   - Added `simply_valid/has` - Brings in `has` methods only
+>   - Added `simply_valid/is` - Brings in `is` methods only
+>   - Added `simply_valid/meets` - Brings in `meets` methods only
+>   - Added `simply_valid/no` - Brings in `no` methods only
+>   - Added `simply_valid/esm` - Brings in `all` of the methods
+>   - Of course you can still use just `simply_valid` to run the validation module as a whole
+
 ## v3.0.2
-**NOTE: 3.1.0 will be coming out soon which will introduce much better method handling and destructing etc...**
 
 > - Small file organization changes
 > - Tweak the `.npmignore` file

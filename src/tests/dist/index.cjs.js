@@ -1,33 +1,25 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.simplyValid = factory());
-}(this, (function () { 'use strict';
+'use strict';
 
-var hasValue = function (val) { return val && val.length !== 0; };
+const hasValue = val => val && val.length !== 0;
 
-var hasNumbers = function (val) { return (/[0-9]/).test(val); };
+const hasNumbers = val => (/[0-9]/).test(val);
 
-var hasLetters = function (val) { return (/[A-Z]/i).test(val); };
+const hasLetters = val => (/[A-Z]/i).test(val);
 
-var hasSpecialCharacters = function (val) { return (/\W/).test(val); };
+const hasSpecialCharacters = val => (/\W/).test(val);
 
-var hasNumbersOrSpecials = function (val) { return hasNumbers(val) || hasSpecialCharacters(val); };
+const hasNumbersOrSpecials = val => hasNumbers(val) || hasSpecialCharacters(val);
 
-var hasUpperAndLowerCase = function (val) { return (/[A-Z]/).test(val) && (/[a-z]/).test(val); };
+const hasUpperAndLowerCase = val => (/[A-Z]/).test(val) && (/[a-z]/).test(val);
 
-var isObject = function (x) { return Object.prototype.toString.call(x) === '[object Object]'; };
+const isObject = x => Object.prototype.toString.call(x) === '[object Object]';
 
 /**
  * Extend or merge an object
  * @param {Object} args The objects to combine
  */
-var extend = function () {
-  var args = [], len = arguments.length;
-  while ( len-- ) args[ len ] = arguments[ len ];
-
-  return args.reduce(function (acc, x) {
-  var key = '';
+const extend = (...args) => args.reduce((acc, x) => {
+  let key = '';
 
   for (key in x) {
     acc[key] = x[key];
@@ -35,13 +27,12 @@ var extend = function () {
 
   return acc;
 }, {});
-};
 
 /**
  * Safety measure to ensure an array is always present
  * @param {*} val value to ensure is an array
  */
-var ensureArray = function (val) {
+const ensureArray = val => {
   if (Array.isArray(val)) {
     return val;
   }
@@ -58,13 +49,13 @@ var ensureArray = function (val) {
  * @param {Object} obj Object to iterate through
  * @param {Function} cb callback to send values back to
  */
-var each = function (data, cb) {
-  var i = 0;
-  var keys = Object.keys(data);
-  var len = keys.length;
+const each = (data, cb) => {
+  let i = 0;
+  const keys = Object.keys(data);
+  const len = keys.length;
 
   for (i; i < len; i++) {
-    var prop = keys[i];
+    const prop = keys[i];
 
     if (Object.prototype.hasOwnProperty.call(data, prop)) {
       if (typeof data[prop] === 'object') {
@@ -80,19 +71,18 @@ var each = function (data, cb) {
  * Formats the results object sent back to the user
  * @param {Object} obj Object to be formatted
  */
-var format = function (obj) {
-  var results = {
+const format = obj => {
+  const results = {
     isValid: true,
     story: []
   };
 
-  for (var prop in obj) {
+  for (const prop in obj) {
     if (obj[prop].isValid) {
       continue;
     }
 
-    var ref = obj[prop].story;
-    var story = ref[0];
+    const [story] = obj[prop].story;
 
     story.propName = prop;
     results.story.push(story);
@@ -111,7 +101,7 @@ var format = function (obj) {
  * Validates the sent in schema is useable
  * @param {*} schema The schema value to validate
  */
-var validateSchema = function (schema) {
+const validateSchema = schema => {
   if (Array.isArray(schema) && schema.length) {
     return true;
   }
@@ -127,13 +117,13 @@ var validateSchema = function (schema) {
  * Validates a credit card using the luhn algorithm
  * @param {String} val The card number string to validate
  */
-var luhn = function (val) {
-  var numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
-  var stringVal = String(val);
-  var len = stringVal.length;
-  var bit = 1;
-  var sum = 0;
-  var num = 0;
+const luhn = val => {
+  const numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+  const stringVal = String(val);
+  let len = stringVal.length;
+  let bit = 1;
+  let sum = 0;
+  let num = 0;
 
   while (len) {
     num = parseInt(stringVal.charAt(--len), 10);
@@ -145,172 +135,127 @@ var luhn = function (val) {
 
 /* eslint-disable max-len */
 
-var emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
-var vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
+const emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
+const vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
 
-var isDate = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m).test(val); };
+const isDate = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m).test(val);
 
-var isDateShort = function (val) { return (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val); };
+const isDateShort = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val);
 
-var isDateProper = function (val) { return (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val); };
+const isDateProper = val => (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val);
 
-var isEmail = function (email) {
-  if ( email === void 0 ) email = emailRegex;
-
-  return function (val) {
+const isEmail = (email = emailRegex) => val => {
   if (email.emailPattern) {
     return email.emailPattern.test(val);
   }
 
   return email.test(val);
 };
-};
 
-var isNumber = function (val) { return !isNaN(val); };
+const isNumber = val => !isNaN(val);
 
-var isPositive = function (val) { return !isNaN(val) && Number(val) >= 0; };
+const isPositive = val => !isNaN(val) && Number(val) >= 0;
 
-var isNegative = function (val) { return !isNaN(val) && Number(val) < 0; };
+const isNegative = val => !isNaN(val) && Number(val) < 0;
 
-var isVin = function (vin) {
-  if ( vin === void 0 ) vin = vinRegex;
-
-  return function (val) {
+const isVin = (vin = vinRegex) => val => {
   if (vin.vinPattern) {
     return vin.vinPattern.test(val);
   }
 
   return vin.test(val);
 };
-};
 
-var isZip = function (val) { return (/^\d{5}(-\d{4})?$/).test(val); };
+const isZip = val => (/^\d{5}(-\d{4})?$/).test(val);
 
-var isCAPostalCode = function (val) { return (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val); };
+const isCAPostalCode = val => (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val);
 
-var isPhone = function (val) { return (/^[0-9]{10}$/).test(val.replace(/\W/g, '')); };
+const isPhone = val => (/^[0-9]{10}$/).test(val.replace(/\W/g, ''));
 
-var isLicensePlate = function (val) { return (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i).test(val); };
+const isLicensePlate = val => (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i).test(val);
 
-var isVisaCard = function (strict) {
-  if ( strict === void 0 ) strict = true;
-
-  return function (val) {
+const isVisaCard = (strict = true) => val => {
   if (strict) {
     return luhn(val);
   }
 
   return (/^4[0-9]{15}$/).test(val);
 };
-};
 
-var isVisaPanCard = function (strict) {
-  if ( strict === void 0 ) strict = true;
-
-  return function (val) {
+const isVisaPanCard = (strict = true) => val => {
   if (strict) {
     return luhn(val);
   }
 
   return (/^4[0-9]{18}$/).test(val);
 };
-};
 
-var isMasterCard = function (strict) {
-  if ( strict === void 0 ) strict = true;
-
-  return function (val) {
+const isMasterCard = (strict = true) => val => {
   if (strict) {
     return luhn(val);
   }
 
   return (/^5[1-5][0-9]{14}$/).test(val);
 };
-};
 
-var isAmericanExpressCard = function (strict) {
-  if ( strict === void 0 ) strict = true;
-
-  return function (val) {
+const isAmericanExpressCard = (strict = true) => val => {
   if (strict) {
     return luhn(val);
   }
 
   return (/^3(4|7)[0-9]{13}$/).test(val);
 };
-};
 
-var isDiscoverCard = function (strict) {
-  if ( strict === void 0 ) strict = true;
-
-  return function (val) {
+const isDiscoverCard = (strict = true) => val => {
   if (strict) {
     return luhn(val);
   }
 
   return (/^6[0-9]{15}$/).test(val);
 };
-};
 
-var isBelowMax = function (m) {
-  if ( m === void 0 ) m = Infinity;
-
-  return function (val) {
+const isBelowMax = (m = Infinity) => val => {
   if (m.max) {
     return !isNaN(val) && Number(val) < m.max;
   }
 
   return !isNaN(val) && Number(val) < m;
 };
-};
 
-var isAboveMin = function (m) {
-  if ( m === void 0 ) m = -Infinity;
-
-  return function (val) {
+const isAboveMin = (m = -Infinity) => val => {
   if (m.min) {
     return !isNaN(val) && Number(val) > m.min;
   }
 
   return !isNaN(val) && Number(val) > m;
 };
-};
 
 /* eslint-disable max-len */
-var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
 
-var meetsMinMax = function (ref) {
-  var min = ref.min; if ( min === void 0 ) min = -Infinity;
-  var max = ref.max; if ( max === void 0 ) max = Infinity;
+const meetsMinMax = ({ min = -Infinity, max = Infinity }) => val => !isNaN(val) && (Number(val) >= min && Number(val) <= max);
 
-  return function (val) { return !isNaN(val) && (Number(val) >= min && Number(val) <= max); };
-};
+const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val);
 
-var meetsYearStandard = function (val) { return (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val); };
+const meetsCVN = val => val.length === 3 && (/[0-9]/).test(val);
 
-var meetsCVN = function (val) { return val.length === 3 && (/[0-9]/).test(val); };
+const meetsCVNAmex = val => val.length === 4 && (/[0-9]/).test(val);
 
-var meetsCVNAmex = function (val) { return val.length === 4 && (/[0-9]/).test(val); };
+const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val);
 
-var meetsTreadDepth = function (val) { return (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val); };
-
-var meetsPassReq = function (pass) {
-  if ( pass === void 0 ) pass = passwordRegex;
-
-  return function (val) {
+const meetsPassReq = (pass = passwordRegex) => val => {
   if (pass.passwordPattern) {
     return pass.passwordPattern.test(val);
   }
 
   return pass.test(val);
 };
-};
 
-var noSpecials = function (val) { return val.match(/\W/) === null; };
+const noSpecials = val => val.match(/\W/) === null;
 
-var noNumbers = function (val) { return val.match(/[0-9]/) === null; };
+const noNumbers = val => val.match(/[0-9]/) === null;
 
-var noLetters = function (val) { return val.match(/[A-Z]/i) === null; };
+const noLetters = val => val.match(/[A-Z]/i) === null;
 
 
 
@@ -352,13 +297,13 @@ var methods = Object.freeze({
 });
 
 /* eslint-disable max-len */
-var setMethods = {};
+let setMethods = {};
 
-var setup = function (opts) {
-  var results = {};
+const setup = opts => {
+  const results = {};
 
-  for (var prop in methods) {
-    var func = methods[prop];
+  for (const prop in methods) {
+    const func = methods[prop];
 
     if (typeof func('test') === 'function') {
       results[prop] = func(opts);
@@ -370,11 +315,11 @@ var setup = function (opts) {
   return results;
 };
 
-var validate = function (data, options, useMethods) {
-  var story = [];
+const validate = (data, options, useMethods) => {
+  const story = [];
 
-  useMethods.forEach(function (currMethod) {
-    var isValid = setMethods[currMethod](data);
+  useMethods.forEach(currMethod => {
+    const isValid = setMethods[currMethod](data);
 
     if (!isValid) {
       // If something comes back as a failure we need to push it into the story
@@ -390,24 +335,24 @@ var validate = function (data, options, useMethods) {
   if (story.length) {
     return {
       isValid: false,
-      story: story
+      story
     };
   }
 
   return { isValid: true };
 };
 
-var validWhere = function (obj, opts, useMethods) {
-  var results = {};
+const validWhere = (obj, opts, useMethods) => {
+  const results = {};
 
   if (isObject(useMethods)) {
-    each(obj, function (val, prop) {
+    each(obj, (val, prop) => {
       if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
         results[prop] = validate(val, opts, useMethods[prop]);
       }
     });
   } else {
-    each(obj, function (val, prop) {
+    each(obj, (val, prop) => {
       results[prop] = validate(val, opts, useMethods);
     });
   }
@@ -415,7 +360,7 @@ var validWhere = function (obj, opts, useMethods) {
   return format(results);
 };
 
-var runSchemaObj = function (data, opts, useMethods) {
+const runSchemaObj = (data, opts, useMethods) => {
   if (isObject(useMethods) || Array.isArray(useMethods)) {
     return validWhere(data, opts, useMethods);
   }
@@ -424,11 +369,11 @@ var runSchemaObj = function (data, opts, useMethods) {
   return validate(data, opts, ensureArray(useMethods));
 };
 
-var runSchemaArr = function (data, opts, useMethods) {
-  var results = {};
-  var arrResults = [];
+const runSchemaArr = (data, opts, useMethods) => {
+  const results = {};
+  const arrResults = [];
 
-  data.forEach(function (val) {
+  data.forEach(val => {
     if (isObject(val)) {
       arrResults.push(runSchemaObj(val, opts, useMethods));
     } else {
@@ -439,8 +384,8 @@ var runSchemaArr = function (data, opts, useMethods) {
   return Object.keys(results).length ? results : format(arrResults);
 };
 
-var simplyValid = function (options) { return function (data) {
-  var defaults = {
+const simplyValid = options => data => {
+  const defaults = {
     schema: [],
     strictCard: false,
     max: Infinity,
@@ -449,7 +394,7 @@ var simplyValid = function (options) { return function (data) {
     emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
   };
-  var opts = extend({}, defaults, options);
+  const opts = extend({}, defaults, options);
 
   setMethods = setup(opts);
 
@@ -465,8 +410,6 @@ var simplyValid = function (options) { return function (data) {
   }
 
   return validate(data, opts, ensureArray(opts.schema));
-}; };
+};
 
-return simplyValid;
-
-})));
+module.exports = simplyValid;
