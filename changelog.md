@@ -1,5 +1,10 @@
 # Change Log v3
 
+## v3.1.2
+
+- Typo Fixes for README
+- Updated use examples in README
+
 ## v3.1.1
 
 > - Converted to webpack for compiling the module down

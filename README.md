@@ -1,5 +1,4 @@
 [![npm](https://img.shields.io/npm/v/simply_valid.svg?style=for-the-badge)](https://www.npmjs.com/package/simply_valid)
-[![Downloads](https://img.shields.io/npm/dm/simply_valid.svg?style=for-the-badge)](https://www.npmjs.com/package/simply_valid)
 [![David](https://img.shields.io/david/dhershman1/simply_valid.svg?style=for-the-badge)](https://david-dm.org/dhershman1/simply_valid)
 [![David](https://img.shields.io/david/dev/dhershman1/simply_valid.svg?style=for-the-badge)](https://david-dm.org/dhershman1/simply_valid?type=dev)
 [![Travis](https://img.shields.io/travis/dhershman1/simply_valid.svg?style=for-the-badge)](https://travis-ci.org/dhershman1/simply_valid)
@@ -110,8 +109,6 @@ In the browser
 </script>
 ```
 
-## Split Methods
-
 ## Schema
 
 New in v3.0.0 is simply_valids support for a new `schema` system this is set in the options passed in on your first call, the `schema` can be an `Object`, `Array`, or `String` This replaces the old methods array parameter in v2.x.x.
@@ -207,7 +204,7 @@ I tried to keep it so you can always expect the same level of return no matter h
 - `simply_valid/meets` - Return the `meets` methods
 - `simply_valid/no` - Return the `no` methods
 - `simply_valid/esm` - Return `all` methods
-- `simply_valid` - Returns the validation functionality built into `Simply_Valid`
+- `simply_valid` - Returns the validation functionality built into `Simply_Valid` (Includes all of the methods by default)
 
 ## **has** Methods
 
@@ -216,7 +213,7 @@ Checks if the value is actually a value
 
 #### Usage
 ```js
-import {hasValue} from 'simply_valid';
+import {hasValue} from 'simply_valid/has';
 
 hasValue('CoolKid112');
 
@@ -235,7 +232,7 @@ Checks if the value has a number
 
 #### Usage
 ```js
-import {hasNumbers} from 'simply_valid';
+import {hasNumbers} from 'simply_valid/has';
 
 hasNumber('CoolKid112');
 
@@ -254,7 +251,7 @@ Checks if the value has a letter
 
 #### Usage
 ```js
-import {hasLetter} from 'simply_valid';
+import {hasLetter} from 'simply_valid/has';
 
 hasLetter('CoolKid112');
 
@@ -273,7 +270,7 @@ Checks if the value contains numbers or special characters
 
 #### Usage
 ```js
-import {hasNumbersOrSpecials} from 'simply_valid';
+import {hasNumbersOrSpecials} from 'simply_valid/has';
 
 hasNumbersOrSpecials('CoolKid112');
 
@@ -291,7 +288,7 @@ Checks if the value contains any special characters
 
 #### Usage
 ```js
-import {hasSpecialCharacters} from 'simply_valid';
+import {hasSpecialCharacters} from 'simply_valid/has';
 
 hasSpecialCharacters('CoolKid112');
 
@@ -309,7 +306,7 @@ Checks if the value contains a upper and lower case character
 
 #### Usage
 ```js
-import {hasUpperAndLowerCase} from 'simply_valid';
+import {hasUpperAndLowerCase} from 'simply_valid/has';
 
 hasUpperAndLowerCase('CoolKid112');
 
@@ -329,7 +326,7 @@ Checks if the value is a valid date (US)
 
 #### Usage
 ```js
-import {isDate} from 'simply_valid';
+import {isDate} from 'simply_valid/is';
 
 isDate('03-28-2017');
 
@@ -348,7 +345,7 @@ Checks if the value is a valid date (US) in short tense
 
 #### Usage
 ```js
-import {isDateShort} from 'simply_valid';
+import {isDateShort} from 'simply_valid/is';
 
 isDateShort('03-28');
 
@@ -367,7 +364,7 @@ Checks if the value is a valid date (US) in proper format
 
 #### Usage
 ```js
-import {isDateProper} from 'simply_valid';
+import {isDateProper} from 'simply_valid/is';
 
 isDateProper('2017-03-28');
 
@@ -390,7 +387,7 @@ Checks if the value is a valid email uses the `emailPattern` option to validate 
 
 #### Usage
 ```js
-import {isEmail} from 'simply_valid';
+import {isEmail} from 'simply_valid/is';
 
 isEmail()('coolKid112@aim.com');
 
@@ -409,7 +406,7 @@ Checks if the value is a number
 
 #### Usage
 ```js
-import {isNumber} from 'simply_valid';
+import {isNumber} from 'simply_valid/is';
 
 isNumber('112');
 
@@ -428,7 +425,7 @@ Checks if the value is both a number **AND** that it is positive
 
 #### Usage
 ```js
-import {isPositive} from 'simply_valid';
+import {isPositive} from 'simply_valid/is';
 
 isPositive('112');
 
@@ -447,7 +444,7 @@ Checks if the value is both a number **AND** that it is negative
 
 #### Usage
 ```js
-import {isNegative} from 'simply_valid';
+import {isNegative} from 'simply_valid/is';
 
 isNegative('-122');
 
@@ -466,7 +463,7 @@ Checks if the value matches a license plate format
 
 #### Usage
 ```js
-import {isLicensePlate} from 'simply_valid';
+import {isLicensePlate} from 'simply_valid/is';
 
 isLicensePlate('SSS1829');
 
@@ -485,7 +482,7 @@ Checks if the value matches a proper phone length (accepts both formatted and un
 
 #### Usage
 ```js
-import {isPhone} from 'simply_valid';
+import {isPhone} from 'simply_valid/is';
 
 isPhone('555-555-5555');
 
@@ -504,7 +501,7 @@ Checks if the value matches a proper zip code format
 
 #### Usage
 ```js
-import {isZip} from 'simply_valid';
+import {isZip} from 'simply_valid/is';
 
 isZip('55555');
 
@@ -523,7 +520,7 @@ Checks if the value matches a proper Canada postal code format
 
 #### Usage
 ```js
-import {isCAPostalCode} from 'simply_valid';
+import {isCAPostalCode} from 'simply_valid/is';
 
 isCAPostalCode('K1A0B1');
 
@@ -546,7 +543,7 @@ Checks if the value is a valid VIN uses the property `vinPattern` in options
 
 #### Usage
 ```js
-import {isVin} from 'simply_valid';
+import {isVin} from 'simply_valid/is';
 
 // You can set a custom regex or leave it empty to use the default one
 isVin(vinRegex)('JM1CW2BL8C0127808');
@@ -570,7 +567,7 @@ Checks if the value is a proper Visa card format
 
 #### Usage
 ```js
-import {isVisaCard} from 'simply_valid';
+import {isVisaCard} from 'simply_valid/is';
 
 isVisaCard(false)('4111111111111111');
 
@@ -598,7 +595,7 @@ Checks if the value is a visa pan card value
 
 #### Usage
 ```js
-import {isVisaPanCard} from 'simply_valid';
+import {isVisaPanCard} from 'simply_valid/is';
 
 isVisaPanCard(false)('4111111111111111222');
 
@@ -626,7 +623,7 @@ Checks if the value is a proper MasterCard format
 
 #### Usage
 ```js
-import {isMasterCard} from 'simply_valid';
+import {isMasterCard} from 'simply_valid/is';
 
 isMasterCard(false)('5511111111111111');
 
@@ -656,7 +653,7 @@ Checks if the value is a proper American Express card format
 
 #### Usage
 ```js
-import {isAmericanExpressCard} from 'simply_valid';
+import {isAmericanExpressCard} from 'simply_valid/is';
 
 isAmericanExpressCard(false)('34111111111111');
 
@@ -685,7 +682,7 @@ Checks if the value is a proper Discover card format
 
 #### Usage
 ```js
-import {isDiscoverCard} from 'simply_valid';
+import {isDiscoverCard} from 'simply_valid/is';
 
 isDiscoverCard(false)('6111111111111111');
 
@@ -714,7 +711,7 @@ Checks if the value is below our maxLength
 
 #### Usage
 ```js
-import {isBelowMax} from 'simply_valid';
+import {isBelowMax} from 'simply_valid/is';
 
 isBelowMax(20)('12');
 
@@ -744,7 +741,7 @@ Checks if the value is above our minLength
 
 #### Usage
 ```js
-import {isAboveMin} from 'simply_valid';
+import {isAboveMin} from 'simply_valid/is';
 
 isAboveMin(2)('12');
 
@@ -776,7 +773,7 @@ Checks if our value meets within our `min` and `max` properties in options
 
 #### Usage
 ```js
-import {meetsMinMax} from 'simply_valid';
+import {meetsMinMax} from 'simply_valid/meets';
 
 meetsMinMax('15', {
   min: 1,
@@ -800,7 +797,7 @@ Checks if our value meets the proper 2 or 4 digit year standard
 
 #### Usage
 ```js
-import {meetsYearStandard} from 'simply_valid';
+import {meetsYearStandard} from 'simply_valid/meets';
 
 meetsYearStandard('2017');
 meetsYearStandard('17');
@@ -821,7 +818,7 @@ Checks if our value is a proper CVN
 
 #### Usage
 ```js
-import {meetsCVN} from 'simply_valid';
+import {meetsCVN} from 'simply_valid/meets';
 
 meetsCVN('333');
 
@@ -840,7 +837,7 @@ Checks if our value is a proper Amex CVN
 
 #### Usage
 ```js
-import {meetsCVNAmex} from 'simply_valid';
+import {meetsCVNAmex} from 'simply_valid/meets';
 
 meetsCVNAmex('3343');
 
@@ -859,7 +856,7 @@ Checks if our value meets a tread depth format
 
 #### Usage
 ```js
-import {meetsTreadDepth} from 'simply_valid';
+import {meetsTreadDepth} from 'simply_valid/meets';
 
 meetsTreadDepth('22');
 
@@ -880,7 +877,7 @@ Checks if our value meets the `passwordPattern` option regex
 
 #### Usage
 ```js
-import {meetsPassReq} from 'simply_valid';
+import {meetsPassReq} from 'simply_valid/meets';
 
 meetsPassReq(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/)('cOol12$d');
 
@@ -906,7 +903,7 @@ Checks if our value contains any special characters
 
 #### Usage
 ```js
-import {noSpecials} from 'simply_valid';
+import {noSpecials} from 'simply_valid/no';
 
 noSpecials('Chicken');
 
@@ -925,7 +922,7 @@ Verifies our value contains no numbers
 
 #### Usage
 ```js
-import {noNumbers} from 'simply_valid';
+import {noNumbers} from 'simply_valid/no';
 
 noNumbers('Chicken');
 
@@ -944,7 +941,7 @@ Verifies our value contains no letters
 
 #### Usage
 ```js
-import {noLetters} from 'simply_valid';
+import {noLetters} from 'simply_valid/no';
 
 noLetters('1123');
 
