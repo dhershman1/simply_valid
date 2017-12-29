@@ -3,37 +3,37 @@ import {
   noNumbers,
   noSpecials
 } from './index.js';
-import test from 'tape';
+import test from 'ava';
 
 test('Test noLetters', t => {
   let results = noLetters('1123450');
 
-  t.ok(noLetters);
-  t.ok(results, 'First results set no letters found');
+  t.truthy(noLetters);
+  t.truthy(results, 'First results set no letters found');
 
   results = noLetters('GHJffre1123');
-  t.notOk(results, 'Letters found in string');
-  t.end();
+  t.falsy(results, 'Letters found in string');
+
 });
 
 test('Test noNumbers', t => {
   let results = noNumbers('abcdefGHIJK');
 
-  t.ok(noNumbers);
-  t.ok(results, 'No numbers found');
+  t.truthy(noNumbers);
+  t.truthy(results, 'No numbers found');
 
   results = noNumbers('abc1234');
-  t.notOk(results, 'Numbers found in string');
-  t.end();
+  t.falsy(results, 'Numbers found in string');
+
 });
 
 test('Test noSpecials', t => {
   let results = noSpecials('cool');
 
-  t.ok(noSpecials);
-  t.ok(results, 'No specials found');
+  t.truthy(noSpecials);
+  t.truthy(results, 'No specials found');
 
   results = noSpecials('cool!');
-  t.notOk(results, 'Specials found in string');
-  t.end();
+  t.falsy(results, 'Specials found in string');
+
 });

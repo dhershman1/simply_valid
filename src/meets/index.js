@@ -1,7 +1,9 @@
-/* eslint-disable max-len */
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
 
-export const meetsMinMax = ({ min = -Infinity, max = Infinity }) => val => !isNaN(val) && (Number(val) >= min && Number(val) <= max);
+export const meetsMinMax = ({
+  min = -Infinity,
+  max = Infinity
+}) => val => !isNaN(val) && (Number(val) >= min && Number(val) <= max);
 
 export const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val);
 

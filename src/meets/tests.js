@@ -6,53 +6,53 @@ import {
   meetsTreadDepth,
   meetsYearStandard
 } from './index.js';
-import test from 'tape';
+import test from 'ava';
 
 test('Test meetsCVN', t => {
-  t.ok(meetsCVN);
-  t.ok(meetsCVN('201'), 'Proper 3 digit CVN format');
-  t.notOk(meetsCVN('2011'), 'Invalid format for CVN');
-  t.end();
+  t.truthy(meetsCVN);
+  t.truthy(meetsCVN('201'), 'Proper 3 digit CVN format');
+  t.falsy(meetsCVN('2011'), 'Invalid format for CVN');
+
 });
 
 test('Test meetsCVNAmex', t => {
-  t.ok(meetsCVNAmex);
-  t.ok(meetsCVNAmex('2031'), 'Proper 3 digit CVN format');
-  t.notOk(meetsCVNAmex('201'), 'Invalid format for CVN');
-  t.end();
+  t.truthy(meetsCVNAmex);
+  t.truthy(meetsCVNAmex('2031'), 'Proper 3 digit CVN format');
+  t.falsy(meetsCVNAmex('201'), 'Invalid format for CVN');
+
 });
 
 test('Test meetsMinMax', t => {
-  t.ok(meetsMinMax);
-  t.ok(meetsMinMax({
+  t.truthy(meetsMinMax);
+  t.truthy(meetsMinMax({
     min: 0,
     max: 5
   })(3), 'Returns OK within our min/max');
-  t.notOk(meetsMinMax({
+  t.falsy(meetsMinMax({
     min: 0,
     max: 5
   })(6), 'Invalid exceeds max');
-  t.end();
+
 });
 
 test('Test meetsPassReq', t => {
-  t.ok(meetsPassReq);
-  t.ok(meetsPassReq()('cOol12$d'), 'Meets Password requirement');
-  t.notOk(meetsPassReq()('AA'), 'Invalid Does not meet password requirement');
-  t.end();
+  t.truthy(meetsPassReq);
+  t.truthy(meetsPassReq()('cOol12$d'), 'Meets Password requirement');
+  t.falsy(meetsPassReq()('AA'), 'Invalid Does not meet password requirement');
+
 });
 
 test('Test meetsTreadDepth', t => {
-  t.ok(meetsTreadDepth);
-  t.ok(meetsTreadDepth('12'), 'Proper tread depth format');
-  t.notOk(meetsTreadDepth('AA'), 'Invalid tread depth format');
-  t.end();
+  t.truthy(meetsTreadDepth);
+  t.truthy(meetsTreadDepth('12'), 'Proper tread depth format');
+  t.falsy(meetsTreadDepth('AA'), 'Invalid tread depth format');
+
 });
 
 test('Test meetsYearStandard', t => {
-  t.ok(meetsYearStandard);
-  t.ok(meetsYearStandard('2017'), 'Proper 4 digit format');
-  t.ok(meetsYearStandard('17'), 'Proper 2 digit format');
-  t.notOk(meetsYearStandard('178'), 'Invalid 3 digit format');
-  t.end();
+  t.truthy(meetsYearStandard);
+  t.truthy(meetsYearStandard('2017'), 'Proper 4 digit format');
+  t.truthy(meetsYearStandard('17'), 'Proper 2 digit format');
+  t.falsy(meetsYearStandard('178'), 'Invalid 3 digit format');
+
 });

@@ -13,6 +13,7 @@ module.exports = {
 		'no-template-curly-in-string': ['error'],
 
 		/* Best Practices */
+		'no-console': ['error', {'allow': ['info', 'warn', 'error']}],
 		'accessor-pairs': ['error'],
 		'array-callback-return': ['error'],
 		'block-scoped-var': ['error'],

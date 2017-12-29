@@ -6,49 +6,49 @@ import {
   hasUpperAndLowerCase,
   hasValue
 } from './index.js';
-import test from 'tape';
+import test from 'ava';
 
 test('Test hasLetters', t => {
-  t.ok(hasLetters);
-  t.ok(hasLetters('test'), 'Has letters');
-  t.notOk(hasLetters(''), 'Has no letters');
-  t.notOk(hasLetters('111222'), 'Has only numbers');
-  t.end();
+  t.truthy(hasLetters);
+  t.truthy(hasLetters('test'), 'Has letters');
+  t.falsy(hasLetters(''), 'Has no letters');
+  t.falsy(hasLetters('111222'), 'Has only numbers');
+
 });
 
 test('Test hasNumbers', t => {
-  t.ok(hasNumbers);
-  t.ok(hasNumbers('1123AF'), 'Has Numbers');
-  t.notOk(hasNumbers('aaaaa'), 'Has no numbers');
-  t.end();
+  t.truthy(hasNumbers);
+  t.truthy(hasNumbers('1123AF'), 'Has Numbers');
+  t.falsy(hasNumbers('aaaaa'), 'Has no numbers');
+
 });
 
 test('Test hasNumbersOrSpecials', t => {
-  t.ok(hasNumbersOrSpecials);
-  t.ok(hasNumbersOrSpecials('33421@#!'), 'Has Numbers and Specials');
-  t.ok(hasNumbersOrSpecials('aaaa@#!'), 'Has Specials');
-  t.ok(hasNumbersOrSpecials('aaaa222'), 'Has Numbers');
-  t.notOk(hasNumbersOrSpecials('aaaaa'), 'Only Letters');
-  t.end();
+  t.truthy(hasNumbersOrSpecials);
+  t.truthy(hasNumbersOrSpecials('33421@#!'), 'Has Numbers and Specials');
+  t.truthy(hasNumbersOrSpecials('aaaa@#!'), 'Has Specials');
+  t.truthy(hasNumbersOrSpecials('aaaa222'), 'Has Numbers');
+  t.falsy(hasNumbersOrSpecials('aaaaa'), 'Only Letters');
+
 });
 
 test('Test hasSpecialCharacters', t => {
-  t.ok(hasSpecialCharacters);
-  t.ok(hasSpecialCharacters('aa$$##'), 'Has Specials');
-  t.notOk(hasSpecialCharacters('aaaa'), 'Has no specials');
-  t.end();
+  t.truthy(hasSpecialCharacters);
+  t.truthy(hasSpecialCharacters('aa$$##'), 'Has Specials');
+  t.falsy(hasSpecialCharacters('aaaa'), 'Has no specials');
+
 });
 
 test('Test hasUpperAndLowerCase', t => {
-  t.ok(hasUpperAndLowerCase);
-  t.ok(hasUpperAndLowerCase('aAAAaaa'), 'Has both upper and lower case');
-  t.notOk(hasUpperAndLowerCase('aaaaa'), 'Has only lower case');
-  t.end();
+  t.truthy(hasUpperAndLowerCase);
+  t.truthy(hasUpperAndLowerCase('aAAAaaa'), 'Has both upper and lower case');
+  t.falsy(hasUpperAndLowerCase('aaaaa'), 'Has only lower case');
+
 });
 
 test('Test hasValue', t => {
-  t.ok(hasValue);
-  t.ok(hasValue('test'), 'Has a value');
-  t.notOk(hasValue(''), 'Has no value');
-  t.end();
+  t.truthy(hasValue);
+  t.truthy(hasValue('test'), 'Has a value');
+  t.falsy(hasValue(''), 'Has no value');
+
 });

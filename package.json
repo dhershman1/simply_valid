@@ -8,25 +8,9 @@
     "test": "tests"
   },
   "scripts": {
-    "prepare": "npm run run:build",
-    "compile:tests:main": "rollup -i src/index.js -o src/tests/dist/index.cjs.js -f cjs -g tape",
-    "compile:tests:has": "rollup -i src/has/tests.js -o src/tests/dist/has.cjs.js -f cjs -g tape",
-    "compile:tests:is": "rollup -i src/is/tests.js -o src/tests/dist/is.cjs.js -f cjs -g tape",
-    "compile:tests:internals": "rollup -i src/_internals/tests.js -o src/tests/dist/internals.cjs.js -f cjs -g tape",
-    "compile:tests:meets": "rollup -i src/meets/tests.js -o src/tests/dist/meets.cjs.js -f cjs -g tape",
-    "broken:multi": "rollup -i src/multi/tests.js -o src/tests/dist/multi.cjs.js -f cjs -g tape",
-    "compile:tests:no": "rollup -i src/no/tests.js -o src/tests/dist/no.cjs.js -f cjs -g tape",
-    "build:has": "rollup --config configs/rollup.has.config.js",
-    "build:is": "rollup --config configs/rollup.is.config.js",
-    "build:meets": "rollup --config configs/rollup.meets.config.js",
-    "build:no": "rollup --config configs/rollup.no.config.js",
-    "build:main": "rollup --config configs/rollup.main.config.js",
-    "build:esm": "rollup --config configs/rollup.esm.config.js",
-    "run:build": "npm-run-all --parallel build:*",
-    "test:internals": "npm run compile:internals && tape src/tests/dist/internals.cjs.js | tap-spec",
-    "test:all": "tape src/tests/{dist/*.cjs.js,tests.js} | tap-spec",
-    "test": "npm-run-all --parallel compile:tests:* && npm run test:all",
-    "cleanup": "rimraf {esm,has,is,meets,no,index.js}",
+    "build": "webpack",
+    "test": "ava",
+    "clean": "node ./scripts/clean.js",
     "lint": "eslint ./src"
   },
   "repository": {
@@ -49,12 +33,33 @@
   },
   "homepage": "https://github.com/dhershman1/simply_valid",
   "devDependencies": {
-    "npm-run-all": "4.1.1",
-    "rimraf": "^2.6.2",
-    "rollup": "0.50.0",
-    "rollup-plugin-buble": "0.16.0",
-    "rollup-plugin-uglify": "2.0.1",
-    "tap-spec": "4.1.1",
-    "tape": "4.8.0"
+    "ava": "^0.24.0",
+    "babel": "^6.23.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "del": "^3.0.0",
+    "eslint": "^4.14.0",
+    "globby": "^7.1.1",
+    "webpack": "^3.10.0"
+  },
+  "ava": {
+    "files": [
+      "src/**/tests.js"
+    ],
+    "source": [
+      "src/**/*.js"
+    ],
+    "concurrency": 5,
+    "require": [
+      "babel-register"
+    ],
+    "babel": {
+      "presets": [
+        "env",
+        "@ava/stage-4",
+        "@ava/transform-test-files"
+      ]
+    }
   }
 }
