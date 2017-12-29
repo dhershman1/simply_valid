@@ -1,8 +1,12 @@
-[![npm](https://img.shields.io/npm/v/simply_valid.svg?style=flat)](https://www.npmjs.com/package/simply_valid) [![Downloads](https://img.shields.io/npm/dm/simply_valid.svg?style=flat)](https://www.npmjs.com/package/simply_valid) [![dependencies Status](https://david-dm.org/dhershman1/simply_valid/status.svg)](https://david-dm.org/dhershman1/simply_valid) [![devDependencies Status](https://david-dm.org/dhershman1/simply_valid/dev-status.svg)](https://david-dm.org/dhershman1/simply_valid?type=dev) [![Build Status](https://travis-ci.org/dhershman1/simply_valid.svg?branch=master)](https://travis-ci.org/dhershman1/simply_valid)
+[![npm](https://img.shields.io/npm/v/simply_valid.svg?style=for-the-badge)](https://www.npmjs.com/package/simply_valid)
+[![Downloads](https://img.shields.io/npm/dm/simply_valid.svg?style=for-the-badge)](https://www.npmjs.com/package/simply_valid)
+[![David](https://img.shields.io/david/dhershman1/simply_valid.svg?style=for-the-badge)](https://david-dm.org/dhershman1/simply_valid)
+[![David](https://img.shields.io/david/dev/dhershman1/simply_valid.svg?style=for-the-badge)](https://david-dm.org/dhershman1/simply_valid?type=dev)
+[![Travis](https://img.shields.io/travis/dhershman1/simply_valid.svg?style=for-the-badge)](https://travis-ci.org/dhershman1/simply_valid)
 
 # Simply Valid
 
-**The following Documentation is for v3+ for older versions of the Docs please see the `old-readmes` folder**
+**The following Documentation is for v3+ for older versions of the Docs please see the [old-readmes](https://github.com/dhershman1/simply_valid/blob/master/old-readmes) folder**
 
 A simple to use data driven validation system
 
@@ -32,7 +36,7 @@ I am proud to say that I think I am back at that point where simply_valid is tru
 ## Changelog
 
 **Make sure to check the changelog for breaking changes!**
-**You can view old changelogs inside of the `old-changelogs` folder**
+**You can view old changelogs inside of the [old-changelogs](https://github.com/dhershman1/simply_valid/blob/master/old-changelogs) folder**
 
 You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
 
@@ -64,11 +68,6 @@ const defaults = {
   passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
 };
 ```
-
-## Browser Support
-![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) |
---- | --- | --- | --- | --- | --- |
-Latest ✔ | Latest ✔ | Untested | Untested | Latest ✔ | 9+ ✔
 
 ## Usage
 
@@ -110,6 +109,8 @@ In the browser
   validate(data);
 </script>
 ```
+
+## Split Methods
 
 ## Schema
 

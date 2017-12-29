@@ -1,14 +1,13 @@
 {
   "name": "simply_valid",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "a simple data driven validation utility library",
-  "main": "index.js",
-  "module": "esm/index.js",
+  "main": "main/index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "build": "webpack",
+    "prepare": "webpack",
     "test": "ava",
     "clean": "node ./scripts/clean.js",
     "lint": "eslint ./src"

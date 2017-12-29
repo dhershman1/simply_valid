@@ -4,7 +4,7 @@ const webpack = require('webpack');
 
 const findEntries = () => {
   const results = {};
-  const paths = globby.sync(['src/*.js', 'src/**/index.js', '!src/_internals']);
+  const paths = globby.sync(['!src/_internals', 'src/*/index.js']);
 
   paths.forEach(p => {
     const { name, dir } = path.parse(p);
@@ -12,10 +12,6 @@ const findEntries = () => {
 
     if (name !== 'index') {
       moduleName = name;
-    }
-
-    if (moduleName === 'esm') {
-      moduleName = 'main';
     }
 
     results[moduleName] = path.resolve(__dirname, p);

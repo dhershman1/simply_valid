@@ -1,6 +1,14 @@
 # Change Log v3
 
-## 3.1.0
+## v3.1.1
+
+> - Converted to webpack for compiling the module down
+> - Overhaul of how the module handles itself
+> - Fix so that `_internals` is no longer being included in the build
+> - Converted unit tests over to use `ava`
+> - Small code optimization tweaks
+
+## v3.1.0
 
 > - Introduction to better destructuring, and requiring support
 > - Introduced the ability to do `simply_valid/{{method}}`
