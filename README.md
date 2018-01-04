@@ -11,14 +11,6 @@ A simple to use data driven validation system
 
 Have a suggestion? Feel free to post them over in the github issues section and I will happily check them out!
 
-## Onward Goals
-
-I felt like Simply_Valid lost what I originally created it for at the beginning, which is the ability to actually be `Simple` I was lucky enough to run into a few use cases where using simply_valid actually became more of a chore, and the more I looked at it or tweaked it the further it drifted from being `Simple`.
-
-The goal for v3.0.0 is a complete re work to get back to the roots of why I built this module, as well as to address a lot of the pain points I personally have run into while attempting to use it. Pain points like not being able to validate against an object, or an array, making it more functional, better UMD support and making it do a lot of the lifting on it's end that really the user shouldn't have to worry about. All that while still dilvering the same type of return you'd expect no matter how you are using it.
-
-I am proud to say that I think I am back at that point where simply_valid is true to it's simple to use data driven validation. I hope you as well will find v3.0.0 to be a much needed release and thank you for the continued support!
-
 ## Contents
 * [Options](#options)
 * [Defaults](#defaults)
@@ -132,7 +124,7 @@ import simplyValid from 'simply_valid';
 
 const validate = simplyValid({
   schema: {
-    zip: ['isNumber'],
+    zip: 'isNumber',
     address: ['hasLetters', 'hasNumbers']
   }
 });
@@ -195,14 +187,11 @@ I tried to keep it so you can always expect the same level of return no matter h
 
 ## Methods
 
-**NOTE** v3.0.0 will temporarily be dropping `multi` style methods. I would like to rethink the approach and re add them later on
-
-**With the introduction of v3.1.0 you can now request method objects**
-
 - `simply_valid/has` - Return the `has` methods
 - `simply_valid/is` - Return the `is` methods
 - `simply_valid/meets` - Return the `meets` methods
 - `simply_valid/no` - Return the `no` methods
+- `simply_valid/combo` - Return the `combo` methods
 - `simply_valid/esm` - Return `all` methods
 - `simply_valid` - Returns the validation functionality built into `Simply_Valid` (Includes all of the methods by default)
 
