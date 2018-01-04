@@ -34,6 +34,22 @@ test('Test Object Schema', t => {
 
 });
 
+test('Test Object Schema Omitting values', t => {
+  const validate = simplyValid({
+    schema: {
+      zip: ['hasValue', 'isNumber']
+    }
+  });
+
+  t.truthy(validate);
+  t.truthy(validate(testData).isValid, 'Object is a valid object');
+  t.falsy(validate({
+    zip: '',
+    address: '112 test St'
+  }).isValid, 'Object is invalid');
+
+});
+
 test('Test Array Schema', t => {
   const validate = simplyValid({
     schema: ['isNumber', 'isPositive']
@@ -126,5 +142,46 @@ test('Test validate array of objects', t => {
   t.truthy(passingResults.isValid, 'Results that came back are valid');
   t.is(passingResults.story.length, 0, 'There is no story');
 
+});
+
+test('Testing Combo Functionality', t => {
+  const simple = simplyValid({
+    schema: {
+      cc: 'creditCard',
+      date: 'date',
+      cvn: 'cvn',
+      zip: 'zipOrPostal'
+    }
+  });
+  const results = simple({
+    cc: '4012888888881881',
+    date: '01/18',
+    cvn: '333',
+    zip: '55555'
+  });
+
+  t.truthy(results);
+  t.truthy(results.isValid);
+
+});
+
+test('Testing Combo Functionality Mixup', t => {
+  const simple = simplyValid({
+    schema: {
+      cc: 'creditCard',
+      date: 'date',
+      cvn: 'cvn',
+      zip: 'zipOrPostal'
+    }
+  });
+  const results = simple({
+    cc: '4012888888881881',
+    date: '01/20/18',
+    cvn: '3333',
+    zip: 'K1A0B1'
+  });
+
+  t.truthy(results);
+  t.truthy(results.isValid);
 
 });

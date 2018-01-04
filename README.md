@@ -22,7 +22,6 @@ I am proud to say that I think I am back at that point where simply_valid is tru
 ## Contents
 * [Options](#options)
 * [Defaults](#defaults)
-* [Browser Support](#browser-support)
 * [Usage](#usage)
 * [Schema](#schema)
 * [Return](#return)
@@ -31,6 +30,7 @@ I am proud to say that I think I am back at that point where simply_valid is tru
   * [Is Methods](#is-methods)
   * [Meets Methods](#meets-methods)
   * [No Methods](#no-methods)
+  * [Combo Methods](#combo-methods)
 
 ## Changelog
 
@@ -953,4 +953,111 @@ const validation = simplyValid({
 });
 
 validation('1123');
+```
+
+## **combo** Methods
+
+### creditCard
+Checks if our value is a valid credit card or not (strictly checks)
+
+Uses the methods:
+
+- `isVisaCard`
+- `isDiscoverCard`
+- `isMasterCard`
+- `isAmexCard`
+
+#### Usage
+```js
+import { creditCard } from 'simply_valid/combo';
+
+creditCard('4012888888881881'); //=> true
+
+// OR
+import {simplyValid} from 'simply_valid';
+
+const validation = simplyValid({
+  schema: 'creditCard'
+});
+
+validation('4012888888881881'); // => {isValid: true}
+```
+
+### date
+Checks if our value is a valid date of some kind
+
+Uses the methods:
+
+- `isDate`
+- `isDateShort`
+- `isDateProper`
+
+#### Usage
+```js
+import { date } from 'simply_valid/combo';
+
+date('01/18'); //=> true
+date('01/20/18'); //=> true
+
+// OR
+import {simplyValid} from 'simply_valid';
+
+const validation = simplyValid({
+  schema: 'date'
+});
+
+validation('01/18'); // => {isValid: true}
+validation('01/20/18'); // => {isValid: true}
+```
+
+### cvn
+Checks if our value is a valid cvn of some kind **NOTE it does not take a credit card type into account, so an amex cvn will still pass**
+
+Uses the methods:
+
+- `meetsCVN`
+- `meetsCVNAmex`
+
+#### Usage
+```js
+import { cvn } from 'simply_valid/combo';
+
+cvn('333'); //=> true
+cvn('3333'); //=> true
+
+// OR
+import {simplyValid} from 'simply_valid';
+
+const validation = simplyValid({
+  schema: 'cvn'
+});
+
+validation('333'); // => {isValid: true}
+validation('3333'); // => {isValid: true}
+```
+
+### zipOrPostal
+Checks if our value is a valid Zip or Postal code
+
+Uses the methods:
+
+- `isZip`
+- `isCAPostalCode`
+
+#### Usage
+```js
+import { zipOrPostal } from 'simply_valid/combo';
+
+zipOrPostal('44444'); //=> true
+zipOrPostal('K1A0B1'); //=> true
+
+// OR
+import {simplyValid} from 'simply_valid';
+
+const validation = simplyValid({
+  schema: 'zipOrPostal'
+});
+
+validation('44444'); // => {isValid: true}
+validation('K1A0B1'); // => {isValid: true}
 ```

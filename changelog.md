@@ -1,5 +1,16 @@
 # Change Log v3
 
+## v3.2.0
+
+- Welcome back "multi" methods now they are called "Combo" methods
+- Combo methods can be required directly as well with `simply_valid/combo` Which contains the following
+    - `creditCard` - Strictly validates the value that it is some card (except `visaPanCards`)
+    - `date` - Validates that the value is a date of some kind
+    - `cvn` - Validates that the value is a CVN of some kind (Warning: Does not match a card type like `simple-card` does)
+    - `zipOrPostal` - Validates that the value is a Zip or Postal code
+- You can now send methods as a single string when using object schema
+- `isAmericanExpressCard` is now depricated please use `isAmexCard` however `isAmericanExpressCard` will work still for now
+
 ## v3.1.2
 
 - Typo Fixes for README

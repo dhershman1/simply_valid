@@ -58,7 +58,7 @@ const validWhere = (obj, opts, useMethods) => {
   if (isObject(useMethods)) {
     each(obj, (val, prop) => {
       if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
-        results[prop] = validate(val, opts, useMethods[prop]);
+        results[prop] = validate(val, opts, ensureArray(useMethods[prop]));
       }
     });
   } else {

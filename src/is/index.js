@@ -65,13 +65,15 @@ export const isMasterCard = (strict = true) => val => {
   return (/^5[1-5][0-9]{14}$/).test(val);
 };
 
-export const isAmericanExpressCard = (strict = true) => val => {
+export const isAmexCard = (strict = true) => val => {
   if (strict) {
     return luhn(val);
   }
 
   return (/^3(4|7)[0-9]{13}$/).test(val);
 };
+
+export const isAmericanExpressCard = (strict = true) => val => isAmexCard(strict)(val);
 
 export const isDiscoverCard = (strict = true) => val => {
   if (strict) {
