@@ -55,7 +55,6 @@ test('Testing isDateProper', t => {
 });
 
 test('Testing isEmail', t => {
-  t.truthy(isEmail);
   t.truthy(isEmail()('coolkid17@AAAAAAHHHHHHHHHHHH.com'), 'valid yet annoying email address');
   t.truthy(isEmail()('coolkid778@aol.com'), 'Returned OK This is a email');
   t.truthy(isEmail()('IamEmail@cool.com'), 'That is indeed an email');
@@ -71,6 +70,7 @@ test('Testing isEmail', t => {
 test('Testing isNumber', t => {
   t.truthy(isNumber);
   t.truthy(isNumber('11234'), 'Is a number');
+  t.truthy(isNumber(11234), 'Is a number');
   t.falsy(isNumber('aaaaaa'), 'Is not a number');
 
 });
@@ -95,7 +95,6 @@ test('Testing isNegative', t => {
 });
 
 test('Testing isVin', t => {
-  t.truthy(isVin);
   t.truthy(isVin()('JM1CW2BL8C0127808'), 'Returned OK This is a VIN');
   t.falsy(isVin()('JM1CW2BL8C012780865'), 'Returned not valid, too long to be vin');
   t.falsy(isVin()('112'), 'Returned not valid, not a vin');
@@ -138,7 +137,6 @@ test('Testing isLicensePlate', t => {
 });
 
 test('Testing isVisaCard', t => {
-  t.truthy(isVisaCard);
   t.truthy(isVisaCard(false)('4111111111111111'), 'Returned OK This is a Visa card format');
   t.falsy(isVisaCard(false)('5111111111111111'), 'Invalid lead number');
   t.falsy(isVisaCard(false)('41111111111111111'), 'Invalid to long');
@@ -149,7 +147,6 @@ test('Testing isVisaCard', t => {
 });
 
 test('Testing isVisaPanCard', t => {
-  t.truthy(isVisaPanCard);
   t.truthy(isVisaPanCard(false)('4111111111111111222'), 'Returned OK This is a Visa card format');
   t.falsy(isVisaPanCard(false)('5111111111111111222'), 'Invalid lead number');
   t.falsy(isVisaPanCard(false)('411111111111111112222'), 'Invalid to long');
@@ -160,7 +157,6 @@ test('Testing isVisaPanCard', t => {
 });
 
 test('Testing isMasterCard', t => {
-  t.truthy(isMasterCard);
   t.truthy(isMasterCard(false)('5511111111111111'), 'Returned OK This is a MasterCard format');
   t.falsy(isMasterCard(false)('5711111111111111'), 'Invalid 2nd digit (not 1-5)');
   t.falsy(isMasterCard(false)('7511111111111111'), 'Invalid 1st digit (not 5)');
@@ -172,7 +168,6 @@ test('Testing isMasterCard', t => {
 });
 
 test('Testing isAmericanExpressCard', t => {
-  t.truthy(isAmericanExpressCard);
   t.truthy(isAmericanExpressCard(false)('341111111111111'), 'Returned valid format');
   t.falsy(isAmericanExpressCard(false)('381111111111111'), 'Invalid 2nd digit (not 4 or 7)');
   t.falsy(isAmericanExpressCard(false)('541111111111111'), 'Invalid 1st digit (not 3)');
@@ -183,7 +178,6 @@ test('Testing isAmericanExpressCard', t => {
 });
 
 test('Testing isDiscoverCard', t => {
-  t.truthy(isDiscoverCard);
   t.truthy(isDiscoverCard(false)('6111111111111111'), 'Returned OK This is a Discover card format');
   t.falsy(isDiscoverCard(false)('5111111111111111'), 'Invalid lead number');
   t.falsy(isDiscoverCard(false)('41111111111111111'), 'Invalid to long');
