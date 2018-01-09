@@ -37,8 +37,8 @@ test('Test meetsMinMax', t => {
 
 test('Test meetsPassReq', t => {
   t.truthy(meetsPassReq);
-  t.truthy(meetsPassReq()('cOol12$d'), 'Meets Password requirement');
-  t.falsy(meetsPassReq()('AA'), 'Invalid Does not meet password requirement');
+  t.truthy(meetsPassReq('default')('cOol12$d'), 'Meets Password requirement');
+  t.falsy(meetsPassReq('default')('AA'), 'Invalid Does not meet password requirement');
 
 });
 

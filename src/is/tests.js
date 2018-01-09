@@ -55,15 +55,15 @@ test('Testing isDateProper', t => {
 });
 
 test('Testing isEmail', t => {
-  t.truthy(isEmail()('coolkid17@AAAAAAHHHHHHHHHHHH.com'), 'valid yet annoying email address');
-  t.truthy(isEmail()('coolkid778@aol.com'), 'Returned OK This is a email');
-  t.truthy(isEmail()('IamEmail@cool.com'), 'That is indeed an email');
-  t.falsy(isEmail()('notEmail'), 'Indeed it is NOT an email');
-  t.falsy(isEmail()('coolkid77'), 'Returns invalid its not an email');
-  t.falsy(isEmail()('coolkid77@gmail'), 'Returns invalid email address format');
-  t.falsy(isEmail()('coolkid77@gmailcom'), 'Returns invalid email address format');
-  t.falsy(isEmail()('coolkid77@gmail-com'), 'Returns invalid email address format');
-  t.falsy(isEmail()('coolkid77gmail.com'), 'Returns invalid email address format');
+  t.truthy(isEmail('default')('coolkid17@AAAAAAHHHHHHHHHHHH.com'), 'valid yet annoying email address');
+  t.truthy(isEmail('default')('coolkid778@aol.com'), 'Returned OK This is a email');
+  t.truthy(isEmail('default')('IamEmail@cool.com'), 'That is indeed an email');
+  t.falsy(isEmail('default')('notEmail'), 'Indeed it is NOT an email');
+  t.falsy(isEmail('default')('coolkid77'), 'Returns invalid its not an email');
+  t.falsy(isEmail('default')('coolkid77@gmail'), 'Returns invalid email address format');
+  t.falsy(isEmail('default')('coolkid77@gmailcom'), 'Returns invalid email address format');
+  t.falsy(isEmail('default')('coolkid77@gmail-com'), 'Returns invalid email address format');
+  t.falsy(isEmail('default')('coolkid77gmail.com'), 'Returns invalid email address format');
 
 });
 
@@ -95,9 +95,9 @@ test('Testing isNegative', t => {
 });
 
 test('Testing isVin', t => {
-  t.truthy(isVin()('JM1CW2BL8C0127808'), 'Returned OK This is a VIN');
-  t.falsy(isVin()('JM1CW2BL8C012780865'), 'Returned not valid, too long to be vin');
-  t.falsy(isVin()('112'), 'Returned not valid, not a vin');
+  t.truthy(isVin('default')('JM1CW2BL8C0127808'), 'Returned OK This is a VIN');
+  t.falsy(isVin('default')('JM1CW2BL8C012780865'), 'Returned not valid, too long to be vin');
+  t.falsy(isVin('default')('112'), 'Returned not valid, not a vin');
 
 });
 
@@ -188,14 +188,15 @@ test('Testing isDiscoverCard', t => {
 });
 
 test('Testing isBelowMax', t => {
-  t.truthy(isBelowMax);
-  t.truthy(isBelowMax(8)('7'), 'Returned OK This is below max');
-  t.falsy(isBelowMax(8)('9'), 'Invalid exceeds/matches max');
+  const tstBelow = isBelowMax(8);
+
+  t.truthy(tstBelow);
+  t.truthy(tstBelow('7'), 'Returned OK This is below max');
+  t.falsy(tstBelow('9'), 'Invalid exceeds/matches max');
 
 });
 
 test('Testing isAboveMin', t => {
-  t.truthy(isAboveMin);
   t.truthy(isAboveMin(4)('5'), 'Returned OK This is above min');
   t.falsy(isAboveMin(4)('3'), 'Invalid below min');
 

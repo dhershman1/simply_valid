@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const jsDocParser = require('jsdoc-to-markdown');
-const ignoredFiles = ['_internals', 'esm'];
+const ignoredFiles = ['_internals', 'esm', 'combo', 'main'];
 
 const listFns = () => {
   const files = fs.readdirSync(path.join(process.cwd(), 'src'));
@@ -20,15 +20,15 @@ const writeDocs = fileObj => fs.writeFileSync('docs.js', `module.exports = ${JSO
 const generateUsage = name => ({
   'commonjs': {
     title: 'CommonJs',
-    code: `const ${name} = require('dusty-fns/${name}');`
+    code: `const ${name} = require('simply_valid/${name}');`
   },
   'standard': {
     title: 'Standard',
-    code: `import ${name} from 'dusty-fns/${name}';`
+    code: `import ${name} from 'simply_valid/${name}';`
   },
   'browser': {
     title: 'Browser',
-    code: `<script src="path/to/node_modules/dusty-fns/${name}/index.js"></script>`
+    code: `<script src="path/to/node_modules/simply_valid/${name}/index.js"></script>`
   }
 });
 
@@ -45,21 +45,20 @@ const generateSyntax = (name, args) => {
 const generateSourceDocs = () => listFns().map(fn => jsDocParser.getTemplateDataSync({
   'files': fn.fullPath,
   'no-cache': true
-})[0])
-  .map(d => ({
-    title: d.name,
-    description: d.description,
-    examples: d.examples,
-    returns: d.returns,
-    params: d.params
-  }));
+}));
 
 let generated = generateSourceDocs();
+let cleanRes = [];
 
-generated = generated.map(doc => ({
-  title: doc.title,
-  syntax: generateSyntax(doc.title, doc.params),
-  usage: generateUsage(doc.title),
+generated.forEach(v => {
+  cleanRes = [...cleanRes, ...v];
+});
+
+
+generated = cleanRes.map(doc => ({
+  title: doc.name,
+  syntax: generateSyntax(doc.name, doc.params),
+  usage: generateUsage(doc.name),
   desc: doc.description,
   examples: doc.examples,
   params: doc.params,

@@ -41,11 +41,12 @@
     "del": "^3.0.0",
     "eslint": "^4.14.0",
     "globby": "^7.1.1",
+    "jsdoc-to-markdown": "^3.0.3",
     "webpack": "^3.10.0"
   },
   "ava": {
     "files": [
-      "src/has/tests.js"
+      "src/is/tests.js"
     ],
     "source": [
       "src/**/*.js"
