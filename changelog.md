@@ -1,5 +1,11 @@
 # Change Log v3
 
+## v3.2.1
+
+- Setup documentation generation
+- Better Currying setup for curried functions
+- Better documentation
+
 ## v3.2.0
 
 - Welcome back "multi" methods now they are called "Combo" methods

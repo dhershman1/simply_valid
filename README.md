@@ -11,6 +11,10 @@ A simple to use data driven validation system
 
 Have a suggestion? Feel free to post them over in the github issues section and I will happily check them out!
 
+## Documentation
+
+Find main documentation [HERE](http://dusty-demos.herokuapp.com/simply_valid)
+
 ## Contents
 * [Options](#options)
 * [Defaults](#defaults)

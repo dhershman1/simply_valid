@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const jsDocParser = require('jsdoc-to-markdown');
-const ignoredFiles = ['_internals', 'esm', 'combo', 'main'];
+const ignoredFiles = ['_internals', 'esm'];
 
 const listFns = () => {
   const files = fs.readdirSync(path.join(process.cwd(), 'src'));
@@ -17,20 +17,31 @@ const listFns = () => {
 
 const writeDocs = fileObj => fs.writeFileSync('docs.js', `module.exports = ${JSON.stringify(fileObj)}`);
 
-const generateUsage = name => ({
-  'commonjs': {
-    title: 'CommonJs',
-    code: `const ${name} = require('simply_valid/${name}');`
-  },
-  'standard': {
-    title: 'Standard',
-    code: `import ${name} from 'simply_valid/${name}';`
-  },
-  'browser': {
-    title: 'Browser',
-    code: `<script src="path/to/node_modules/simply_valid/${name}/index.js"></script>`
+const generateUsage = (name, loc) => {
+  if (loc === 'main') {
+    return {
+      'commonjs': {
+        title: 'CommonJs',
+        code: `const simplyValid = require('simply_valid');`
+      },
+      'standard': {
+        title: 'Standard',
+        code: `import simplyValid from 'simply_valid';`
+      }
+    };
   }
-});
+
+  return {
+    'commonjs': {
+      title: 'CommonJs',
+      code: `const { ${name} } = require('simply_valid/${loc}');`
+    },
+    'standard': {
+      title: 'Standard',
+      code: `import { ${name} } from 'simply_valid/${loc}';`
+    }
+  };
+};
 
 const generateSyntax = (name, args) => {
   if (!args) {
@@ -54,15 +65,32 @@ generated.forEach(v => {
   cleanRes = [...cleanRes, ...v];
 });
 
+const sortFns = (a, b) => {
+  if (a.title < b.title || a.title === 'simplyValid') {
+    return -1;
+  }
 
-generated = cleanRes.map(doc => ({
-  title: doc.name,
-  syntax: generateSyntax(doc.name, doc.params),
-  usage: generateUsage(doc.name),
-  desc: doc.description,
-  examples: doc.examples,
-  params: doc.params,
-  returns: doc.returns
-}));
+  if (a.title > b.title) {
+    return 1;
+  }
 
-writeDocs(generated);
+  return 0;
+};
+
+generated = cleanRes.map(doc => {
+  const pathArr = doc.meta.path.split('/');
+  const loc = pathArr[pathArr.length - 1];
+
+  return {
+    title: doc.name,
+    syntax: generateSyntax(doc.name, doc.params),
+    usage: generateUsage(doc.name, loc),
+    desc: doc.description,
+    examples: doc.examples,
+    params: doc.params,
+    returns: doc.returns,
+    properties: doc.properties
+  };
+});
+
+writeDocs(generated.sort(sortFns));

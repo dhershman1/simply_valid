@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import * as methods from '../esm';
+import curry from '../_internals/curry';
 import each from '../_internals/each';
 import ensureArray from '../_internals/ensureArray';
 import extend from '../_internals/extend';
@@ -94,7 +95,59 @@ const runSchemaArr = (data, opts, useMethods) => {
   return Object.keys(results).length ? results : format(arrResults);
 };
 
-const simplyValid = options => data => {
+/**
+ * @name simplyValid
+ * @description The main validation functionality of simply valid
+ * @param {Object} options The main options to setup simply_valid
+ * @property {Any} schema The schema that the functionality of the module should be following
+ * @property {Boolean} strictCard Whether or not we should run card validation strictly or not
+ * @property {Number} max The max number used for max validation methods
+ * @property {Number} min The min number used for min validation methods
+ * @property {RegExp} vinPattern The RegExp pattern for vin validation
+ * @property {RegExp} emailPattern The RegExp pattern for email validation
+ * @property {RegExp} passwordPattern The RegExp pattern for password validation
+ * @param {Any} data The data that we want to run the validation functionality against
+ * @returns {Object} Returns an object with a isValid prop telling if validation was a success, and a story which is an array of objects of which validation methods failed
+ *
+ * @example
+ * // Simple validation schemas
+ *
+ * const validate = simplyValid({
+    schema: 'hasValue'
+  });
+
+  validate('test'); // => { isValid: true }
+  validate(''); // => { isValid: false, story: [{ test: 'hasValue', value: '' }] }
+  simplyValid({
+    schema: 'hasValue'
+  }, 'test'); // => { isValid: true }
+ *
+ * // Array Validation Schemas
+ *
+ * const validate = simplyValid({
+ *  schema: ['hasValue', 'hasNumber']
+ * });
+ * validate('test1123'); // => { isValid: true }
+ * validate('test'); // => { isValid: false, story: [{ test: 'hasNumbers', value: 'test' }] }
+ *
+ * // Object Validation Schema
+ *
+ * const validate = simplyValid({
+ *  schema: {
+ *    test: ['hasNumbers', 'hasLetters'],
+ *    thing: 'hasValue',
+ *    nestedThing: ['isPositive', 'hasNumbers']
+ *  }
+ * });
+ * validate({
+ *   test: 'cool112',
+ *   thing: 'test',
+ *   other: {
+ *     nestedThing: '1234'
+ *   }
+ * }); // => { isValid: true }
+ */
+const simplyValid = curry((options, data) => {
   const defaults = {
     schema: [],
     strictCard: false,
@@ -120,6 +173,6 @@ const simplyValid = options => data => {
   }
 
   return validate(data, opts, ensureArray(opts.schema));
-};
+});
 
 export default simplyValid;

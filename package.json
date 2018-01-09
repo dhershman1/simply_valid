@@ -1,6 +1,6 @@
 {
   "name": "simply_valid",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "a simple data driven validation utility library",
   "main": "main/index.js",
   "directories": {
@@ -46,7 +46,7 @@
   },
   "ava": {
     "files": [
-      "src/is/tests.js"
+      "src/**/tests.js"
     ],
     "source": [
       "src/**/*.js"

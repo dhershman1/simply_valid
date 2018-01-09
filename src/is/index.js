@@ -25,6 +25,7 @@ export const isDate = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9]
  *
  * @example
  * const result = isDateShort('1/19'); // => true
+ * const result = isDateShort('13/19'); // => false
  */
 export const isDateShort = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val);
 
@@ -42,11 +43,16 @@ export const isDateProper = val => (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0
 /**
  * @name isEmail
  * @description Validates if a email is valid or not using the email regex
- * @param {RegExp|Void} email The Regex to use for validating the email string (pass falsy value for default)
+ * @param {RegExp|String} email Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * const email = isEmail('default');
+ * const result = email('dusty@gmail.com'); // => true
+ *
+ * // OR
+ *
  * const result = isEmail('default', 'dusty@gmail.com'); // => true
  * const result = isEmail('default')('dusty@gmail.com'); // => true
  */
@@ -102,11 +108,16 @@ export const isNegative = val => !isNaN(val) && Number(val) < 0;
 /**
  * @name isVin
  * @description Validates if a provided value is a valid vin number
- * @param {RegExp|Void} vin The Regex to use for validating the vin string (pass falsy value for default)
+ * @param {RegExp|String} vin Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * const vin = isVin('default');
+ * const result = vin('JM1CW2BL8C0127808'); // => true
+ *
+ * // OR
+ *
  * const result = isVin('default', 'JM1CW2BL8C0127808'); // => true
  * const result = isVin('default')('JM1CW2BL8C0127808'); // => true
  */
@@ -140,8 +151,8 @@ export const isZip = val => (/^\d{5}(-\d{4})?$/).test(val);
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isZip('K1A0B1'); // => true
- * const result = isZip('44444'); // => false
+ * const result = isCAPostalCode('K1A0B1'); // => true
+ * const result = isCAPostalCode('44444'); // => false
  */
 export const isCAPostalCode = val => (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val);
 
@@ -173,11 +184,16 @@ export const isLicensePlate = val => (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9
 /**
  * @name isVisaCard
  * @description Validates if a provided value is a valid Visa credit card
- * @param {Boolean|Void} strict Determines if the card should be strictly validated
+ * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * const isVida = isVisaCard(true);
+ * const result = isVisa('4111111111111111'); // => true
+ *
+ * // OR
+ *
  * const result = isVisaCard(true, '4111111111111111'); // => true
  * const result = isVisaCard(true)('4111111111111111'); // => true
  */
@@ -192,13 +208,20 @@ export const isVisaCard = curry((strict, val) => {
 /**
  * @name isVisaPanCard
  * @description Validates if a provided value is a valid Visa Pan credit card
- * @param {Boolean|Void} strict Determines if the card should be strictly validated
+ * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isVisaPanCard(true, '4111111111111111222'); // => true
- * const result = isVisaPanCard(true)('4111111111111111222'); // => true
+ * const visaPan = isVisaPanCard(true);
+ * const result = visaPan('4111111111111111222'); // => false
+ *
+ * // OR
+ *
+ * const result = isVisaPanCard(true, '4111111111111111222'); // => false
+ * const result = isVisaPanCard(true)('4111111111111111222'); // => false
+ * const result = isVisaPanCard(false)('4111111111111111222'); // => true
+ * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isVisaPanCard = curry((strict, val) => {
   if (strict) {
@@ -211,13 +234,19 @@ export const isVisaPanCard = curry((strict, val) => {
 /**
  * @name isMasterCard
  * @description Validates if a provided value is a valid Master card
- * @param {Boolean|Void} strict Determines if the card should be strictly validated
+ * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isMasterCard(true, '5387109830289055'); // => true
- * const result = isMasterCard(true)('5387109830289055'); // => true
+ * const master = isMasterCard(true);
+ * const result = master('5511111111111111'); // => false
+ *
+ * // OR
+ *
+ * const result = isMasterCard(true, '5511111111111111'); // => false
+ * const result = isMasterCard(true)('5511111111111111'); // => false
+ * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isMasterCard = curry((strict, val) => {
   if (strict) {
@@ -230,13 +259,20 @@ export const isMasterCard = curry((strict, val) => {
 /**
  * @name isAmexCard
  * @description Validates if a provided value is a valid American Express card
- * @param {Boolean|Void} strict Determines if the card should be strictly validated (pass true or leave empty value for default)
+ * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isMasterCard(true, '341111111111111'); // => true
- * const result = isMasterCard(true)('341111111111111'); // => true
+ * const amex = isAmexCard(true);
+ * const result = amex('341111111111111'); // => false
+ *
+ * // OR
+ *
+ * const result = isMasterCard(true, '341111111111111'); // => false
+ * const result = isMasterCard(true)('341111111111111'); // => false
+ * const result = isMasterCard(false)('341111111111111'); // => true
+ * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isAmexCard = curry((strict, val) => {
   if (strict) {
@@ -249,27 +285,41 @@ export const isAmexCard = curry((strict, val) => {
 /**
  * @name isAmericanExpressCard
  * @description Validates if a provided value is a valid American Express card (depricated)
- * @param {Boolean|Void} strict Determines if the card should be strictly validated
+ * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  * @deprecated in favor of isAmexCard
  *
  * @example
- * const result = isAmericanExpressCard(true, '341111111111111'); // => true
- * const result = isAmericanExpressCard(true)('341111111111111'); // => true
+ * const isAmex = isAmericanExpressCard(true);
+ * const result = isAmex('341111111111111'); // => false
+ *
+ * // OR
+ *
+ * const result = isAmericanExpressCard(true, '341111111111111'); // => false
+ * const result = isAmericanExpressCard(true)('341111111111111'); // => false
+ * const result = isAmericanExpressCard(false, '341111111111111'); // => true
+ * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isAmericanExpressCard = isAmexCard;
 
 /**
  * @name isDiscoverCard
- * @description Validates if a provided value is a valid American Express card (depricated)
- * @param {Boolean|Void} strict Determines if the card should be strictly validated
+ * @description Validates if a provided value is a valid American Express card
+ * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isDiscoverCard(true, '6111111111111111'); // => true
- * const result = isDiscoverCard(true)('6111111111111111'); // => true
+ * const discover = isDiscoverCard(true);
+ * const result = discover('6111111111111111'); // => false
+ *
+ * // OR
+ *
+ * const result = isDiscoverCard(true, '6111111111111111'); // => false
+ * const result = isDiscoverCard(true)('6111111111111111'); // => false
+ * const result = isDiscoverCard(false, '6111111111111111'); // => true
+ * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isDiscoverCard = curry((strict, val) => {
   if (strict) {
@@ -287,6 +337,11 @@ export const isDiscoverCard = curry((strict, val) => {
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * const below = isBelowMax(20);
+ * const result = below('19'); // => true
+ *
+ * // OR
+ *
  * const result = isBelowMax(20, '19'); // => true
  * const result = isBelowMax(20)('19'); // => true
  */
@@ -306,6 +361,11 @@ export const isBelowMax = curry((m, val) => {
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * const above = isAboveMin(15);
+ * const result = above('19'); // => true
+ *
+ * // OR
+ *
  * const result = isAboveMin(15, '19'); // => true
  * const result = isAboveMin(15)('19'); // => true
  */

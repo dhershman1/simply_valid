@@ -11,6 +11,14 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * const minMax = meetsMinMax({
+ *   min: 0,
+ *   max: 10
+ * });
+ * const result = minMax(5); // => true
+ *
+ * // OR
+ *
  * const result = meetsMinMax('11'); // => false
  * const result = meetsMinMax('eew2211'); // => true
  * const result = meetsMinMax('eerrt'); // => true
@@ -72,10 +80,16 @@ export const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i)
 /**
  * @name meetsPassReq
  * @description Validates if the value is a valid treaddepth style
+ * @param {(RegExp|String)} pass Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * const pass = meetsPassReq('default');
+ * const result = pass('cOol12$d'); // => true
+ *
+ * // OR
+ *
  * const result = meetsPassReq('default', 'cOol12$d'); // => true
  * const result = meetsPassReq('default')('cOol12$d') // => true
  * const result = meetsPassReq('default', 'AA'); // => false
