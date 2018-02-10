@@ -1,6 +1,7 @@
 const path = require('path');
 const globby = require('globby');
 const webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const findEntries = () => {
   const results = {};
@@ -29,14 +30,22 @@ module.exports = {
     libraryTarget: 'umd'
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin()
+    new UglifyJSPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
   ],
   module: {
     rules: [
       {
         test: /.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['babel-preset-env']
+          }
+        }
       }
     ]
   }
