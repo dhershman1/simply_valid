@@ -8,11 +8,11 @@ import {
   isMasterCard,
   isVisaCard,
   isZip
-} from '../is';
+} from '../is/index';
 import {
   meetsCVN,
   meetsCVNAmex
-} from '../meets';
+} from '../meets/index';
 
 const runner = (val, methods) => {
   for (let i = 0, len = methods.length; i < len; i++) {
@@ -26,7 +26,11 @@ const runner = (val, methods) => {
 
 /**
  * @name creditCard
- * @description Validates that the value is some kind of credit card (excludes the visa pan card however) it runs validation in strict mode by default
+ * @since v3.2.0
+ * @category Combo
+ * @description
+ * Validates that the value is some kind of credit card (excludes the visa pan card however)
+ * it runs validation in strict mode by default
  * @param {String} val The credit card number value to validate
  * @returns {Boolean} Returns true or false based on the validation test
  *
@@ -43,6 +47,8 @@ export const creditCard = val => runner(val, [
 
 /**
  * @name date
+ * @since v3.2.0
+ * @category Combo
  * @description Validates that the value is some kind of date (short, proper, or normal)
  * @param {String} val The date string value to validate
  * @returns {Boolean} Returns true or false based on the validation test
@@ -56,6 +62,8 @@ export const date = val => runner(val, [isDate, isDateShort, isDateProper]);
 
 /**
  * @name cvn
+ * @since v3.2.0
+ * @category Combo
  * @description Validates that the value is either a normal or amex CVN number
  * @param {String} val The cvn string to run validation against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -69,6 +77,8 @@ export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex]);
 
 /**
  * @name zipOrPostal
+ * @since v3.2.0
+ * @category Combo
  * @description Validates that the value is some kind of zip or postal code
  * @param {String} val The zip or postal code string to validate
  * @returns {Boolean} Returns true or false based on the validation test

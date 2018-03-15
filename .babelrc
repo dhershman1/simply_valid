@@ -1,5 +1,17 @@
 {
   "presets": [
-    "env"
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "ie >= 9"
+          ]
+        },
+        "modules": "commonjs"
+      }
+    ],
+    "@babel/preset-stage-2"
   ]
 }

@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
-import * as methods from '../esm';
-import curry from '../_internals/curry';
-import each from '../_internals/each';
-import ensureArray from '../_internals/ensureArray';
-import extend from '../_internals/extend';
-import format from '../_internals/format';
-import isObject from '../_internals/isObject';
-import validateSchema from '../_internals/validateSchema';
+import * as methods from '../esm/index';
+import curry from '../_internals/curry/index';
+import each from '../_internals/each/index';
+import ensureArray from '../_internals/ensureArray/index';
+import extend from '../_internals/extend/index';
+import format from '../_internals/format/index';
+import isObject from '../_internals/isObject/index';
+import validateSchema from '../_internals/validateSchema/index';
 
 let setMethods = {};
 
@@ -97,6 +97,8 @@ const runSchemaArr = (data, opts, useMethods) => {
 
 /**
  * @name simplyValid
+ * @since v1.0.0
+ * @category Main
  * @description The main validation functionality of simply valid
  * @param {Object} options The main options to setup simply_valid
  * @property {Any} schema The schema that the functionality of the module should be following

@@ -1,9 +1,9 @@
-import curry from '../_internals/curry';
-
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+import curry from '../_internals/curry/index';
 
 /**
  * @name meetsMinMax
+ * @since v1.0.0
+ * @category Meets
  * @description Validates if the value contains numbers or not
  * @param {Number} $0.min The min value to compare to
  * @param {Number} $0.max The min value to compare to
@@ -30,6 +30,8 @@ export const meetsMinMax = curry(({
 
 /**
  * @name meetsYearStandard
+ * @since v1.0.0
+ * @category Meets
  * @description Validates if the value is a valid year string
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -43,6 +45,8 @@ export const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).te
 
 /**
  * @name meetsCVN
+ * @since v1.0.0
+ * @category Meets
  * @description Validates if the value is a valid CVN code
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -55,6 +59,8 @@ export const meetsCVN = val => val.length === 3 && (/[0-9]/).test(val);
 
 /**
  * @name meetsCVNAmex
+ * @since v1.0.0
+ * @category Meets
  * @description Validates if the value is a valid Amex CVN code
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -67,6 +73,8 @@ export const meetsCVNAmex = val => val.length === 4 && (/[0-9]/).test(val);
 
 /**
  * @name meetsTreadDepth
+ * @since v1.0.0
+ * @category Meets
  * @description Validates if the value is a valid treaddepth style
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -79,6 +87,8 @@ export const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i)
 
 /**
  * @name meetsPassReq
+ * @since v1.0.0
+ * @category Meets
  * @description Validates if the value is a valid treaddepth style
  * @param {(RegExp|String)} pass Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
@@ -95,6 +105,8 @@ export const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i)
  * const result = meetsPassReq('default', 'AA'); // => false
  */
 export const meetsPassReq = curry((pass, val) => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+
   if (pass === 'default') {
     return passwordRegex.test(val);
   }

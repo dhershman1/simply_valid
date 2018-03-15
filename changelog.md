@@ -1,5 +1,9 @@
 # Change Log v3
 
+## v3.2.2
+
+- Rebuilt entire build process replacing webpack with a rollup build system this gives us a fairly large decrease in overall file size
+
 ## v3.2.1
 
 - Setup documentation generation

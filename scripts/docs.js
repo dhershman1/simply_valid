@@ -27,6 +27,10 @@ const generateUsage = (name, loc) => {
       'standard': {
         title: 'Standard',
         code: `import simplyValid from 'simply_valid';`
+      },
+      'browser': {
+        title: 'Browser',
+        code: `<script src="path/to/simply_valid/${name}/index.js"></script>`
       }
     };
   }
@@ -39,6 +43,10 @@ const generateUsage = (name, loc) => {
     'standard': {
       title: 'Standard',
       code: `import { ${name} } from 'simply_valid/${loc}';`
+    },
+    'browser': {
+      title: 'Browser',
+      code: `<script src="path/to/simply_valid/${loc}/index.js"></script>`
     }
   };
 };
@@ -78,11 +86,13 @@ const sortFns = (a, b) => {
 };
 
 generated = cleanRes.map(doc => {
-  const pathArr = doc.meta.path.split('/');
+  const pathArr = doc.meta.path.split('\\');
   const loc = pathArr[pathArr.length - 1];
 
   return {
     title: doc.name,
+    since: doc.since,
+    category: doc.category,
     syntax: generateSyntax(doc.name, doc.params),
     usage: generateUsage(doc.name, loc),
     desc: doc.description,

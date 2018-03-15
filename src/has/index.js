@@ -1,5 +1,7 @@
 /**
  * @name hasValue
+ * @since v1.0.0
+ * @category Has
  * @description Validates if the value is actually a value
  * @param {Any} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -12,6 +14,8 @@ export const hasValue = val => val && val.length !== 0;
 
 /**
  * @name hasNumbers
+ * @since v1.0.0
+ * @category Has
  * @description Validates if the value contains numbers or not
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -25,6 +29,8 @@ export const hasNumbers = val => (/[0-9]/).test(val);
 
 /**
  * @name hasLetters
+ * @since v1.0.0
+ * @category Has
  * @description Validates if the value contains numbers or not
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -38,6 +44,8 @@ export const hasLetters = val => (/[A-Z]/i).test(val);
 
 /**
  * @name hasSpecialCharacters
+ * @since v1.0.0
+ * @category Has
  * @description Validates if the value contains Special Characters
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -51,6 +59,8 @@ export const hasSpecialCharacters = val => (/\W/).test(val);
 
 /**
  * @name hasNumbersOrSpecials
+ * @since v1.0.0
+ * @category Has
  * @description Validates if the value contains Special Characters or numbers
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -64,6 +74,8 @@ export const hasNumbersOrSpecials = val => hasNumbers(val) || hasSpecialCharacte
 
 /**
  * @name hasUpperAndLowerCase
+ * @since v1.0.0
+ * @category Has
  * @description Validates if the value contains Special Characters or numbers
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test

@@ -9,3 +9,5 @@ scripts/
 changelog.md
 webpack.config.js
 .babelrc
+rollup.config.js
+rollup.config.split.js

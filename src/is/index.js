@@ -1,13 +1,12 @@
 /* eslint-disable max-len */
 
-import curry from '../_internals/curry';
-import luhn from '../_internals/luhn';
-
-const emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
-const vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
+import curry from '../_internals/curry/index';
+import luhn from '../_internals/luhn/index';
 
 /**
  * @name isDate
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a normal date is valid or not
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -19,6 +18,8 @@ export const isDate = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9]
 
 /**
  * @name isDateShort
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a short date is valid or not
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -31,6 +32,8 @@ export const isDateShort = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2]
 
 /**
  * @name isDateProper
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a "Proper" date is valid or not
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -42,6 +45,8 @@ export const isDateProper = val => (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0
 
 /**
  * @name isEmail
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a email is valid or not using the email regex
  * @param {RegExp|String} email Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
@@ -57,6 +62,8 @@ export const isDateProper = val => (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0
  * const result = isEmail('default')('dusty@gmail.com'); // => true
  */
 export const isEmail = curry((email, val) => {
+  const emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
+
   if (email === 'default') {
     return emailRegex.test(val);
   }
@@ -69,6 +76,8 @@ export const isEmail = curry((email, val) => {
 
 /**
  * @name isNumber
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid number or not
  * @param {String|Number} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -81,6 +90,8 @@ export const isNumber = val => !isNaN(val);
 
 /**
  * @name isPositive
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a positive number
  * @param {String|Number} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -94,6 +105,8 @@ export const isPositive = val => !isNaN(val) && Number(val) >= 0;
 
 /**
  * @name isNegative
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a negative number
  * @param {String|Number} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -107,6 +120,8 @@ export const isNegative = val => !isNaN(val) && Number(val) < 0;
 
 /**
  * @name isVin
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid vin number
  * @param {RegExp|String} vin Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
@@ -122,6 +137,8 @@ export const isNegative = val => !isNaN(val) && Number(val) < 0;
  * const result = isVin('default')('JM1CW2BL8C0127808'); // => true
  */
 export const isVin = curry((vin, val) => {
+  const vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
+
   if (vin === 'default') {
     return vinRegex.test(val);
   }
@@ -134,6 +151,8 @@ export const isVin = curry((vin, val) => {
 
 /**
  * @name isZip
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a correct American zip code
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -146,6 +165,8 @@ export const isZip = val => (/^\d{5}(-\d{4})?$/).test(val);
 
 /**
  * @name isCAPostalCode
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid CA postal Code
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -158,6 +179,8 @@ export const isCAPostalCode = val => (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d
 
 /**
  * @name isPhone
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid Phone number
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -170,6 +193,8 @@ export const isPhone = val => (/^[0-9]{10}$/).test(val.replace(/\W/g, ''));
 
 /**
  * @name isLicensePlate
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid Phone number
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
@@ -183,13 +208,15 @@ export const isLicensePlate = val => (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9
 
 /**
  * @name isVisaCard
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid Visa credit card
  * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const isVida = isVisaCard(true);
+ * const isVisa = isVisaCard(true);
  * const result = isVisa('4111111111111111'); // => true
  *
  * // OR
@@ -207,6 +234,8 @@ export const isVisaCard = curry((strict, val) => {
 
 /**
  * @name isVisaPanCard
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid Visa Pan credit card
  * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
@@ -233,6 +262,8 @@ export const isVisaPanCard = curry((strict, val) => {
 
 /**
  * @name isMasterCard
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid Master card
  * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
@@ -258,6 +289,8 @@ export const isMasterCard = curry((strict, val) => {
 
 /**
  * @name isAmexCard
+ * @since v3.2.0
+ * @category Is
  * @description Validates if a provided value is a valid American Express card
  * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
@@ -284,6 +317,8 @@ export const isAmexCard = curry((strict, val) => {
 
 /**
  * @name isAmericanExpressCard
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid American Express card (depricated)
  * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
@@ -305,6 +340,8 @@ export const isAmericanExpressCard = isAmexCard;
 
 /**
  * @name isDiscoverCard
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a valid American Express card
  * @param {Boolean} strict Determines if the card should be strictly validated
  * @param {String} val The value to validate against
@@ -331,6 +368,8 @@ export const isDiscoverCard = curry((strict, val) => {
 
 /**
  * @name isBelowMax
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a below the set maximum
  * @param {Number} m The max to validate against
  * @param {String} val The value to validate with
@@ -355,6 +394,8 @@ export const isBelowMax = curry((m, val) => {
 
 /**
  * @name isAboveMin
+ * @since v1.0.0
+ * @category Is
  * @description Validates if a provided value is a below the set minimum
  * @param {Number} m The min to validate against
  * @param {String} val The value to validate with
