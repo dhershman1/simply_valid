@@ -3,6 +3,7 @@
 ## v3.2.2
 
 - Rebuilt entire build process replacing webpack with a rollup build system this gives us a fairly large decrease in overall file size
+- Fixed some typos in documentation
 
 ## v3.2.1
 
