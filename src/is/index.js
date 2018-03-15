@@ -302,9 +302,9 @@ export const isMasterCard = curry((strict, val) => {
  *
  * // OR
  *
- * const result = isMasterCard(true, '341111111111111'); // => false
- * const result = isMasterCard(true)('341111111111111'); // => false
- * const result = isMasterCard(false)('341111111111111'); // => true
+ * const result = isAmexCard(true, '341111111111111'); // => false
+ * const result = isAmexCard(true)('341111111111111'); // => false
+ * const result = isAmexCard(false)('341111111111111'); // => true
  * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isAmexCard = curry((strict, val) => {
