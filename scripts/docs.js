@@ -30,7 +30,7 @@ const generateUsage = (name, loc) => {
       },
       'browser': {
         title: 'Browser',
-        code: `<script src="path/to/simply_valid/${name}/index.js"></script>`
+        code: `<script src="path/to/simply_valid/${loc}/index.js"></script>`
       }
     };
   }
