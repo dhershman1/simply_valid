@@ -1,14 +1,15 @@
 {
   "name": "simply_valid",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "a simple data driven validation utility library",
-  "main": "main/index.js",
+  "main": "simply-valid.min.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "prepack": "rollup -c && node scripts/docs.js",
+    "prepack": "rollup -c && rollup -c rollup.config.dist.js && node scripts/docs.js",
     "postpack": "npm run clean",
+    "build:main": "rollup -c rollup.config.dist.js",
     "build": "rollup -c",
     "clean": "node scripts/clean.js",
     "postpublish": "npm run clean",

@@ -5,7 +5,7 @@ import uglify from 'rollup-plugin-uglify';
 
 const buildEntry = () => {
   const results = [];
-  const paths = globby.sync(['src/*/index.js', '!src/_internals', '!src/esm']);
+  const paths = globby.sync(['src/*/index.js', '!src/main/index.js', '!src/_internals']);
 
   paths.forEach(p => {
     const { name, dir } = path.parse(p);
@@ -35,7 +35,6 @@ const buildEntry = () => {
             ],
             '@babel/preset-stage-2'
           ],
-          plugins: ['@babel/plugin-external-helpers'],
           exclude: 'node_modules/**',
           runtimeHelpers: true
         }),

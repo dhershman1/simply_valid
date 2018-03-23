@@ -1,5 +1,10 @@
 # Change Log v3
 
+## v3.2.3
+
+- Fixed build process for simplyValid validation using `.default`
+- Fixed needing to call main when using CDN style of simply_valid
+
 ## v3.2.2
 
 - Rebuilt entire build process replacing webpack with a rollup build system this gives us a fairly large decrease in overall file size
