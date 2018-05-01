@@ -33,7 +33,9 @@ const buildEntry = () => {
                 'modules': false
               }
             ],
-            '@babel/preset-stage-2'
+            ['@babel/preset-stage-2', {
+              'decoratorsLegacy': true
+            }]
           ],
           exclude: 'node_modules/**',
           runtimeHelpers: true

@@ -45,4 +45,5 @@ test('Test hasValue', t => {
   t.truthy(hasValue)
   t.truthy(hasValue('test'), 'Has a value')
   t.falsy(hasValue(''), 'Has no value')
+  t.truthy(hasValue(0), 'Still true for number zero values')
 })

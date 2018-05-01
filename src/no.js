@@ -7,9 +7,9 @@
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = noSpecials('AAAA'); // => true
- * const result = noSpecials('1122334') // => true
- * const result = noSpecials('AAA12!#$'); // => false
+ * noSpecials('AAAA'); // => true
+ * noSpecials('1122334') // => true
+ * noSpecials('AAA12!#$'); // => false
  */
 export const noSpecials = val => val.match(/\W/) === null
 
@@ -22,9 +22,9 @@ export const noSpecials = val => val.match(/\W/) === null
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = noNumbers('AAAA'); // => true
- * const result = noNumbers('1122334') // => false
- * const result = noNumbers('AAA12!#$'); // => false
+ * noNumbers('AAAA'); // => true
+ * noNumbers('1122334') // => false
+ * noNumbers('AAA12!#$'); // => false
  */
 export const noNumbers = val => val.match(/[0-9]/) === null
 
@@ -37,8 +37,8 @@ export const noNumbers = val => val.match(/[0-9]/) === null
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = noLetters('1122334') // => true
- * const result = noLetters('AAAA'); // => false
- * const result = noLetters('AAA12!#$'); // => false
+ * noLetters('1122334') // => true
+ * noLetters('AAAA'); // => false
+ * noLetters('AAA12!#$'); // => false
  */
 export const noLetters = val => val.match(/[A-Z]/i) === null

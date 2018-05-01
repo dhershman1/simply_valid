@@ -143,9 +143,6 @@ const validateSchema = schema =>
  * @property {Boolean} strictCard Whether or not we should run card validation strictly or not
  * @property {Number} max The max number used for max validation methods
  * @property {Number} min The min number used for min validation methods
- * @property {RegExp} vinPattern The RegExp pattern for vin validation
- * @property {RegExp} emailPattern The RegExp pattern for email validation
- * @property {RegExp} passwordPattern The RegExp pattern for password validation
  * @param {Any} data The data that we want to run the validation functionality against
  * @returns {Object} Returns an object with a isValid prop telling if validation was a success, and a story which is an array of objects of which validation methods failed
  *
@@ -192,10 +189,7 @@ const simplyValid = curry((options, data) => {
     schema: [],
     strictCard: false,
     max: Infinity,
-    min: -Infinity,
-    vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
-    emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
-    passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
+    min: -Infinity
   }
   const opts = extend({}, defaults, options)
 

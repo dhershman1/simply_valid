@@ -10,7 +10,7 @@
  * const result = hasValue('11'); // => true
  * const result = hasValue(''); // => false
  */
-export const hasValue = val => val && val.length !== 0
+export const hasValue = val => val === 0 || Boolean(val)
 
 /**
  * @name hasNumbers

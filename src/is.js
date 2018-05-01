@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 import curry from './_internals/curry'
 
 const luhn = val => {
@@ -12,7 +10,7 @@ const luhn = val => {
 
   while (len) {
     num = parseInt(stringVal.charAt(--len), 10)
-    sum += (bit ^= 1) ? numArr[num] : num // eslint-disable-line
+    sum += (bit ^= 1) ? numArr[num] : num
   }
 
   return sum && sum % 10 === 0
@@ -27,9 +25,10 @@ const luhn = val => {
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isDate('1/2/2019'); // => true
+ * isDate('1/2/2019'); // => true
  */
-export const isDate = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m).test(val)
+export const isDate = val =>
+  (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m).test(val)
 
 /**
  * @name isDateShort
@@ -40,8 +39,8 @@ export const isDate = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9]
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isDateShort('1/19'); // => true
- * const result = isDateShort('13/19'); // => false
+ * isDateShort('1/19'); // => true
+ * isDateShort('13/19'); // => false
  */
 export const isDateShort = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m).test(val)
 
@@ -54,40 +53,27 @@ export const isDateShort = val => (/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2]
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isDateProper('2019/1/2'); // => true
+ * isDateProper('2019/1/2'); // => true
  */
-export const isDateProper = val => (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val)
+export const isDateProper = val =>
+  (/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m).test(val)
 
 /**
  * @name isEmail
  * @since v1.0.0
  * @category Is
  * @description Validates if a email is valid or not using the email regex
- * @param {RegExp|String} email Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const email = isEmail('default');
- * const result = email('dusty@gmail.com'); // => true
- *
- * // OR
- *
- * const result = isEmail('default', 'dusty@gmail.com'); // => true
- * const result = isEmail('default')('dusty@gmail.com'); // => true
+ * isEmail('dusty@gmail.com'); // => true
  */
-export const isEmail = curry((email, val) => {
+export const isEmail = val => {
   const emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i
 
-  if (email === 'default') {
-    return emailRegex.test(val)
-  }
-  if (email.emailPattern) {
-    return email.emailPattern.test(val)
-  }
-
-  return email.test(val)
-})
+  return emailRegex.test(val)
+}
 
 /**
  * @name isNumber
@@ -98,8 +84,8 @@ export const isEmail = curry((email, val) => {
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isNumber('2'); // => true
- * const result = isNumber(2); // => true
+ * isNumber('2'); // => true
+ * isNumber(2); // => true
  */
 export const isNumber = val => !isNaN(val)
 
@@ -112,9 +98,9 @@ export const isNumber = val => !isNaN(val)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isPositive('2'); // => true
- * const result = isPositive(2); // => true
- * const result = isPositive(-2); // => false
+ * isPositive('2'); // => true
+ * isPositive(2); // => true
+ * isPositive(-2); // => false
  */
 export const isPositive = val => !isNaN(val) && Number(val) >= 0
 
@@ -127,9 +113,9 @@ export const isPositive = val => !isNaN(val) && Number(val) >= 0
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isNegative('-2'); // => true
- * const result = isNegative(-2); // => true
- * const result = isNegative(2); // => false
+ * isNegative('-2'); // => true
+ * isNegative(-2); // => true
+ * isNegative(2); // => false
  */
 export const isNegative = val => !isNaN(val) && Number(val) < 0
 
@@ -138,31 +124,17 @@ export const isNegative = val => !isNaN(val) && Number(val) < 0
  * @since v1.0.0
  * @category Is
  * @description Validates if a provided value is a valid vin number
- * @param {RegExp|String} vin Accepts a RegexExp or the 'default' string to use the default regex
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const vin = isVin('default');
- * const result = vin('JM1CW2BL8C0127808'); // => true
- *
- * // OR
- *
- * const result = isVin('default', 'JM1CW2BL8C0127808'); // => true
- * const result = isVin('default')('JM1CW2BL8C0127808'); // => true
+ * vin('JM1CW2BL8C0127808'); // => true
  */
-export const isVin = curry((vin, val) => {
+export const isVin = val => {
   const vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i
 
-  if (vin === 'default') {
-    return vinRegex.test(val)
-  }
-  if (vin.vinPattern) {
-    return vin.vinPattern.test(val)
-  }
-
-  return vin.test(val)
-})
+  return vinRegex.test(val)
+}
 
 /**
  * @name isZip
@@ -173,8 +145,8 @@ export const isVin = curry((vin, val) => {
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isZip('44444'); // => true
- * const result = isZip('232'); // => false
+ * isZip('44444'); // => true
+ * isZip('232'); // => false
  */
 export const isZip = val => (/^\d{5}(-\d{4})?$/).test(val)
 
@@ -187,8 +159,8 @@ export const isZip = val => (/^\d{5}(-\d{4})?$/).test(val)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isCAPostalCode('K1A0B1'); // => true
- * const result = isCAPostalCode('44444'); // => false
+ * isCAPostalCode('K1A0B1'); // => true
+ * isCAPostalCode('44444'); // => false
  */
 export const isCAPostalCode = val => (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i).test(val)
 
@@ -201,8 +173,8 @@ export const isCAPostalCode = val => (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isPhone('555-666-7777'); // => true
- * const result = isPhone('5556667777'); // => true
+ * isPhone('555-666-7777'); // => true
+ * isPhone('5556667777'); // => true
  */
 export const isPhone = val => (/^[0-9]{10}$/).test(val.replace(/\W/g, ''))
 
@@ -215,9 +187,9 @@ export const isPhone = val => (/^[0-9]{10}$/).test(val.replace(/\W/g, ''))
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = isLicensePlate('SSS1829'); // => true
- * const result = isLicensePlate('SSS-1829'); // => true
- * const result = isLicensePlate('SSSS 188'); // => false
+ * isLicensePlate('SSS1829'); // => true
+ * isLicensePlate('SSS-1829'); // => true
+ * isLicensePlate('SSSS 188'); // => false
  */
 export const isLicensePlate = val => (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i).test(val)
 
@@ -232,12 +204,12 @@ export const isLicensePlate = val => (/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9
  *
  * @example
  * const isVisa = isVisaCard(true);
- * const result = isVisa('4111111111111111'); // => true
+ * isVisa('4111111111111111'); // => true
  *
  * // OR
  *
- * const result = isVisaCard(true, '4111111111111111'); // => true
- * const result = isVisaCard(true)('4111111111111111'); // => true
+ * isVisaCard(true, '4111111111111111'); // => true
+ * isVisaCard(true)('4111111111111111'); // => true
  */
 export const isVisaCard = curry((strict, val) => {
   if (strict) {
@@ -258,13 +230,13 @@ export const isVisaCard = curry((strict, val) => {
  *
  * @example
  * const visaPan = isVisaPanCard(true);
- * const result = visaPan('4111111111111111222'); // => false
+ * visaPan('4111111111111111222'); // => false
  *
  * // OR
  *
- * const result = isVisaPanCard(true, '4111111111111111222'); // => false
- * const result = isVisaPanCard(true)('4111111111111111222'); // => false
- * const result = isVisaPanCard(false)('4111111111111111222'); // => true
+ * isVisaPanCard(true, '4111111111111111222'); // => false
+ * isVisaPanCard(true)('4111111111111111222'); // => false
+ * isVisaPanCard(false)('4111111111111111222'); // => true
  * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isVisaPanCard = curry((strict, val) => {
@@ -286,12 +258,12 @@ export const isVisaPanCard = curry((strict, val) => {
  *
  * @example
  * const master = isMasterCard(true);
- * const result = master('5511111111111111'); // => false
+ * master('5511111111111111'); // => false
  *
  * // OR
  *
- * const result = isMasterCard(true, '5511111111111111'); // => false
- * const result = isMasterCard(true)('5511111111111111'); // => false
+ * isMasterCard(true, '5511111111111111'); // => false
+ * isMasterCard(true)('5511111111111111'); // => false
  * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isMasterCard = curry((strict, val) => {
@@ -313,13 +285,13 @@ export const isMasterCard = curry((strict, val) => {
  *
  * @example
  * const amex = isAmexCard(true);
- * const result = amex('341111111111111'); // => false
+ * amex('341111111111111'); // => false
  *
  * // OR
  *
- * const result = isAmexCard(true, '341111111111111'); // => false
- * const result = isAmexCard(true)('341111111111111'); // => false
- * const result = isAmexCard(false)('341111111111111'); // => true
+ * isAmexCard(true, '341111111111111'); // => false
+ * isAmexCard(true)('341111111111111'); // => false
+ * isAmexCard(false)('341111111111111'); // => true
  * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isAmexCard = curry((strict, val) => {
@@ -342,13 +314,13 @@ export const isAmexCard = curry((strict, val) => {
  *
  * @example
  * const isAmex = isAmericanExpressCard(true);
- * const result = isAmex('341111111111111'); // => false
+ * isAmex('341111111111111'); // => false
  *
  * // OR
  *
- * const result = isAmericanExpressCard(true, '341111111111111'); // => false
- * const result = isAmericanExpressCard(true)('341111111111111'); // => false
- * const result = isAmericanExpressCard(false, '341111111111111'); // => true
+ * isAmericanExpressCard(true, '341111111111111'); // => false
+ * isAmericanExpressCard(true)('341111111111111'); // => false
+ * isAmericanExpressCard(false, '341111111111111'); // => true
  * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isAmericanExpressCard = isAmexCard
@@ -364,13 +336,13 @@ export const isAmericanExpressCard = isAmexCard
  *
  * @example
  * const discover = isDiscoverCard(true);
- * const result = discover('6111111111111111'); // => false
+ * discover('6111111111111111'); // => false
  *
  * // OR
  *
- * const result = isDiscoverCard(true, '6111111111111111'); // => false
- * const result = isDiscoverCard(true)('6111111111111111'); // => false
- * const result = isDiscoverCard(false, '6111111111111111'); // => true
+ * isDiscoverCard(true, '6111111111111111'); // => false
+ * isDiscoverCard(true)('6111111111111111'); // => false
+ * isDiscoverCard(false, '6111111111111111'); // => true
  * // Since the provided number is a fake the luhn algorithm will fail it
  */
 export const isDiscoverCard = curry((strict, val) => {
@@ -392,12 +364,12 @@ export const isDiscoverCard = curry((strict, val) => {
  *
  * @example
  * const below = isBelowMax(20);
- * const result = below('19'); // => true
+ * below('19'); // => true
  *
  * // OR
  *
- * const result = isBelowMax(20, '19'); // => true
- * const result = isBelowMax(20)('19'); // => true
+ * isBelowMax(20, '19'); // => true
+ * isBelowMax(20)('19'); // => true
  */
 export const isBelowMax = curry((m, val) => {
   if (m.max) {
@@ -418,12 +390,12 @@ export const isBelowMax = curry((m, val) => {
  *
  * @example
  * const above = isAboveMin(15);
- * const result = above('19'); // => true
+ * above('19'); // => true
  *
  * // OR
  *
- * const result = isAboveMin(15, '19'); // => true
- * const result = isAboveMin(15)('19'); // => true
+ * isAboveMin(15, '19'); // => true
+ * isAboveMin(15)('19'); // => true
  */
 export const isAboveMin = curry((m, val) => {
   if (m.min) {

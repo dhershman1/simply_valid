@@ -57,7 +57,7 @@ function _nonIterableRest() {
 }
 
 var hasValue = function hasValue(val) {
-  return val && val.length !== 0;
+  return val === 0 || Boolean(val);
 };
 var hasNumbers = function hasNumbers(val) {
   return /[0-9]/.test(val);
@@ -109,16 +109,10 @@ var isDateShort = function isDateShort(val) {
 var isDateProper = function isDateProper(val) {
   return /^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m.test(val);
 };
-var isEmail = curry(function (email, val) {
+var isEmail = function isEmail(val) {
   var emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
-  if (email === 'default') {
-    return emailRegex.test(val);
-  }
-  if (email.emailPattern) {
-    return email.emailPattern.test(val);
-  }
-  return email.test(val);
-});
+  return emailRegex.test(val);
+};
 var isNumber = function isNumber(val) {
   return !isNaN(val);
 };
@@ -128,16 +122,10 @@ var isPositive = function isPositive(val) {
 var isNegative = function isNegative(val) {
   return !isNaN(val) && Number(val) < 0;
 };
-var isVin = curry(function (vin, val) {
+var isVin = function isVin(val) {
   var vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
-  if (vin === 'default') {
-    return vinRegex.test(val);
-  }
-  if (vin.vinPattern) {
-    return vin.vinPattern.test(val);
-  }
-  return vin.test(val);
-});
+  return vinRegex.test(val);
+};
 var isZip = function isZip(val) {
   return /^\d{5}(-\d{4})?$/.test(val);
 };
@@ -211,16 +199,10 @@ var meetsCVNAmex = function meetsCVNAmex(val) {
 var meetsTreadDepth = function meetsTreadDepth(val) {
   return /^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i.test(val);
 };
-var meetsPassReq = curry(function (pass, val) {
+var meetsPassReq = function meetsPassReq(val) {
   var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
-  if (pass === 'default') {
-    return passwordRegex.test(val);
-  }
-  if (pass.passwordPattern) {
-    return pass.passwordPattern.test(val);
-  }
-  return pass.test(val);
-});
+  return passwordRegex.test(val);
+};
 
 var noSpecials = function noSpecials(val) {
   return val.match(/\W/) === null;
@@ -434,10 +416,7 @@ var simplyValid = curry(function (options, data) {
     schema: [],
     strictCard: false,
     max: Infinity,
-    min: -Infinity,
-    vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
-    emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
-    passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
+    min: -Infinity
   };
   var opts = extend({}, defaults, options);
   setMethods = setup(opts);

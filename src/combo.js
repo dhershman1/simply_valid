@@ -35,8 +35,8 @@ const runner = (val, methods) => {
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = creditCard('4111111111111111'); // => true
- * const result = creditCard('AB4111111111111111'); // => false
+ * creditCard('4111111111111111'); // => true
+ * creditCard('AB4111111111111111'); // => false
  */
 export const creditCard = val => runner(val, [
   isAmexCard(true),
@@ -54,9 +54,9 @@ export const creditCard = val => runner(val, [
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = date('01/19'); // => true
- * const result = date('01/15/2019'); // => true
- * const result = date('2019/01/05'); // => true
+ * date('01/19'); // => true
+ * date('01/15/2019'); // => true
+ * date('2019/01/05'); // => true
  */
 export const date = val => runner(val, [isDate, isDateShort, isDateProper])
 
@@ -69,9 +69,9 @@ export const date = val => runner(val, [isDate, isDateShort, isDateProper])
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = cvn('333'); // => true
- * const result = cvn('4444'); // => true
- * const result = cvn('55555'); // => false
+ * cvn('333'); // => true
+ * cvn('4444'); // => true
+ * cvn('55555'); // => false
  */
 export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex])
 
@@ -84,7 +84,7 @@ export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex])
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
- * const result = zipOrPostal('55555'); // => true
- * const result = zipOrPostal('K1A0B1'); // => true
+ * zipOrPostal('55555'); // => true
+ * zipOrPostal('K1A0B1'); // => true
  */
 export const zipOrPostal = val => runner(val, [isZip, isCAPostalCode])

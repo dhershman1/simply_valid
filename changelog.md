@@ -1,6 +1,12 @@
 # Change Log v3
 
-## v3.2.4 (Unreleased)
+## v4.0.0 (Unreleased)
+
+### BREAKING CHANGES
+
+- `isVin`, `isEmail`, and `meetsPassReq` no longer accept a regex overwrite the built in ones are optimized and specialized for each of these fields
+- Regex options removed from available options lists to send in for the same as above reasons
+- `hasValue` (As stated in the fixed section) will no longer consider the number or sting 0 as a falsey value
 
 ### New
 
@@ -11,6 +17,12 @@
 ### Updated
 
 - Updated documentation scripts to be faster and have a little more info
+- Slight documentation cleanup
+
+### Fixed
+
+- `hasValue` Rule will no longer treat the number 0 as a falsy value
+- Some documentation pieces had copy/paste errors that needed addressed
 
 ## v3.2.3
 
