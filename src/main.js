@@ -143,6 +143,8 @@ const validateSchema = schema =>
  * @property {Boolean} strictCard Whether or not we should run card validation strictly or not
  * @property {Number} max The max number used for max validation methods
  * @property {Number} min The min number used for min validation methods
+ * @property {Number} maxLen The maximum length a value can be
+ * @property {Number} minLen The minimum length a value can be
  * @param {Any} data The data that we want to run the validation functionality against
  * @returns {Object} Returns an object with a isValid prop telling if validation was a success, and a story which is an array of objects of which validation methods failed
  *
@@ -189,7 +191,9 @@ const simplyValid = curry((options, data) => {
     schema: [],
     strictCard: false,
     max: Infinity,
-    min: -Infinity
+    min: -Infinity,
+    maxLen: 100,
+    minLen: 1
   }
   const opts = extend({}, defaults, options)
 

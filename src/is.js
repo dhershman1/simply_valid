@@ -17,6 +17,96 @@ const luhn = val => {
 }
 
 /**
+ * @name isNotTooShort
+ * @since v4.0.0
+ * @category Is
+ * @description Validates if the value is longer or equal to the minLen option
+ * @param {Number} rule The length the value needs to be greater than or equal to
+ * @param {String} val The value to validate against
+ * @returns {Boolean} Returns true or false based on the validation test
+ *
+ * @example
+ * isNotTooShort(5, 'the cow ate grass'); // => true
+ * isNotTooShort(5, 'the'); // => false
+ *
+ * // OR
+ *
+ * const check = isNotTooShort(5);
+ *
+ * check('the cow ate grass'); // => true
+ * check('the'); // => false
+ */
+export const isNotTooShort = curry((rule, val) => {
+  if (rule.minLen) {
+    return val.length >= rule.minLen
+  }
+
+  return val.length >= rule
+})
+
+/**
+ * @name isNotTooLong
+ * @since v4.0.0
+ * @category Is
+ * @description Validates if the value is shorter or equal to the maxLen option
+ * @param {Number} rule The length the value needs to be Less than or equal to
+ * @param {String} val The value to validate against
+ * @returns {Boolean} Returns true or false based on the validation test
+ *
+ * @example
+ * isNotTooLong(5, 'the'); // => true
+ * isNotTooLong(5, 'the cow ate grass'); // => false
+ *
+ * // OR
+ *
+ * const check = isNotTooLong(5);
+ *
+ * check('the'); // => true
+ * check('the cow ate grass'); // => false
+ */
+export const isNotTooLong = curry((rule, val) => {
+  if (rule.maxLen) {
+    return val.length <= rule.maxLen
+  }
+
+  return val.length <= rule
+})
+
+/**
+ * @name isCorrectLength
+ * @since v4.0.0
+ * @category Is
+ * @description Validates if the value is between or equal to the maxLen and minLen options
+ * @param {Object} rule Object containing the two numbers to stay between
+ * @param {Number} rule.maxLen The length the value needs to be Less than or equal to
+ * @param {Number} rule.minLen The length the value needs to be greater than or equal to
+ * @param {String} val The value to validate against
+ * @returns {Boolean} Returns true or false based on the validation test
+ *
+ * @example
+ * isCorrectLength({
+ *  maxLen: 10,
+ *  minLen: 1
+ * }, 'the'); // => true
+ * isCorrectLength({
+ *  maxLen: 10,
+ *  minLen: 1
+ * }, 'the cow ate grass'); // => false
+ *
+ * // OR
+ *
+ * const check = isCorrectLength({
+ *  maxLen: 10,
+ *  minLen: 1
+ * });
+ *
+ * check('the'); // => true
+ * check('the cow ate grass'); // => false
+ */
+export const isCorrectLength = curry(({ maxLen, minLen }, val) =>
+  isNotTooShort(minLen, val) && isNotTooLong(maxLen, val))
+
+/**
  * @name isDate
  * @since v1.0.0
  * @category Is
@@ -301,29 +391,6 @@ export const isAmexCard = curry((strict, val) => {
 
   return (/^3(4|7)[0-9]{13}$/).test(val)
 })
-
-/**
- * @name isAmericanExpressCard
- * @since v1.0.0
- * @category Is
- * @description Validates if a provided value is a valid American Express card (depricated)
- * @param {Boolean} strict Determines if the card should be strictly validated
- * @param {String} val The value to validate against
- * @returns {Boolean} Returns true or false based on the validation test
- * @deprecated in favor of isAmexCard
- *
- * @example
- * const isAmex = isAmericanExpressCard(true);
- * isAmex('341111111111111'); // => false
- *
- * // OR
- *
- * isAmericanExpressCard(true, '341111111111111'); // => false
- * isAmericanExpressCard(true)('341111111111111'); // => false
- * isAmericanExpressCard(false, '341111111111111'); // => true
- * // Since the provided number is a fake the luhn algorithm will fail it
- */
-export const isAmericanExpressCard = isAmexCard
 
 /**
  * @name isDiscoverCard

@@ -1,8 +1,9 @@
 import {
   isAboveMin,
-  isAmericanExpressCard,
+  isAmexCard,
   isBelowMax,
   isCAPostalCode,
+  isCorrectLength,
   isDate,
   isDateProper,
   isDateShort,
@@ -11,6 +12,8 @@ import {
   isLicensePlate,
   isMasterCard,
   isNegative,
+  isNotTooLong,
+  isNotTooShort,
   isNumber,
   isPhone,
   isPositive,
@@ -152,13 +155,13 @@ test('Testing isMasterCard', t => {
   t.falsy(isMasterCard(false)('5511111111111111GG'), 'Invalid to short')
 })
 
-test('Testing isAmericanExpressCard', t => {
-  t.truthy(isAmericanExpressCard(false)('341111111111111'), 'Returned valid format')
-  t.falsy(isAmericanExpressCard(false)('381111111111111'), 'Invalid 2nd digit (not 4 or 7)')
-  t.falsy(isAmericanExpressCard(false)('541111111111111'), 'Invalid 1st digit (not 3)')
-  t.falsy(isAmericanExpressCard(false)('3411111111111111'), 'Invalid to long')
-  t.falsy(isAmericanExpressCard(false)('34111111111111'), 'Invalid to short')
-  t.falsy(isAmericanExpressCard(false)('34111111111111GG'), 'Invalid to short')
+test('Testing isAmexCard', t => {
+  t.truthy(isAmexCard(false)('341111111111111'), 'Returned valid format')
+  t.falsy(isAmexCard(false)('381111111111111'), 'Invalid 2nd digit (not 4 or 7)')
+  t.falsy(isAmexCard(false)('541111111111111'), 'Invalid 1st digit (not 3)')
+  t.falsy(isAmexCard(false)('3411111111111111'), 'Invalid to long')
+  t.falsy(isAmexCard(false)('34111111111111'), 'Invalid to short')
+  t.falsy(isAmexCard(false)('34111111111111GG'), 'Invalid to short')
 })
 
 test('Testing isDiscoverCard', t => {
@@ -181,4 +184,46 @@ test('Testing isBelowMax', t => {
 test('Testing isAboveMin', t => {
   t.truthy(isAboveMin(4)('5'), 'Returned OK This is above min')
   t.falsy(isAboveMin(4)('3'), 'Invalid below min')
+})
+
+test('Testing isNotTooShort', t => {
+  const tst = isNotTooShort(1)
+
+  t.truthy(tst('The brown Cow'))
+  t.falsy(tst(''))
+  t.falsy(isNotTooShort(5, 'the'))
+  t.truthy(isNotTooShort(5, 'Brown Cow'))
+})
+
+test('Testing isNotTooLong', t => {
+  const tst = isNotTooLong(10)
+
+  t.truthy(tst('The Cow'))
+  t.falsy(tst('The Cow Ate Grass'))
+  t.truthy(isNotTooLong(15, 'Another Cow'))
+  t.falsy(isNotTooLong(5, 'Another Cow'))
+})
+
+test('Testing isCorrectLength', t => {
+  const tst = isCorrectLength({
+    maxLen: 10,
+    minLen: 5
+  })
+
+  t.truthy(tst('The Cow'))
+  t.falsy(tst('The'))
+  t.falsy(tst('The Cow Ate Grass'))
+
+  t.truthy(isCorrectLength({
+    maxLen: 15,
+    minLen: 3
+  }, 'The Cow'))
+  t.falsy(isCorrectLength({
+    maxLen: 10,
+    minLen: 3
+  }, 'The Cow Ate Grass'))
+  t.falsy(isCorrectLength({
+    maxLen: 10,
+    minLen: 3
+  }, 'At'))
 })

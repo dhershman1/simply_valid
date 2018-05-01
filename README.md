@@ -46,9 +46,8 @@ You can find the changelog here: https://github.com/dhershman1/simply_valid/blob
 - `strictCard` - `Boolean` - If credit card validation should use the `luhn` algorithm strictly
 - `max` - `Number`: The maximum of a value
 - `min` - `Number`: The minimum of a value
-- `emailPattern` - `Regex`: The pattern used to match emails (There is a default pattern set already)
-- `vinPattern` - `Regex`: The pattern used to match VINs (There is a default pattern set already)
-- `passwordPattern` - `Regex`: The pattern used to validate a password string (Has a default pattern set already)
+- `maxLen` - `Number`: The maximum length of a value
+- `minLen` - `Number`: The minimum length of a value
 
 ## Defaults
 
@@ -58,9 +57,8 @@ const defaults = {
   strictCard: true,
   max: Infinity,
   min: -Infinity,
-  vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
-  emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
-  passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
+  maxLen: 100,
+  minLen: 1
 };
 ```
 
@@ -230,7 +228,7 @@ import {hasNumbers} from 'simply_valid/has';
 hasNumber('CoolKid112');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'hasNumbers'
@@ -249,7 +247,7 @@ import {hasLetter} from 'simply_valid/has';
 hasLetter('CoolKid112');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'hasLetters'
@@ -268,7 +266,7 @@ import {hasNumbersOrSpecials} from 'simply_valid/has';
 hasNumbersOrSpecials('CoolKid112');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 const validation = simplyValid({
   schema: 'hasNumbersOrSpecials'
 });
@@ -286,7 +284,7 @@ import {hasSpecialCharacters} from 'simply_valid/has';
 hasSpecialCharacters('CoolKid112');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 const validation = simplyValid({
   schema: 'hasSpecialCharacters'
 });
@@ -304,7 +302,7 @@ import {hasUpperAndLowerCase} from 'simply_valid/has';
 hasUpperAndLowerCase('CoolKid112');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 const validation = simplyValid({
   schema: 'hasUpperAndLowerCase'
 });
@@ -313,6 +311,75 @@ validation('CoolKid112');
 ```
 
 ## **is** Methods
+
+### isCorrectLength
+Validates if the value is between or equal to the `maxLen` and `minLen` options
+
+#### Usage
+```js
+import {isCorrectLength} from 'simply_valid/is';
+
+isCorrectLength({
+  maxLen: 15,
+  minLen: 3
+}, 'The Cow') // => true
+isCorrectLength({
+  maxLen: 10,
+  minLen: 3
+}, 'The Cow Ate Grass') // => false
+
+// OR
+import simplyValid from 'simply_valid';
+
+const validation = simplyValid({
+  schema: 'isCorrectLength',
+  maxLen: 100,
+  minLen: 1
+});
+
+validation('the cow ate grass');
+```
+
+### isNotTooLong
+Validates if the value is shorter or equal to the `maxLen` option
+
+#### Usage
+```js
+import {isNotTooLong} from 'simply_valid/is';
+
+isNotTooLong(5, 'the'); // => true
+isNotTooLong(5, 'the cow ate grass'); // => false
+
+// OR
+import simplyValid from 'simply_valid';
+
+const validation = simplyValid({
+  schema: 'isNotTooLong'
+});
+
+validation('the cow ate grass');
+```
+
+
+### isNotTooShort
+Validates if the value is longer or equal to the `minLen` option
+
+#### Usage
+```js
+import {isNotTooShort} from 'simply_valid/is';
+
+isNotTooShort(5, 'the cow ate grass'); // => true
+isNotTooShort(5, 'the'); // => false
+
+// OR
+import simplyValid from 'simply_valid';
+
+const validation = simplyValid({
+  schema: 'isNotTooShort'
+});
+
+validation('the cow ate grass');
+```
 
 ### isDate
 Checks if the value is a valid date (US)
@@ -324,7 +391,7 @@ import {isDate} from 'simply_valid/is';
 isDate('03-28-2017');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isDate'
@@ -343,7 +410,7 @@ import {isDateShort} from 'simply_valid/is';
 isDateShort('03-28');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isDateShort'
@@ -362,7 +429,7 @@ import {isDateProper} from 'simply_valid/is';
 isDateProper('2017-03-28');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isDateProper'
@@ -385,7 +452,7 @@ import {isEmail} from 'simply_valid/is';
 isEmail()('coolKid112@aim.com');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isEmail'
@@ -404,7 +471,7 @@ import {isNumber} from 'simply_valid/is';
 isNumber('112');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isNumber'
@@ -423,7 +490,7 @@ import {isPositive} from 'simply_valid/is';
 isPositive('112');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isPositive'
@@ -442,7 +509,7 @@ import {isNegative} from 'simply_valid/is';
 isNegative('-122');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isNegative'
@@ -461,7 +528,7 @@ import {isLicensePlate} from 'simply_valid/is';
 isLicensePlate('SSS1829');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isLicensePlate'
@@ -480,7 +547,7 @@ import {isPhone} from 'simply_valid/is';
 isPhone('555-555-5555');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isPhone'
@@ -499,7 +566,7 @@ import {isZip} from 'simply_valid/is';
 isZip('55555');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isZip'
@@ -518,7 +585,7 @@ import {isCAPostalCode} from 'simply_valid/is';
 isCAPostalCode('K1A0B1');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isCAPostalCode'
@@ -542,7 +609,7 @@ import {isVin} from 'simply_valid/is';
 isVin(vinRegex)('JM1CW2BL8C0127808');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isVin'
@@ -570,7 +637,7 @@ const validate = isVisaCard(false);
 validate('4111111111111111');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isVisaCard'
@@ -598,7 +665,7 @@ const validate = isVisaPanCard(false);
 validate('4111111111111111222');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isVisaPanCard'
@@ -626,7 +693,7 @@ const validate = isMasterCard(false);
 validate('5511111111111111');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 
 const validation = simplyValid({
@@ -637,7 +704,7 @@ const validation = simplyValid({
 validation('5511111111111111');
 ```
 
-### isAmericanExpressCard
+### isAmexCard
 Checks if the value is a proper American Express card format
 
 #### Arguments
@@ -646,20 +713,20 @@ Checks if the value is a proper American Express card format
 
 #### Usage
 ```js
-import {isAmericanExpressCard} from 'simply_valid/is';
+import {isAmexCard} from 'simply_valid/is';
 
-isAmericanExpressCard(false)('34111111111111');
+isAmexCard(false)('34111111111111');
 
 // OR set it and re use
-const validate = isAmericanExpressCard(false);
+const validate = isAmexCard(false);
 
 validate('34111111111111');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
-  schema: 'isAmericanExpressCard',
+  schema: 'isAmexCard',
   strictCard: false
 });
 
@@ -685,7 +752,7 @@ const validate = isDiscoverCard(false);
 validate('6111111111111111');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isDiscoverCard',
@@ -715,7 +782,7 @@ validate('12');
 validate('18');
 
 // OR setup a schema
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isBelowMax'
@@ -746,7 +813,7 @@ validate('3');
 
 
 // OR setup a schema
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'isAboveMin',
@@ -774,7 +841,7 @@ meetsMinMax('15', {
 });
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   min: 1,
@@ -796,7 +863,7 @@ meetsYearStandard('2017');
 meetsYearStandard('17');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'meetsYearStandard'
@@ -816,7 +883,7 @@ import {meetsCVN} from 'simply_valid/meets';
 meetsCVN('333');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'meetsCVN'
@@ -835,7 +902,7 @@ import {meetsCVNAmex} from 'simply_valid/meets';
 meetsCVNAmex('3343');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'meetsCVNAmex'
@@ -854,7 +921,7 @@ import {meetsTreadDepth} from 'simply_valid/meets';
 meetsTreadDepth('22');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'meetsTreadDepth'
@@ -880,7 +947,7 @@ const validate = meetsPassReq(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A
 validate('cOol12$d');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'meetsPassReq'
@@ -901,7 +968,7 @@ import {noSpecials} from 'simply_valid/no';
 noSpecials('Chicken');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'noSpecials'
@@ -920,7 +987,7 @@ import {noNumbers} from 'simply_valid/no';
 noNumbers('Chicken');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'noNumbers'
@@ -939,7 +1006,7 @@ import {noLetters} from 'simply_valid/no';
 noLetters('1123');
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'noLetters'
@@ -967,7 +1034,7 @@ import { creditCard } from 'simply_valid/combo';
 creditCard('4012888888881881'); //=> true
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'creditCard'
@@ -993,7 +1060,7 @@ date('01/18'); //=> true
 date('01/20/18'); //=> true
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'date'
@@ -1019,7 +1086,7 @@ cvn('333'); //=> true
 cvn('3333'); //=> true
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'cvn'
@@ -1045,7 +1112,7 @@ zipOrPostal('44444'); //=> true
 zipOrPostal('K1A0B1'); //=> true
 
 // OR
-import {simplyValid} from 'simply_valid';
+import simplyValid from 'simply_valid';
 
 const validation = simplyValid({
   schema: 'zipOrPostal'

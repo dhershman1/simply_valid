@@ -100,6 +100,23 @@ var luhn = function luhn(val) {
   }
   return sum && sum % 10 === 0;
 };
+var isNotTooShort = curry(function (rule, val) {
+  if (rule.minLen) {
+    return val.length >= rule.minLen;
+  }
+  return val.length >= rule;
+});
+var isNotTooLong = curry(function (rule, val) {
+  if (rule.maxLen) {
+    return val.length <= rule.maxLen;
+  }
+  return val.length <= rule;
+});
+var isCorrectLength = curry(function (_ref, val) {
+  var maxLen = _ref.maxLen,
+      minLen = _ref.minLen;
+  return isNotTooShort(minLen, val) && isNotTooLong(maxLen, val);
+});
 var isDate = function isDate(val) {
   return /^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m.test(val);
 };
@@ -162,7 +179,6 @@ var isAmexCard = curry(function (strict, val) {
   }
   return /^3(4|7)[0-9]{13}$/.test(val);
 });
-var isAmericanExpressCard = isAmexCard;
 var isDiscoverCard = curry(function (strict, val) {
   if (strict) {
     return luhn(val);
@@ -244,6 +260,9 @@ hasLetters: hasLetters,
 hasSpecialCharacters: hasSpecialCharacters,
 hasNumbersOrSpecials: hasNumbersOrSpecials,
 hasUpperAndLowerCase: hasUpperAndLowerCase,
+isNotTooShort: isNotTooShort,
+isNotTooLong: isNotTooLong,
+isCorrectLength: isCorrectLength,
 isDate: isDate,
 isDateShort: isDateShort,
 isDateProper: isDateProper,
@@ -260,7 +279,6 @@ isVisaCard: isVisaCard,
 isVisaPanCard: isVisaPanCard,
 isMasterCard: isMasterCard,
 isAmexCard: isAmexCard,
-isAmericanExpressCard: isAmericanExpressCard,
 isDiscoverCard: isDiscoverCard,
 isBelowMax: isBelowMax,
 isAboveMin: isAboveMin,
@@ -416,7 +434,9 @@ var simplyValid = curry(function (options, data) {
     schema: [],
     strictCard: false,
     max: Infinity,
-    min: -Infinity
+    min: -Infinity,
+    maxLen: 100,
+    minLen: 1
   };
   var opts = extend({}, defaults, options);
   setMethods = setup(opts);
