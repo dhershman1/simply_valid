@@ -1,8 +1,8 @@
 {
   "name": "simply_valid",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "a simple data driven validation utility library",
-  "main": "simply-valid.min.js",
+  "main": "dist/simply-valid.min.js",
   "directories": {
     "test": "tests"
   },
@@ -15,7 +15,8 @@
     "postpublish": "npm run clean",
     "test:watch": "ava --watch",
     "test": "ava",
-    "lint": "eslint ./src"
+    "lint": "standard ./src/*.js",
+    "fix": "standard --fix ./test/*.js"
   },
   "repository": {
     "type": "git",
@@ -49,11 +50,14 @@
     "jsdoc-to-markdown": "3.0.3",
     "rollup": "0.57.0",
     "rollup-plugin-babel": "4.0.0-beta.2",
-    "rollup-plugin-uglify": "3.0.0"
+    "rollup-plugin-cleanup": "^3.0.0-beta.1",
+    "rollup-plugin-filesize": "^1.5.0",
+    "rollup-plugin-uglify": "3.0.0",
+    "standard": "11.0.1"
   },
   "ava": {
     "files": [
-      "src/**/tests.js"
+      "test/*.js"
     ],
     "require": [
       "@babel/register"
@@ -68,5 +72,11 @@
         ]
       }
     }
+  },
+  "standard": {
+    "ignore": [
+      "dist/*",
+      "docs.js"
+    ]
   }
 }

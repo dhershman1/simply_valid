@@ -1,5 +1,17 @@
 # Change Log v3
 
+## v3.2.4 (Unreleased)
+
+### New
+
+- Extreme Architecture cleanup, flattened all of the file systems
+- Improved Flow/Optimizations
+- Converted from `eslint` to `standardjs`
+
+### Updated
+
+- Updated documentation scripts to be faster and have a little more info
+
 ## v3.2.3
 
 - Fixed build process for simplyValid validation using `.default`

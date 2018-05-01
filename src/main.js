@@ -1,36 +1,69 @@
 /* eslint-disable max-len */
-import * as methods from '../esm/index';
-import curry from '../_internals/curry/index';
-import each from '../_internals/each/index';
-import ensureArray from '../_internals/ensureArray/index';
-import extend from '../_internals/extend/index';
-import format from '../_internals/format/index';
-import isObject from '../_internals/isObject/index';
-import validateSchema from '../_internals/validateSchema/index';
+import * as methods from './index'
+import curry from './_internals/curry'
+import each from './_internals/each'
+import ensureArray from './_internals/ensure-array'
+import isObject from './_internals/isObject'
 
-let setMethods = {};
+let setMethods = {}
+
+const extend = (...args) => args.reduce((acc, x) => {
+  let key = ''
+
+  for (key in x) {
+    acc[key] = x[key]
+  }
+
+  return acc
+}, {})
+
+const format = obj => {
+  const results = {
+    isValid: true,
+    story: []
+  }
+
+  for (const prop in obj) {
+    if (obj[prop].isValid) {
+      continue
+    }
+
+    const [story] = obj[prop].story
+
+    story.propName = prop
+    results.story.push(story)
+  }
+
+  if (results.story.length) {
+    results.isValid = false
+
+    return results
+  }
+
+  return results
+}
 
 const setup = opts => {
-  const results = {};
+  const results = {}
 
   for (const prop in methods) {
-    const func = methods[prop];
+    const func = methods[prop]
 
     if (typeof func('test') === 'function') {
-      results[prop] = func(opts);
+      results[prop] = func(opts)
     } else {
-      results[prop] = func;
+      results[prop] = func
     }
   }
 
-  return results;
-};
+  return results
+}
 
 const validate = (data, options, useMethods) => {
-  const story = [];
+  const story = []
 
   useMethods.forEach(currMethod => {
-    const isValid = setMethods[currMethod](data);
+    const isValid = setMethods[currMethod](data)
 
     if (!isValid) {
       // If something comes back as a failure we need to push it into the story
@@ -39,61 +72,66 @@ const validate = (data, options, useMethods) => {
         test: currMethod,
         // The value used when the failure happened
         value: data
-      });
+      })
     }
-  });
+  })
 
   if (story.length) {
     return {
       isValid: false,
       story
-    };
+    }
   }
 
-  return { isValid: true };
-};
+  return { isValid: true }
+}
 
 const validWhere = (obj, opts, useMethods) => {
-  const results = {};
+  const results = {}
 
   if (isObject(useMethods)) {
     each(obj, (val, prop) => {
       if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
-        results[prop] = validate(val, opts, ensureArray(useMethods[prop]));
+        results[prop] = validate(val, opts, ensureArray(useMethods[prop]))
       }
-    });
+    })
   } else {
     each(obj, (val, prop) => {
-      results[prop] = validate(val, opts, useMethods);
-    });
+      results[prop] = validate(val, opts, useMethods)
+    })
   }
 
-  return format(results);
-};
+  return format(results)
+}
 
 const runSchemaObj = (data, opts, useMethods) => {
   if (isObject(useMethods) || Array.isArray(useMethods)) {
-    return validWhere(data, opts, useMethods);
+    return validWhere(data, opts, useMethods)
   }
 
   // Assume it's a string at this point
-  return validate(data, opts, ensureArray(useMethods));
-};
+  return validate(data, opts, ensureArray(useMethods))
+}
 
 const runSchemaArr = (data, opts, useMethods) => {
-  const results = {};
-  const arrResults = [];
+  const results = {}
+  const arrResults = []
 
   data.forEach(val => {
     if (isObject(val)) {
-      arrResults.push(runSchemaObj(val, opts, useMethods));
+      arrResults.push(runSchemaObj(val, opts, useMethods))
     } else {
-      results[val] = validate(val, opts, ensureArray(useMethods));
+      results[val] = validate(val, opts, ensureArray(useMethods))
     }
-  });
+  })
 
-  return Object.keys(results).length ? results : format(arrResults);
-};
+  return Object.keys(results).length ? results : format(arrResults)
+}
+
+const validateSchema = schema =>
+  (Array.isArray(schema) && schema.length) ||
+  (isObject(schema) && Object.keys(schema).length) ||
+  Boolean(schema.length)
 
 /**
  * @name simplyValid
@@ -158,23 +196,23 @@ const simplyValid = curry((options, data) => {
     vinPattern: /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i,
     emailPattern: /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
-  };
-  const opts = extend({}, defaults, options);
+  }
+  const opts = extend({}, defaults, options)
 
-  setMethods = setup(opts);
+  setMethods = setup(opts)
 
   if (!validateSchema(opts.schema)) {
-    throw new Error('No schema provided for validation');
+    throw new Error('No schema provided for validation')
   }
 
   if (isObject(data)) {
-    return runSchemaObj(data, opts, opts.schema);
+    return runSchemaObj(data, opts, opts.schema)
   }
   if (Array.isArray(data)) {
-    return runSchemaArr(data, opts, opts.schema);
+    return runSchemaArr(data, opts, opts.schema)
   }
 
-  return validate(data, opts, ensureArray(opts.schema));
-});
+  return validate(data, opts, ensureArray(opts.schema))
+})
 
-export default simplyValid;
+export default simplyValid

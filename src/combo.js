@@ -8,21 +8,21 @@ import {
   isMasterCard,
   isVisaCard,
   isZip
-} from '../is/index';
+} from './is'
 import {
   meetsCVN,
   meetsCVNAmex
-} from '../meets/index';
+} from './meets'
 
 const runner = (val, methods) => {
   for (let i = 0, len = methods.length; i < len; i++) {
     if (methods[i](val)) {
-      return true;
+      return true
     }
   }
 
-  return false;
-};
+  return false
+}
 
 /**
  * @name creditCard
@@ -43,7 +43,7 @@ export const creditCard = val => runner(val, [
   isDiscoverCard(true),
   isMasterCard(true),
   isVisaCard(true)
-]);
+])
 
 /**
  * @name date
@@ -58,7 +58,7 @@ export const creditCard = val => runner(val, [
  * const result = date('01/15/2019'); // => true
  * const result = date('2019/01/05'); // => true
  */
-export const date = val => runner(val, [isDate, isDateShort, isDateProper]);
+export const date = val => runner(val, [isDate, isDateShort, isDateProper])
 
 /**
  * @name cvn
@@ -73,7 +73,7 @@ export const date = val => runner(val, [isDate, isDateShort, isDateProper]);
  * const result = cvn('4444'); // => true
  * const result = cvn('55555'); // => false
  */
-export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex]);
+export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex])
 
 /**
  * @name zipOrPostal
@@ -87,4 +87,4 @@ export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex]);
  * const result = zipOrPostal('55555'); // => true
  * const result = zipOrPostal('K1A0B1'); // => true
  */
-export const zipOrPostal = val => runner(val, [isZip, isCAPostalCode]);
+export const zipOrPostal = val => runner(val, [isZip, isCAPostalCode])

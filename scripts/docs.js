@@ -1,106 +1,88 @@
-const fs = require('fs');
-const path = require('path');
-const jsDocParser = require('jsdoc-to-markdown');
-const ignoredFiles = ['_internals', 'esm'];
+const fs = require('fs')
+const path = require('path')
+const jsDocParser = require('jsdoc-to-markdown')
+const { version } = require('../package.json')
+const ignoredFiles = ['_internals', 'esm', 'index.js']
 
 const listFns = () => {
-  const files = fs.readdirSync(path.join(process.cwd(), 'src'));
+  const files = fs.readdirSync(path.join(process.cwd(), 'src'))
 
   return files
     .filter(file => (/^[^._]/).test(file) && !ignoredFiles.includes(file))
-    .map(file => ({
-      name: file,
-      path: `./${file}`,
-      fullPath: `./src/${file}/index.js`
-    }));
-};
-
-const writeDocs = fileObj => fs.writeFileSync('docs.js', `module.exports = ${JSON.stringify(fileObj)}`);
+    .map(file => `./src/${file}`)
+}
 
 const generateUsage = (name, loc) => {
   if (loc === 'main') {
     return {
       'commonjs': {
         title: 'CommonJs',
-        code: `const simplyValid = require('simply_valid');`
+        code: `const simplyValid = require('simply_valid')`
       },
       'standard': {
         title: 'Standard',
-        code: `import simplyValid from 'simply_valid';`
+        code: `import simplyValid from 'simply_valid'`
+      },
+      'cdn': {
+        title: 'CDN (Prod)',
+        code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/dist/${name}.min.js"></script>`
+      },
+      'cdn': {
+        title: 'CDN (Dev)',
+        code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/dist/${name}.js"></script>`
       },
       'browser': {
         title: 'Browser',
-        code: `<script src="path/to/simply_valid/${loc}/index.js"></script>`
+        code: `<script src="path/to/simply_valid/${name}.js"></script>`
       }
-    };
+    }
   }
 
   return {
     'commonjs': {
       title: 'CommonJs',
-      code: `const { ${name} } = require('simply_valid/${loc}');`
+      code: `const { ${name} } = require('simply_valid/${name}')`
     },
     'standard': {
       title: 'Standard',
-      code: `import { ${name} } from 'simply_valid/${loc}';`
+      code: `import { ${name} } from 'simply_valid/${name}'`
+    },
+    'cdn': {
+      title: 'CDN',
+      code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/${name}.js"></script>`
     },
     'browser': {
       title: 'Browser',
       code: `<script src="path/to/simply_valid/${loc}/index.js"></script>`
     }
-  };
-};
+  }
+}
 
 const generateSyntax = (name, args) => {
   if (!args) {
-    return '';
+    return ''
   }
 
-  const argsStr = args.map(a => a.optional ? `[${a.name}]` : a.name).join(', '); // eslint-disable-line
+  const argsStr = args.map(a => a.optional ? `[${a.name}]` : a.name).join(', ')
 
-  return `${name}(${argsStr})`;
-};
+  return `${name}(${argsStr})`
+}
 
-const generateSourceDocs = () => listFns().map(fn => jsDocParser.getTemplateDataSync({
-  'files': fn.fullPath,
+jsDocParser.getTemplateData({
+  'files': listFns(),
   'no-cache': true
-}));
+}).then((data) => {
+  const results = data.map(d => ({
+    since: d.since ? d.since : 'Unknown',
+    category: d.category,
+    title: d.name,
+    desc: d.description,
+    examples: d.examples,
+    returns: d.returns,
+    params: d.params,
+    syntax: generateSyntax(d.name, d.params),
+    usage: generateUsage(d.name)
+  }))
 
-let generated = generateSourceDocs();
-let cleanRes = [];
-
-generated.forEach(v => {
-  cleanRes = [...cleanRes, ...v];
-});
-
-const sortFns = (a, b) => {
-  if (a.title < b.title || a.title === 'simplyValid') {
-    return -1;
-  }
-
-  if (a.title > b.title) {
-    return 1;
-  }
-
-  return 0;
-};
-
-generated = cleanRes.map(doc => {
-  const pathArr = doc.meta.path.split('\\');
-  const loc = pathArr[pathArr.length - 1];
-
-  return {
-    title: doc.name,
-    since: doc.since,
-    category: doc.category,
-    syntax: generateSyntax(doc.name, doc.params),
-    usage: generateUsage(doc.name, loc),
-    desc: doc.description,
-    examples: doc.examples,
-    params: doc.params,
-    returns: doc.returns,
-    properties: doc.properties
-  };
-});
-
-writeDocs(generated.sort(sortFns));
+  fs.writeFileSync('docs.js', `module.exports = ${JSON.stringify(results, null, 2)}`)
+})
