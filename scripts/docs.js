@@ -9,7 +9,10 @@ const listFns = () => {
 
   return files
     .filter(file => (/^[^._]/).test(file) && !ignoredFiles.includes(file))
-    .map(file => `./src/${file}`)
+    .map(file => ({
+      name: file,
+      path: `./src/${file}`
+    }))
 }
 
 const generateUsage = (name, loc) => {
@@ -41,15 +44,15 @@ const generateUsage = (name, loc) => {
   return {
     'commonjs': {
       title: 'CommonJs',
-      code: `const { ${name} } = require('simply_valid/${name}')`
+      code: `const { ${name} } = require('simply_valid/${loc}')`
     },
     'standard': {
       title: 'Standard',
-      code: `import { ${name} } from 'simply_valid/${name}'`
+      code: `import { ${name} } from 'simply_valid/${loc}'`
     },
     'cdn': {
       title: 'CDN',
-      code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/${name}.js"></script>`
+      code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/${loc}.js"></script>`
     },
     'browser': {
       title: 'Browser',
@@ -68,21 +71,30 @@ const generateSyntax = (name, args) => {
   return `${name}(${argsStr})`
 }
 
-jsDocParser.getTemplateData({
-  'files': listFns(),
+const generate = () => listFns().map(fn => jsDocParser.getTemplateDataSync({
+  'files': fn.path,
   'no-cache': true
-}).then((data) => {
-  const results = data.map(d => ({
-    since: d.since ? d.since : 'Unknown',
-    category: d.category,
-    title: d.name,
-    desc: d.description,
-    examples: d.examples,
-    returns: d.returns,
-    params: d.params,
-    syntax: generateSyntax(d.name, d.params),
-    usage: generateUsage(d.name)
-  }))
+}))
 
-  fs.writeFileSync('docs.js', `module.exports = ${JSON.stringify(results, null, 2)}`)
+const generated = generate();
+let cleanRes = generated.reduce((acc, v) => {
+  return [...acc, ...v]
+}, [])
+
+const results = cleanRes.map(doc => {
+  const loc = doc.meta.filename.replace('.js', '')
+
+  return {
+    since: doc.since ? doc.since : 'Unknown',
+    category: doc.category,
+    title: doc.name,
+    desc: doc.docescription,
+    examples: doc.examples,
+    returns: doc.returns,
+    params: doc.params,
+    syntax: generateSyntax(doc.name, doc.params),
+    usage: generateUsage(doc.name, loc)
+  }
 })
+
+fs.writeFileSync('docs.js', `module.exports = ${JSON.stringify(results)}`)
