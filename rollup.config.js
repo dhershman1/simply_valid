@@ -1,60 +1,70 @@
-import babel from 'rollup-plugin-babel';
-import globby from 'globby';
-import path from 'path';
-import uglify from 'rollup-plugin-uglify';
+import babel from 'rollup-plugin-babel'
+import cleanup from 'rollup-plugin-cleanup'
+import filesize from 'rollup-plugin-filesize'
+import uglify from 'rollup-plugin-uglify'
 
-const buildEntry = () => {
-  const results = [];
-  const paths = globby.sync(['src/*/index.js', '!src/main/index.js', '!src/_internals']);
-
-  paths.forEach(p => {
-    const { name, dir } = path.parse(p);
-    let [, moduleName] = dir.split('/');
-
-    if (name !== 'index') {
-      moduleName = name;
-    }
-
-    const config = {
-      input: path.resolve(__dirname, p),
-      plugins: [
-        babel({
-          babelrc: false,
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                'targets': {
-                  'browsers': [
-                    'last 2 versions',
-                    'ie >= 9'
-                  ]
-                },
-                'modules': false
-              }
-            ],
-            '@babel/preset-stage-2'
-          ],
-          exclude: 'node_modules/**',
-          runtimeHelpers: true
-        }),
-        uglify()
+export default [{
+  input: './src/main.js',
+  plugins: [
+    babel({
+      babelrc: false,
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            'targets': {
+              'browsers': [
+                'last 2 versions',
+                'ie >= 9'
+              ]
+            },
+            'modules': false
+          }
+        ],
+        '@babel/preset-stage-2'
       ],
-      output: {
-        dir,
-        file: path.join(moduleName, 'index.js'),
-        format: 'umd',
-        name: moduleName,
-        exports: 'named'
-      }
-    };
-
-    results.push(config);
-
-    return true;
-  });
-
-  return results;
-};
-
-export default buildEntry();
+      exclude: 'node_modules/**',
+      runtimeHelpers: true
+    }),
+    uglify(),
+    filesize()
+  ],
+  output: {
+    file: './dist/simply-valid.min.js',
+    format: 'umd',
+    name: 'simplyValid',
+    exports: 'default'
+  }
+}, {
+  input: './src/main.js',
+  plugins: [
+    babel({
+      babelrc: false,
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            'targets': {
+              'browsers': [
+                'last 2 versions',
+                'ie >= 9'
+              ]
+            },
+            'modules': false
+          }
+        ],
+        '@babel/preset-stage-2'
+      ],
+      exclude: 'node_modules/**',
+      runtimeHelpers: true
+    }),
+    cleanup(),
+    filesize()
+  ],
+  output: {
+    file: './dist/simply-valid.js',
+    format: 'umd',
+    name: 'simplyValid',
+    exports: 'default'
+  }
+}]
