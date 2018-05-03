@@ -1,131 +1,70 @@
 /* eslint-disable max-len */
-import * as methods from './index'
 import curry from './_internals/curry'
-import each from './_internals/each'
 import ensureArray from './_internals/ensure-array'
+import extend from './_internals/extend'
 import isObject from './_internals/isObject'
+import setup from './_internals/setup'
 
-let setMethods = {}
+const flatten = list =>
+  list.reduce((acc, x) =>
+    acc.concat(Array.isArray(x) ? flatten(x) : x), [])
 
-const extend = (...args) => args.reduce((acc, x) => {
-  let key = ''
+const format = res => {
+  const results = res.reduce((acc, { isValid, story }) => {
+    if (!isValid) {
+      acc.story.push(...story)
+    }
 
-  for (key in x) {
-    acc[key] = x[key]
-  }
-
-  return acc
-}, {})
-
-const format = obj => {
-  const results = {
+    return acc
+  }, {
     isValid: true,
     story: []
-  }
+  })
 
-  for (const prop in obj) {
-    if (obj[prop].isValid) {
-      continue
-    }
-
-    const [story] = obj[prop].story
-
-    story.propName = prop
-    results.story.push(story)
-  }
-
-  if (results.story.length) {
-    results.isValid = false
-
-    return results
-  }
+  results.isValid = !results.story.length
 
   return results
 }
 
-const setup = opts => {
-  const results = {}
-
-  for (const prop in methods) {
-    const func = methods[prop]
-
-    if (typeof func('test') === 'function') {
-      results[prop] = func(opts)
-    } else {
-      results[prop] = func
-    }
-  }
-
-  return results
-}
-
-const validate = (data, options, useMethods) => {
+const validate = (data, schema, methods) => {
   const story = []
+  const schemaArr = ensureArray(schema)
+  const dataArr = ensureArray(data)
 
-  useMethods.forEach(currMethod => {
-    const isValid = setMethods[currMethod](data)
-
-    if (!isValid) {
-      // If something comes back as a failure we need to push it into the story
-      story.push({
-        // What test did we fail on
-        test: currMethod,
-        // The value used when the failure happened
-        value: data
-      })
-    }
-  })
-
-  if (story.length) {
-    return {
-      isValid: false,
-      story
-    }
-  }
-
-  return { isValid: true }
-}
-
-const validWhere = (obj, opts, useMethods) => {
-  const results = {}
-
-  if (isObject(useMethods)) {
-    each(obj, (val, prop) => {
-      if (Object.prototype.hasOwnProperty.call(useMethods, prop)) {
-        results[prop] = validate(val, opts, ensureArray(useMethods[prop]))
+  dataArr.forEach(d => {
+    const results = schemaArr.reduce((acc, fn) => {
+      console.log(fn)
+      if (!methods[fn](d)) {
+        acc.push({
+          test: fn,
+          value: d
+        })
       }
-    })
-  } else {
-    each(obj, (val, prop) => {
-      results[prop] = validate(val, opts, useMethods)
-    })
-  }
 
-  return format(results)
-}
+      return acc
+    }, [])
 
-const runSchemaObj = (data, opts, useMethods) => {
-  if (isObject(useMethods) || Array.isArray(useMethods)) {
-    return validWhere(data, opts, useMethods)
-  }
-
-  // Assume it's a string at this point
-  return validate(data, opts, ensureArray(useMethods))
-}
-
-const runSchemaArr = (data, opts, useMethods) => {
-  const results = {}
-  const arrResults = []
-
-  data.forEach(val => {
-    if (isObject(val)) {
-      arrResults.push(runSchemaObj(val, opts, useMethods))
-    } else {
-      results[val] = validate(val, opts, ensureArray(useMethods))
-    }
+    story.push(...results)
   })
 
-  return Object.keys(results).length ? results : format(arrResults)
+  return {
+    isValid: !story.length,
+    story
+  }
+}
+
+const validateDataObj = (data, schema, methods) => {
+  const keys = Object.keys(data)
+
+  return keys.map(k => {
+    const value = data[k]
+
+    if (isObject(value)) {
+      return validateDataObj(value, schema[k], methods)
+    }
+
+    return validate(value, schema[k], methods)
+  })
 }
 
 const validateSchema = schema =>
@@ -196,21 +135,19 @@ const simplyValid = curry((options, data) => {
     minLen: 1
   }
   const opts = extend({}, defaults, options)
+  const setMethods = setup(opts)
 
-  setMethods = setup(opts)
+  console.log(setMethods)
 
   if (!validateSchema(opts.schema)) {
     throw new Error('The schema is either invalid or one was not provided for validation')
   }
 
   if (isObject(data)) {
-    return runSchemaObj(data, opts, opts.schema)
-  }
-  if (Array.isArray(data)) {
-    return runSchemaArr(data, opts, opts.schema)
+    return format(flatten(validateDataObj(data, opts.schema, setMethods)))
   }
 
-  return validate(data, opts, ensureArray(opts.schema))
+  return validate(data, opts.schema, setMethods)
 })
 
 export default simplyValid

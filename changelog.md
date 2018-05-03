@@ -25,8 +25,10 @@
 
 - Updated documentation scripts to be faster and have a little more info
 - Slight documentation cleanup
+- New smart setup helper that only creates a methods list of the validation functions we actually want to use
 
 ### Fixed
 
 - `hasValue` Rule will no longer treat the number 0 as a falsy value
 - Some documentation pieces had copy/paste errors that needed addressed
+- Nested objects not being validated as expected
