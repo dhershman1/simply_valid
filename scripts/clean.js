@@ -19,7 +19,9 @@ const ignoredFiles = [
   'docs',
   '.eslintrc',
   'rollup.config',
-  'rollup.split',
+  'rollup.config.split',
+  'old-readmes',
+  'old-changelogs',
   'dist'
 ]
 const results = fileList.filter(f => {

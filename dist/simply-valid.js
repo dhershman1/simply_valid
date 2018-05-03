@@ -441,7 +441,7 @@ var simplyValid = curry(function (options, data) {
   var opts = extend({}, defaults, options);
   setMethods = setup(opts);
   if (!validateSchema(opts.schema)) {
-    throw new Error('No schema provided for validation');
+    throw new Error('The schema is either invalid or one was not provided for validation');
   }
   if (isObject(data)) {
     return runSchemaObj(data, opts, opts.schema);

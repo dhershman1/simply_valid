@@ -1,22 +1,18 @@
 import babel from 'rollup-plugin-babel'
+import filesize from 'rollup-plugin-filesize'
 import globby from 'globby'
 import path from 'path'
 import uglify from 'rollup-plugin-uglify'
 
 const buildEntry = () => {
   const results = []
-  const paths = globby.sync(['src/*/index.js', '!src/main/index.js', '!src/_internals'])
+  const paths = globby.sync(['src/*.js', '!src/main.js', '!src/_internals'])
 
   paths.forEach(p => {
-    const { name, dir } = path.parse(p)
-    let [, moduleName] = dir.split('/')
-
-    if (name !== 'index') {
-      moduleName = name
-    }
+    const { name, base } = path.parse(p)
 
     const config = {
-      input: path.resolve(__dirname, p),
+      input: p,
       plugins: [
         babel({
           babelrc: false,
@@ -40,13 +36,13 @@ const buildEntry = () => {
           exclude: 'node_modules/**',
           runtimeHelpers: true
         }),
-        uglify()
+        uglify(),
+        filesize()
       ],
       output: {
-        dir,
-        file: path.join(moduleName, 'index.js'),
+        file: name === 'index' ? 'esm.js' : base,
         format: 'umd',
-        name: moduleName,
+        name: name === 'index' ? 'esm' : name,
         exports: 'named'
       }
     }

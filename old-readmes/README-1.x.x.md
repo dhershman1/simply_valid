@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/dhershman1/simply_valid.svg?branch=master)](https://travis-ci.org/dhershman1/simply_valid)
+# Simply Valid v1.x.x
 
-# Simply Valid
+**The following documentation is for v1.x.x and is considered depricated**
 
 A simple to use data driven validation system
 
