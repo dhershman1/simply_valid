@@ -9,6 +9,7 @@
 - `hasValue` (As stated in the fixed section) will no longer consider the number or sting 0 as a falsey value
 - Removal of long deprecated `isAmericanExpressCard` in favor of `isAmexCard`
 - Marked `v1.0.0 - v2.2.0` as deprecated
+- You now need to be more specific about nested objects in the schema if they're nested via your data
 
 ### New
 
@@ -26,6 +27,7 @@
 - Updated documentation scripts to be faster and have a little more info
 - Slight documentation cleanup
 - New smart setup helper that only creates a methods list of the validation functions we actually want to use
+- The reponse of the main validation functionality will be much more consistent `{ isValid: Boolean, story: Array }`
 
 ### Fixed
 

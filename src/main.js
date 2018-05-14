@@ -1,14 +1,36 @@
 /* eslint-disable max-len */
 import curry from './_internals/curry'
-import ensureArray from './_internals/ensure-array'
-import extend from './_internals/extend'
-import isObject from './_internals/isObject'
-import setup from './_internals/setup'
+import * as validationMethods from './index'
+
+const isObject = x => Object.prototype.toString.call(x) === '[object Object]'
+
+const ensureArray = val => {
+  if (Array.isArray(val)) {
+    return val
+  }
+
+  if (val === void 0) {
+    return []
+  }
+
+  return [val]
+}
+
+const extend = (...args) => args.reduce((acc, x) => {
+  let key = ''
+
+  for (key in x) {
+    acc[key] = x[key]
+  }
+
+  return acc
+}, {})
 
 const flatten = list =>
   list.reduce((acc, x) =>
     acc.concat(Array.isArray(x) ? flatten(x) : x), [])
 
+// Format the response to keep it consistent
 const format = res => {
   const results = res.reduce((acc, { isValid, story }) => {
     if (!isValid) {
@@ -33,7 +55,6 @@ const validate = (data, schema, methods) => {
 
   dataArr.forEach(d => {
     const results = schemaArr.reduce((acc, fn) => {
-      console.log(fn)
       if (!methods[fn](d)) {
         acc.push({
           test: fn,
@@ -114,7 +135,9 @@ const validateSchema = schema =>
  *  schema: {
  *    test: ['hasNumbers', 'hasLetters'],
  *    thing: 'hasValue',
- *    nestedThing: ['isPositive', 'hasNumbers']
+ *    other: {
+ *      nestedThing: ['isPositive', 'hasNumbers']
+ *    }
  *  }
  * });
  * validate({
@@ -135,19 +158,16 @@ const simplyValid = curry((options, data) => {
     minLen: 1
   }
   const opts = extend({}, defaults, options)
-  const setMethods = setup(opts)
-
-  console.log(setMethods)
 
   if (!validateSchema(opts.schema)) {
     throw new Error('The schema is either invalid or one was not provided for validation')
   }
 
   if (isObject(data)) {
-    return format(flatten(validateDataObj(data, opts.schema, setMethods)))
+    return format(flatten(validateDataObj(data, opts.schema, validationMethods)))
   }
 
-  return validate(data, opts.schema, setMethods)
+  return validate(data, opts.schema, validationMethods)
 })
 
 export default simplyValid

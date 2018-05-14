@@ -175,32 +175,18 @@ You can simply require in a chunk of validation functions if you only need a cer
 I tried to keep it so you can always expect the same level of return no matter how you are using `simply_valid`
 
 ```js
-// Passing returns will look like
-// Default passing object
-{ isValid: true }
-
-// For passing object validation
+// Passing Validation
 {
   isValid: true,
   story: []
 }
 
-// Failing returns will look like
-// This is the default failing object
+// Failing returns will look like this
 {
   isValid: false,
   story: [{
     test: 'isNumber',
     value: 'cool'
   }]
-}
-// For failing object validation
-{
-  isValid: false,
-  story: [ {
-    test: 'isNumber',
-    value: 'cool',
-    propName: 'zip'
-    } ]
 }
 ```
