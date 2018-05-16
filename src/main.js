@@ -16,18 +16,9 @@ const ensureArray = val => {
   return [val]
 }
 
-const extend = (...args) => args.reduce((acc, x) => {
-  let key = ''
-
-  for (key in x) {
-    acc[key] = x[key]
-  }
-
-  return acc
-}, {})
-
 // Format the response to keep it consistent
 const format = res => {
+  console.log(res)
   const results = res.reduce((acc, { isValid, story }) => {
     if (!isValid) {
       acc.story.push(...story)
@@ -153,7 +144,13 @@ const simplyValid = curry((options, data) => {
     maxLen: 100,
     minLen: 1
   }
-  const opts = extend({}, defaults, options)
+  const opts = Object.keys(options).reduce((acc, key) => {
+    if (defaults[key]) {
+      acc[key] = options[key]
+    }
+
+    return acc
+  }, {})
 
   if (!validateSchema(opts.schema)) {
     throw new Error('The schema is either invalid or one was not provided for validation')
