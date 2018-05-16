@@ -18,7 +18,6 @@ const ensureArray = val => {
 
 // Format the response to keep it consistent
 const format = res => {
-  console.log(res)
   const results = res.reduce((acc, { isValid, story }) => {
     if (!isValid) {
       acc.story.push(...story)
