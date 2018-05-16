@@ -26,10 +26,6 @@ const extend = (...args) => args.reduce((acc, x) => {
   return acc
 }, {})
 
-const flatten = list =>
-  list.reduce((acc, x) =>
-    acc.concat(Array.isArray(x) ? flatten(x) : x), [])
-
 // Format the response to keep it consistent
 const format = res => {
   const results = res.reduce((acc, { isValid, story }) => {
@@ -77,15 +73,15 @@ const validate = (data, schema, methods) => {
 const validateDataObj = (data, schema, methods) => {
   const keys = Object.keys(data)
 
-  return keys.map(k => {
+  return keys.reduce((acc, k) => {
     const value = data[k]
 
     if (isObject(value)) {
-      return validateDataObj(value, schema[k], methods)
+      return acc.concat(validateDataObj(value, schema[k], methods))
     }
 
-    return validate(value, schema[k], methods)
-  })
+    return acc.concat([validate(value, schema[k], methods)])
+  }, [])
 }
 
 const validateSchema = schema =>
@@ -164,7 +160,7 @@ const simplyValid = curry((options, data) => {
   }
 
   if (isObject(data)) {
-    return format(flatten(validateDataObj(data, opts.schema, validationMethods)))
+    return format(validateDataObj(data, opts.schema, validationMethods))
   }
 
   return validate(data, opts.schema, validationMethods)
