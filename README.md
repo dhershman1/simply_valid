@@ -19,11 +19,9 @@ You can find the changelog here: https://github.com/dhershman1/simply_valid/blob
 
 ## Old Logs & Readmes
 
-**Note: Depricated versions of the changelogs and readmes will soon be removed starting with v1.x.x and v2.x.x please migrate to v3 or greater**
+You can find Non-depricated old changelogs [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-changelogs)
 
-You can find all of the old changelogs [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-changelogs)
-
-You can find all of the old readmes [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-readmes)
+You can find Non-depricated old readmes [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-readmes)
 
 ## Contents
 * [Philosophy](#philosophy)
@@ -35,7 +33,7 @@ You can find all of the old readmes [HERE](https://github.com/dhershman1/simply_
 * [Methods](#methods)
 * [Return](#return)
 
-## Pholosophy
+## Philosophy
 
 The idea behind `simply_valid` was a ui free data driven validation system. It started as something I wanted at work over our current validation library and then grew into this. (You can see the inspiration of some of the validation types that lives currently in the functions)
 

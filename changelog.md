@@ -26,7 +26,6 @@
 
 - Updated documentation scripts to be faster and have a little more info
 - Slight documentation cleanup
-- New smart setup helper that only creates a methods list of the validation functions we actually want to use
 - The reponse of the main validation functionality will be much more consistent `{ isValid: Boolean, story: Array }`
 
 ### Fixed
