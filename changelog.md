@@ -33,3 +33,4 @@
 - `hasValue` Rule will no longer treat the number 0 as a falsy value
 - Some documentation pieces had copy/paste errors that needed addressed
 - Nested objects not being validated as expected
+- Methods that could break on an undefined will no longer bomb out

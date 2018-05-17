@@ -266,7 +266,7 @@ export const isCAPostalCode = val => (/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d
  * isPhone('555-666-7777'); // => true
  * isPhone('5556667777'); // => true
  */
-export const isPhone = val => (/^[0-9]{10}$/).test(val.replace(/\W/g, ''))
+export const isPhone = (val = '') => (/^[0-9]{10}$/).test(val.replace(/\W/g, ''))
 
 /**
  * @name isLicensePlate

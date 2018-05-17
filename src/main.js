@@ -60,10 +60,8 @@ const validate = (data, schema, methods) => {
   }
 }
 
-const validateDataObj = (data, schema, methods) => {
-  const keys = Object.keys(data)
-
-  return keys.reduce((acc, k) => {
+const validateDataObj = (data, schema, methods) =>
+  Object.keys(data).reduce((acc, k) => {
     const value = data[k]
 
     if (isObject(value)) {
@@ -72,12 +70,22 @@ const validateDataObj = (data, schema, methods) => {
 
     return acc.concat([validate(value, schema[k], methods)])
   }, [])
-}
 
 const validateSchema = schema =>
   (Array.isArray(schema) && schema.length) ||
   (isObject(schema) && Object.keys(schema).length) ||
   Boolean(schema.length)
+
+const setup = (methods, opts) =>
+  Object.keys(methods).reduce((acc, k) => {
+    if (typeof methods[k]() === 'function') {
+      acc[k] = methods[k](opts)
+    } else {
+      acc[k] = methods[k]
+    }
+
+    return acc
+  }, {})
 
 /**
  * @name simplyValid
@@ -144,22 +152,24 @@ const simplyValid = curry((options, data) => {
     minLen: 1
   }
   const opts = Object.keys(options).reduce((acc, key) => {
-    if (defaults[key]) {
+    if (acc[key]) {
       acc[key] = options[key]
     }
 
     return acc
-  }, {})
+  }, defaults)
+
+  const fns = setup(validationMethods, opts)
 
   if (!validateSchema(opts.schema)) {
     throw new Error('The schema is either invalid or one was not provided for validation')
   }
 
   if (isObject(data)) {
-    return format(validateDataObj(data, opts.schema, validationMethods))
+    return format(validateDataObj(data, opts.schema, fns))
   }
 
-  return validate(data, opts.schema, validationMethods)
+  return validate(data, opts.schema, fns)
 })
 
 export default simplyValid

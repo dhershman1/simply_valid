@@ -51,7 +51,7 @@ export const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).te
  * meetsCVN('201'); // => true
  * meetsCVN('1777'); // => false
  */
-export const meetsCVN = val => val.length === 3 && (/[0-9]/).test(val)
+export const meetsCVN = (val = '') => val.length === 3 && (/[0-9]/).test(val)
 
 /**
  * @name meetsCVNAmex
@@ -65,7 +65,7 @@ export const meetsCVN = val => val.length === 3 && (/[0-9]/).test(val)
  * meetsCVNAmex('201'); // => false
  * meetsCVNAmex('1777'); // => true
  */
-export const meetsCVNAmex = val => val.length === 4 && (/[0-9]/).test(val)
+export const meetsCVNAmex = (val = '') => val.length === 4 && (/[0-9]/).test(val)
 
 /**
  * @name meetsTreadDepth
