@@ -330,7 +330,6 @@ var validateDataObj = function validateDataObj(data, schema, methods) {
   }, []);
 };
 var validateSchema = function validateSchema(schema) {
-  console.log(schema);
   return Array.isArray(schema) && schema.length || isObject(schema) && Object.keys(schema).length || Boolean(schema.length);
 };
 var setup = function setup(methods, opts) {
