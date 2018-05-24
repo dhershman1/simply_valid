@@ -2,6 +2,7 @@
 [![David](https://img.shields.io/david/dhershman1/simply_valid.svg?style=for-the-badge)](https://david-dm.org/dhershman1/simply_valid)
 [![David](https://img.shields.io/david/dev/dhershman1/simply_valid.svg?style=for-the-badge)](https://david-dm.org/dhershman1/simply_valid?type=dev)
 [![Travis](https://img.shields.io/travis/dhershman1/simply_valid.svg?style=for-the-badge)](https://travis-ci.org/dhershman1/simply_valid)
+[![Coverage Status](https://img.shields.io/coveralls/github/dhershman1/simply_valid.svg?style=flat-square)](https://coveralls.io/github/dhershman1/simply_valid?branch=master)
 
 # Simply Valid
 

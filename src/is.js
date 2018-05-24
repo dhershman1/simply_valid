@@ -439,7 +439,7 @@ export const isDiscoverCard = curry((strict, val) => {
  * isBelowMax(20)('19'); // => true
  */
 export const isBelowMax = curry((m, val) => {
-  if (m.max) {
+  if (m.max != null) {
     return !isNaN(val) && Number(val) < m.max
   }
 
@@ -465,7 +465,7 @@ export const isBelowMax = curry((m, val) => {
  * isAboveMin(15)('19'); // => true
  */
 export const isAboveMin = curry((m, val) => {
-  if (m.min) {
+  if (m.min != null) {
     return !isNaN(val) && Number(val) > m.min
   }
 

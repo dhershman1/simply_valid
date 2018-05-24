@@ -3,34 +3,37 @@ import {
   noNumbers,
   noSpecials
 } from '../src/no'
-import test from 'ava'
+import test from 'tape'
 
 test('Test noLetters', t => {
   let results = noLetters('1123450')
 
-  t.truthy(noLetters)
-  t.truthy(results, 'First results set no letters found')
+  t.ok(noLetters)
+  t.ok(results, 'First results set no letters found')
 
   results = noLetters('GHJffre1123')
-  t.falsy(results, 'Letters found in string')
+  t.notOk(results, 'Letters found in string')
+  t.end()
 })
 
 test('Test noNumbers', t => {
   let results = noNumbers('abcdefGHIJK')
 
-  t.truthy(noNumbers)
-  t.truthy(results, 'No numbers found')
+  t.ok(noNumbers)
+  t.ok(results, 'No numbers found')
 
   results = noNumbers('abc1234')
-  t.falsy(results, 'Numbers found in string')
+  t.notOk(results, 'Numbers found in string')
+  t.end()
 })
 
 test('Test noSpecials', t => {
   let results = noSpecials('cool')
 
-  t.truthy(noSpecials)
-  t.truthy(results, 'No specials found')
+  t.ok(noSpecials)
+  t.ok(results, 'No specials found')
 
   results = noSpecials('cool!')
-  t.falsy(results, 'Specials found in string')
+  t.notOk(results, 'Specials found in string')
+  t.end()
 })

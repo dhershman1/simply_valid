@@ -71,10 +71,13 @@ const validateDataObj = (data, schema, methods) =>
     return acc.concat([validate(value, schema[k], methods)])
   }, [])
 
-const validateSchema = schema =>
-  (Array.isArray(schema) && schema.length) ||
-  (isObject(schema) && Object.keys(schema).length) ||
-  Boolean(schema.length)
+const validateSchema = schema => {
+  console.log(schema)
+
+  return (Array.isArray(schema) && schema.length) ||
+    (isObject(schema) && Object.keys(schema).length) ||
+    Boolean(schema.length)
+}
 
 const setup = (methods, opts) =>
   Object.keys(methods).reduce((acc, k) => {

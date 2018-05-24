@@ -21,6 +21,7 @@
 - Added `isNotTooLong` which verifies if the value is shorter or equal to `maxLen`
 - Added `isCorrectLength` which verifies if the value is between or equal to `maxLen` or `minLen`
 - There is now a non compressed version of the built module if you want to use it in a dev environment located with the compressed version in `dist/simply-valid.js`
+- Converted back to `tape` from `ava`
 
 ### Updated
 
@@ -34,3 +35,4 @@
 - Some documentation pieces had copy/paste errors that needed addressed
 - Nested objects not being validated as expected
 - Methods that could break on an undefined will no longer bomb out
+- Methods `isAboveMin` and `isBelowMax` edge case fixed if you passed 0 for the min or max property when sending an object
