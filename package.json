@@ -7,9 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "prepack": "rollup -c && rollup -c rollup.config.split.js && node scripts/docs.js",
+    "prepack": "rollup -c && rollup -c rollup.split.js && node scripts/docs.js",
     "postpack": "npm run clean",
-    "build:split": "rollup -c rollup.config.split.js",
+    "build:split": "rollup -c rollup.split.js",
     "build": "rollup -c",
     "clean": "node scripts/clean.js",
     "postpublish": "npm run clean",
@@ -43,18 +43,18 @@
     "@babel/preset-stage-2": "7.0.0-beta.46",
     "coveralls": "3.0.1",
     "del": "3.0.0",
-    "esm": "3.0.37",
+    "esm": "3.0.55",
     "globby": "8.0.1",
     "jsdoc-to-markdown": "3.0.3",
     "nyc": "11.8.0",
-    "rollup": "0.59.3",
+    "rollup": "0.62.0",
     "rollup-plugin-babel": "4.0.0-beta.4",
     "rollup-plugin-cleanup": "3.0.0-beta.1",
-    "rollup-plugin-filesize": "1.5.0",
-    "rollup-plugin-uglify": "3.0.0",
+    "rollup-plugin-filesize": "2.0.0",
+    "rollup-plugin-uglify": "4.0.0",
     "standard": "11.0.1",
-    "tap-spec": "4.1.1",
-    "tape": "4.9.0"
+    "tap-spec": "5.0.0",
+    "tape": "4.9.1"
   },
   "nyc": {
     "include": [
