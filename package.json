@@ -7,9 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "prepack": "rollup -c && rollup -c rollup.split.js && node scripts/docs.js",
+    "prepack": "rollup -c && node scripts/docs.js",
     "postpack": "npm run clean",
-    "build:split": "rollup -c rollup.split.js",
     "build": "rollup -c",
     "clean": "node scripts/clean.js",
     "postpublish": "npm run clean",

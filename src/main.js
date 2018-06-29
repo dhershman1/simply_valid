@@ -142,7 +142,7 @@ const setup = (methods, opts) =>
  *   }
  * }); // => { isValid: true }
  */
-const simplyValid = curry((options, data) => {
+const simplyValid = (options, data) => {
   const defaults = {
     schema: [],
     strictCard: false,
@@ -170,6 +170,6 @@ const simplyValid = curry((options, data) => {
   }
 
   return validate(data, opts.schema, fns)
-})
+}
 
-export default simplyValid
+export default curry(simplyValid)
