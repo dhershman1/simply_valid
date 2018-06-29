@@ -18,9 +18,7 @@ Find individual documentation per function on the site: **[You can click here to
 
 You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
 
-## Old Logs & Readmes
-
-You can find Non-depricated old changelogs [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-changelogs)
+## Old Readmes
 
 You can find Non-depricated old readmes [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-readmes)
 
