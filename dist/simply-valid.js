@@ -342,7 +342,7 @@
       return acc;
     }, {});
   };
-  var simplyValid = curry(function (options, data) {
+  var simplyValid = function simplyValid(options, data) {
     var defaults = {
       schema: [],
       strictCard: false,
@@ -365,8 +365,9 @@
       return format(validateDataObj(data, opts.schema, fns));
     }
     return validate(data, opts.schema, fns);
-  });
+  };
+  var main = curry(simplyValid);
 
-  return simplyValid;
+  return main;
 
 })));
