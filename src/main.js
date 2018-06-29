@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import curry from './_internals/curry'
 import * as validationMethods from './index'
 
