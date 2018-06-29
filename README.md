@@ -75,7 +75,7 @@ Using Standardized JS
 ```js
 import simplyValid from 'simply_valid';
 
-simplyValid(options)(data);
+simplyValid(options, data);
 
 // Or
 const validate = simplyValid(options);
@@ -87,7 +87,7 @@ Using commonjs
 ```js
 const simplyValid = require('simply_valid');
 
-simplyValid(options)(data);
+simplyValid(options, data);
 
 // Or
 const validate = simplyValid(options);
@@ -99,7 +99,7 @@ In the browser
 ```html
 <script src="path/to/dist/simplyValid.min.js"></script>
 <script>
-  simplyValid(options)(data);
+  simplyValid(options, data);
 
   // Or
   var validate = simplyValid(options);
