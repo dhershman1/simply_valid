@@ -97,4 +97,4 @@ const results = cleanRes.map(doc => {
   }
 })
 
-fs.writeFileSync('docs.js', `module.exports = ${JSON.stringify(results)}`)
+fs.writeFileSync('docs.json', JSON.stringify(results))
