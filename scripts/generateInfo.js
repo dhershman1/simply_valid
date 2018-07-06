@@ -88,7 +88,7 @@ const results = cleanRes.map(doc => {
     since: doc.since ? doc.since : 'Unknown',
     category: doc.category,
     title: doc.name,
-    desc: doc.docescription,
+    desc: doc.description,
     examples: doc.examples,
     returns: doc.returns,
     params: doc.params,

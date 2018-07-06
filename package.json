@@ -1,6 +1,6 @@
 {
   "name": "simply_valid",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "a simple data driven validation utility library",
   "main": "dist/simply-valid.min.js",
   "directories": {
