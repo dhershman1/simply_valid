@@ -1,5 +1,12 @@
 # Change Log
 
+## v4.0.1
+
+### New
+
+- Re vamped how the documentation scripts work to make keeping docs up-to-date much simpler
+  - Now if I need to push an update I don't need to worry about the documentation falling behind!
+
 ## v4.0.0
 
 ### BREAKING CHANGES

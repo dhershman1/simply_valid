@@ -97,7 +97,7 @@ const results = cleanRes.map(doc => {
   }
 })
 
-fs.writeFileSync('.github/info.json', JSON.stringify({
+fs.writeFileSync('info.json', JSON.stringify({
   version,
   description,
   docs: results
