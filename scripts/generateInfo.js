@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const jsDocParser = require('jsdoc-to-markdown')
-const { version } = require('../package.json')
+const { version, description } = require('../package.json')
 const ignoredFiles = ['_internals', 'esm', 'index.js']
 
 const listFns = () => {
@@ -97,4 +97,8 @@ const results = cleanRes.map(doc => {
   }
 })
 
-fs.writeFileSync('docs.js', `module.exports = ${JSON.stringify(results)}`)
+fs.writeFileSync('info.json', JSON.stringify({
+  version,
+  description,
+  docs: results
+}))
