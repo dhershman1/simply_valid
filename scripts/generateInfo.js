@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const jsDocParser = require('jsdoc-to-markdown')
-const { version } = require('../package.json')
+const { version, description } = require('../package.json')
 const ignoredFiles = ['_internals', 'esm', 'index.js']
 
 const listFns = () => {
@@ -97,6 +97,24 @@ const results = cleanRes.map(doc => {
   }
 })
 
-fs.writeFileSync('docs.js', `
-  const SV_VERSION = '${version}'
-  const SV_DOCS = ${JSON.stringify(results)}`)
+fs.writeFileSync('.github/info.json', JSON.stringify({
+  version,
+  description,
+  docs: results,
+  returns: [
+    // Passing Validation
+    {
+      isValid: true,
+      story: []
+    },
+
+    // Failing returns will look like this
+    {
+      isValid: false,
+      story: [{
+        test: "isNumber",
+        value: "cool"
+      }]
+    }
+  ]
+}))
