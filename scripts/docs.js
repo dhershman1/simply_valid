@@ -97,4 +97,6 @@ const results = cleanRes.map(doc => {
   }
 })
 
-fs.writeFileSync('docs.json', JSON.stringify(results))
+fs.writeFileSync('docs.js', `
+  const SV_VERSION = '${version}'
+  const SV_DOCS = ${JSON.stringify(results)}`)
