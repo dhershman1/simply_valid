@@ -100,21 +100,5 @@ const results = cleanRes.map(doc => {
 fs.writeFileSync('.github/info.json', JSON.stringify({
   version,
   description,
-  docs: results,
-  returns: [
-    // Passing Validation
-    {
-      isValid: true,
-      story: []
-    },
-
-    // Failing returns will look like this
-    {
-      isValid: false,
-      story: [{
-        test: "isNumber",
-        value: "cool"
-      }]
-    }
-  ]
+  docs: results
 }))
