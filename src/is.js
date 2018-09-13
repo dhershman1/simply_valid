@@ -10,7 +10,8 @@ const luhn = val => {
 
   while (len) {
     num = parseInt(stringVal.charAt(--len), 10)
-    sum += (bit ^= 1) ? numArr[num] : num
+    bit ^= 1
+    sum += bit ? numArr[num] : num
   }
 
   return sum && sum % 10 === 0
