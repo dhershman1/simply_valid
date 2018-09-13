@@ -1,19 +1,7 @@
-import curry from './_internals/curry'
+import curry from 'kyanite/curry'
+import type from 'kyanite/type'
+import ensureArray from 'kyanite/ensureArray'
 import * as validationMethods from './index'
-
-const isObject = x => Object.prototype.toString.call(x) === '[object Object]'
-
-const ensureArray = val => {
-  if (Array.isArray(val)) {
-    return val
-  }
-
-  if (val === void 0) {
-    return []
-  }
-
-  return [val]
-}
 
 // Format the response to keep it consistent
 const format = res => {
@@ -63,7 +51,7 @@ const validateDataObj = (data, schema, methods) =>
   Object.keys(data).reduce((acc, k) => {
     const value = data[k]
 
-    if (isObject(value)) {
+    if (type(value) === 'Object') {
       return acc.concat(validateDataObj(value, schema[k], methods))
     }
 
@@ -72,7 +60,7 @@ const validateDataObj = (data, schema, methods) =>
 
 const validateSchema = schema =>
   (Array.isArray(schema) && schema.length) ||
-  (isObject(schema) && Object.keys(schema).length) ||
+  (type(schema) === 'Object' && Object.keys(schema).length) ||
   Boolean(schema.length)
 
 const setup = (methods, opts) =>
@@ -164,7 +152,7 @@ const simplyValid = (options, data) => {
     throw new Error('The schema is either invalid or one was not provided for validation')
   }
 
-  if (isObject(data)) {
+  if (type(data) === 'Object') {
     return format(validateDataObj(data, opts.schema, fns))
   }
 

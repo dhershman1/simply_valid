@@ -1,4 +1,4 @@
-import curry from './_internals/curry'
+import curry from 'kyanite/curry'
 
 const luhn = val => {
   const numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]

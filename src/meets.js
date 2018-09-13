@@ -1,4 +1,4 @@
-import curry from './_internals/curry'
+import curry from 'kyanite/curry'
 
 /**
  * @name meetsMinMax

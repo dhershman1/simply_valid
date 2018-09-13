@@ -14,15 +14,18 @@ import {
   meetsCVNAmex
 } from './meets'
 
-const runner = (val, methods) => {
-  for (let i = 0, len = methods.length; i < len; i++) {
-    if (methods[i](val)) {
-      return true
-    }
-  }
+// const runner = (val, methods) => {
+//   console.log(methods.some(fn => fn(val)))
+//   for (let i = 0, len = methods.length; i < len; i++) {
+//     if (methods[i](val)) {
+//       return true
+//     }
+//   }
 
-  return false
-}
+//   return false
+// }
+
+const runner = (methods, val) => methods.some(fn => fn(val))
 
 /**
  * @name creditCard
@@ -38,12 +41,12 @@ const runner = (val, methods) => {
  * creditCard('4111111111111111'); // => true
  * creditCard('AB4111111111111111'); // => false
  */
-export const creditCard = val => runner(val, [
+export const creditCard = val => runner([
   isAmexCard(true),
   isDiscoverCard(true),
   isMasterCard(true),
   isVisaCard(true)
-])
+], val)
 
 /**
  * @name date
@@ -58,7 +61,7 @@ export const creditCard = val => runner(val, [
  * date('01/15/2019'); // => true
  * date('2019/01/05'); // => true
  */
-export const date = val => runner(val, [isDate, isDateShort, isDateProper])
+export const date = val => runner([isDate, isDateShort, isDateProper], val)
 
 /**
  * @name cvn
@@ -73,7 +76,7 @@ export const date = val => runner(val, [isDate, isDateShort, isDateProper])
  * cvn('4444'); // => true
  * cvn('55555'); // => false
  */
-export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex])
+export const cvn = val => runner([meetsCVN, meetsCVNAmex], val)
 
 /**
  * @name zipOrPostal
@@ -87,4 +90,4 @@ export const cvn = val => runner(val, [meetsCVN, meetsCVNAmex])
  * zipOrPostal('55555'); // => true
  * zipOrPostal('K1A0B1'); // => true
  */
-export const zipOrPostal = val => runner(val, [isZip, isCAPostalCode])
+export const zipOrPostal = val => runner([isZip, isCAPostalCode], val)

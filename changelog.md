@@ -1,5 +1,15 @@
 # Change Log
 
+## v4.1.0
+
+### New
+
+- Added Kyanite library to help with utility functionality
+
+### Improved
+
+- Cleaned up code a bit using the library
+
 ## v4.0.1
 
 ### New
