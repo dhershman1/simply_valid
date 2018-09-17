@@ -1,8 +1,12 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global.simplyValid = factory());
-}(this, (function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('kyanite/curry'), require('kyanite/type'), require('kyanite/ensureArray')) :
+  typeof define === 'function' && define.amd ? define(['kyanite/curry', 'kyanite/type', 'kyanite/ensureArray'], factory) :
+  (global.simplyValid = factory(global.curry,global.type,global.ensureArray));
+}(this, (function (curry,type,ensureArray) { 'use strict';
+
+  curry = curry && curry.hasOwnProperty('default') ? curry['default'] : curry;
+  type = type && type.hasOwnProperty('default') ? type['default'] : type;
+  ensureArray = ensureArray && ensureArray.hasOwnProperty('default') ? ensureArray['default'] : ensureArray;
 
   function _toConsumableArray(arr) {
     return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
@@ -23,18 +27,6 @@
   function _nonIterableSpread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
-
-  var curry = function curry(f) {
-    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-    return f.length <= args.length ? f.apply(void 0, args) : function () {
-      for (var _len2 = arguments.length, more = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        more[_key2] = arguments[_key2];
-      }
-      return curry.apply(void 0, [f].concat(args, more));
-    };
-  };
 
   var hasValue = function hasValue(val) {
     return val === 0 || Boolean(val);
@@ -64,7 +56,8 @@
     var num = 0;
     while (len) {
       num = parseInt(stringVal.charAt(--len), 10);
-      sum += (bit ^= 1) ? numArr[num] : num;
+      bit ^= 1;
+      sum += bit ? numArr[num] : num;
     }
     return sum && sum % 10 === 0;
   };
@@ -204,25 +197,22 @@
     return val.match(/[A-Z]/i) === null;
   };
 
-  var runner = function runner(val, methods) {
-    for (var i = 0, len = methods.length; i < len; i++) {
-      if (methods[i](val)) {
-        return true;
-      }
-    }
-    return false;
+  var runner = function runner(methods, val) {
+    return methods.some(function (fn) {
+      return fn(val);
+    });
   };
   var creditCard = function creditCard(val) {
-    return runner(val, [isAmexCard(true), isDiscoverCard(true), isMasterCard(true), isVisaCard(true)]);
+    return runner([isAmexCard(true), isDiscoverCard(true), isMasterCard(true), isVisaCard(true)], val);
   };
   var date = function date(val) {
-    return runner(val, [isDate, isDateShort, isDateProper]);
+    return runner([isDate, isDateShort, isDateProper], val);
   };
   var cvn = function cvn(val) {
-    return runner(val, [meetsCVN, meetsCVNAmex]);
+    return runner([meetsCVN, meetsCVNAmex], val);
   };
   var zipOrPostal = function zipOrPostal(val) {
-    return runner(val, [isZip, isCAPostalCode]);
+    return runner([isZip, isCAPostalCode], val);
   };
 
 
@@ -271,18 +261,6 @@
     zipOrPostal: zipOrPostal
   });
 
-  var isObject = function isObject(x) {
-    return Object.prototype.toString.call(x) === '[object Object]';
-  };
-  var ensureArray = function ensureArray(val) {
-    if (Array.isArray(val)) {
-      return val;
-    }
-    if (val === void 0) {
-      return [];
-    }
-    return [val];
-  };
   var format = function format(res) {
     var results = res.reduce(function (acc, _ref) {
       var isValid = _ref.isValid,
@@ -323,14 +301,14 @@
   var validateDataObj = function validateDataObj(data, schema, methods) {
     return Object.keys(data).reduce(function (acc, k) {
       var value = data[k];
-      if (isObject(value)) {
+      if (type(value) === 'Object') {
         return acc.concat(validateDataObj(value, schema[k], methods));
       }
       return acc.concat([validate(value, schema[k], methods)]);
     }, []);
   };
   var validateSchema = function validateSchema(schema) {
-    return Array.isArray(schema) && schema.length || isObject(schema) && Object.keys(schema).length || Boolean(schema.length);
+    return Array.isArray(schema) && schema.length || type(schema) === 'Object' && Object.keys(schema).length || Boolean(schema.length);
   };
   var setup = function setup(methods, opts) {
     return Object.keys(methods).reduce(function (acc, k) {
@@ -361,7 +339,7 @@
     if (!validateSchema(opts.schema)) {
       throw new Error('The schema is either invalid or one was not provided for validation');
     }
-    if (isObject(data)) {
+    if (type(data) === 'Object') {
       return format(validateDataObj(data, opts.schema, fns));
     }
     return validate(data, opts.schema, fns);

@@ -19,11 +19,17 @@ const buildEntry = () => {
         uglify(),
         filesize()
       ],
+      external: [
+        'kyanite/curry'
+      ],
       output: {
         file: name === 'index' ? 'esm.js' : base,
         format: 'umd',
         name: name === 'index' ? 'esm' : name,
-        exports: 'named'
+        exports: 'named',
+        globals: {
+          'kyanite/curry': 'curry'
+        }
       }
     }
 
@@ -42,11 +48,21 @@ export default [{
     uglify(),
     filesize()
   ],
+  external: [
+    'kyanite/curry',
+    'kyanite/type',
+    'kyanite/ensureArray'
+  ],
   output: {
     file: './dist/simply-valid.min.js',
     format: 'umd',
     name: 'simplyValid',
-    exports: 'default'
+    exports: 'default',
+    globals: {
+      'kyanite/curry': 'curry',
+      'kyanite/type': 'type',
+      'kyanite/ensureArray': 'ensureArray'
+    }
   }
 }, {
   input: './src/main.js',
@@ -55,10 +71,20 @@ export default [{
     cleanup(),
     filesize()
   ],
+  external: [
+    'kyanite/curry',
+    'kyanite/type',
+    'kyanite/ensureArray'
+  ],
   output: {
     file: './dist/simply-valid.js',
     format: 'umd',
     name: 'simplyValid',
-    exports: 'default'
+    exports: 'default',
+    globals: {
+      'kyanite/curry': 'curry',
+      'kyanite/type': 'type',
+      'kyanite/ensureArray': 'ensureArray'
+    }
   }
 }].concat(buildEntry())
