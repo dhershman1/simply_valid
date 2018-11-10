@@ -15,51 +15,24 @@ const listFns = () => {
     }))
 }
 
-const generateUsage = (name, loc) => {
-  if (loc === 'main') {
-    return {
-      'commonjs': {
-        title: 'CommonJs',
-        code: `const simplyValid = require('simply_valid')`
-      },
-      'standard': {
-        title: 'Standard',
-        code: `import simplyValid from 'simply_valid'`
-      },
-      'cdn': {
-        title: 'CDN (Prod)',
-        code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/dist/${name}.min.js"></script>`
-      },
-      'cdn': {
-        title: 'CDN (Dev)',
-        code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/dist/${name}.js"></script>`
-      },
-      'browser': {
-        title: 'Browser',
-        code: `<script src="path/to/simply_valid/${name}.js"></script>`
-      }
-    }
+const generateUsage = name => ({
+  'commonjs': {
+    title: 'CommonJs',
+    code: `const { ${name} } = require('simply_valid')`
+  },
+  'standard': {
+    title: 'Standard',
+    code: `import { ${name} } from 'simply_valid'`
+  },
+  'cdn': {
+    title: 'CDN',
+    code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/simply-valid.min.js"></script>`
+  },
+  'browser': {
+    title: 'Browser',
+    code: `<script src="path/to/simply_valid/dist/simply-valid.min.js"></script>`
   }
-
-  return {
-    'commonjs': {
-      title: 'CommonJs',
-      code: `const { ${name} } = require('simply_valid/${loc}')`
-    },
-    'standard': {
-      title: 'Standard',
-      code: `import { ${name} } from 'simply_valid/${loc}'`
-    },
-    'cdn': {
-      title: 'CDN',
-      code: `<script src="https://cdn.jsdelivr.net/npm/simply_valid@${version}/${loc}.js"></script>`
-    },
-    'browser': {
-      title: 'Browser',
-      code: `<script src="path/to/simply_valid/${loc}/index.js"></script>`
-    }
-  }
-}
+})
 
 const generateSyntax = (name, args) => {
   if (!args) {
@@ -76,26 +49,26 @@ const generate = () => listFns().map(fn => jsDocParser.getTemplateDataSync({
   'no-cache': true
 }))
 
-const generated = generate();
-let cleanRes = generated.reduce((acc, v) => {
-  return [...acc, ...v]
-}, [])
+const generated = generate()
+const results = generated
+  .reduce((acc, v) => {
+    return [...acc, ...v]
+  }, [])
+  .map(doc => {
+    const loc = doc.meta.filename.replace('.js', '')
 
-const results = cleanRes.map(doc => {
-  const loc = doc.meta.filename.replace('.js', '')
-
-  return {
-    since: doc.since ? doc.since : 'Unknown',
-    category: doc.category,
-    title: doc.name,
-    desc: doc.description,
-    examples: doc.examples,
-    returns: doc.returns,
-    params: doc.params,
-    syntax: generateSyntax(doc.name, doc.params),
-    usage: generateUsage(doc.name, loc)
-  }
-})
+    return {
+      since: doc.since ? doc.since : 'Unknown',
+      category: doc.category,
+      title: doc.name,
+      desc: doc.description,
+      examples: doc.examples,
+      returns: doc.returns,
+      params: doc.params,
+      syntax: generateSyntax(doc.name, doc.params),
+      usage: generateUsage(doc.name, loc)
+    }
+  })
 
 fs.writeFileSync('info.json', JSON.stringify({
   version,

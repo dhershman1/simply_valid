@@ -1,5 +1,14 @@
 # Change Log
 
+## v5.0.0
+
+### BREAKING CHANGES
+
+- Importing/requiring the module is a bit different please see the README for info
+  - Schema will **No longer** take string values, you must import and pass the functions you want to use.
+    - Why? This offers a cleaner and more direct experience, less the library has to worry about so less overhead!
+    - This also opens the door for _you_ to be able to pass in your own functionality!
+
 ## v4.0.2
 
 ### New

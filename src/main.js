@@ -1,7 +1,17 @@
-import curry from 'kyanite/curry'
-import type from 'kyanite/type'
-import ensureArray from 'kyanite/ensureArray'
-import * as validationMethods from './index'
+import { curry, ensureArray, plan, type, whole } from 'kyanite'
+import * as is from './is'
+import * as no from './no'
+import * as meets from './meets'
+import * as has from './has'
+import * as combo from './combo'
+
+const validationMethods = {
+  ...is,
+  ...no,
+  ...meets,
+  ...has,
+  ...combo
+}
 
 // Format the response to keep it consistent
 const format = res => {
@@ -21,7 +31,7 @@ const format = res => {
   return results
 }
 
-const validate = (data, schema, methods) => {
+const runValidate = (data, schema, methods) => {
   const story = []
   const schemaArr = ensureArray(schema)
   const dataArr = ensureArray(data)
@@ -55,7 +65,7 @@ const validateDataObj = (data, schema, methods) =>
       return acc.concat(validateDataObj(value, schema[k], methods))
     }
 
-    return acc.concat([validate(value, schema[k], methods)])
+    return acc.concat([runValidate(value, schema[k], methods)])
   }, [])
 
 const validateSchema = schema =>
@@ -75,12 +85,13 @@ const setup = (methods, opts) =>
   }, {})
 
 /**
- * @name simplyValid
+ * @name validate
  * @since v1.0.0
  * @category Main
  * @description The main validation functionality of simply valid
  * @param {Object} options The main options to setup simply_valid
  * @property {Any} schema The schema that the functionality of the module should be following
+ * @property {Boolean} partial Determines whether objects with missing values should fail or not
  * @property {Boolean} strictCard Whether or not we should run card validation strictly or not
  * @property {Number} max The max number used for max validation methods
  * @property {Number} min The min number used for min validation methods
@@ -92,46 +103,56 @@ const setup = (methods, opts) =>
  * @example
  * // Simple validation schemas
  *
- * const validate = simplyValid({
-    schema: 'hasValue'
+ * const valid = validate({
+    schema: hasValue
   });
 
-  validate('test'); // => { isValid: true }
-  validate(''); // => { isValid: false, story: [{ test: 'hasValue', value: '' }] }
-  simplyValid({
-    schema: 'hasValue'
-  }, 'test'); // => { isValid: true }
+  valid(test); // => { isValid: true, story: [] }
+  valid(); // => { isValid: false, story: [{ test: hasValue, value: undefined }] }
+  validate({
+    schema: hasValue
+  }, test); // => { isValid: true, story: [] }
  *
  * // Array Validation Schemas
  *
- * const validate = simplyValid({
- *  schema: ['hasValue', 'hasNumber']
+ * const valid = validate({
+ *  schema: [hasValue, hasNumber]
  * });
- * validate('test1123'); // => { isValid: true }
- * validate('test'); // => { isValid: false, story: [{ test: 'hasNumbers', value: 'test' }] }
+ * valid(test1123); // => { isValid: true, story: [] }
+ * valid(test); // => { isValid: false, story: [{ test: hasNumbers, value: test }] }
  *
  * // Object Validation Schema
  *
- * const validate = simplyValid({
+ * const valid = validate({
  *  schema: {
- *    test: ['hasNumbers', 'hasLetters'],
- *    thing: 'hasValue',
+ *    test: [hasNumbers, hasLetters],
+ *    thing: hasValue,
  *    other: {
- *      nestedThing: ['isPositive', 'hasNumbers']
+ *      nestedThing: [isPositive, hasNumbers]
  *    }
  *  }
  * });
- * validate({
- *   test: 'cool112',
- *   thing: 'test',
+ * valid({
+ *   test: cool112,
+ *   thing: test,
  *   other: {
- *     nestedThing: '1234'
+ *     nestedThing: 1234
  *   }
- * }); // => { isValid: true }
+ * }); // => { isValid: true, story: [] }
+ *
+ * // Using partial
+ * validate({
+ *   schema: {
+ *     zip: isNumber
+ *     address: hasLetters
+ *   },
+ *   partial: false
+ * }, { zip: 12345 }) // => { isValid: false, story: [{ test: 'hasLetters', value: undefined }] }
  */
-const simplyValid = (options, data) => {
+const validate = (options, data) => {
   const defaults = {
     schema: [],
+    partial: true,
     strictCard: false,
     max: Infinity,
     min: -Infinity,
@@ -153,10 +174,11 @@ const simplyValid = (options, data) => {
   }
 
   if (type(data) === 'Object') {
-    return format(validateDataObj(data, opts.schema, fns))
+    return { isValid: plan(opts.schema, data) }
+    // return format(validateDataObj(data, opts.schema, fns))
   }
 
-  return validate(data, opts.schema, fns)
+  return runValidate(data, opts.schema, fns)
 }
 
-export default curry(simplyValid)
+export default curry(validate)

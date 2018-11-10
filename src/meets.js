@@ -1,4 +1,4 @@
-import curry from 'kyanite/curry'
+import { curry } from 'kyanite'
 
 /**
  * @name meetsMinMax

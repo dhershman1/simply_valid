@@ -1,12 +1,42 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('kyanite/curry'), require('kyanite/type'), require('kyanite/ensureArray')) :
-  typeof define === 'function' && define.amd ? define(['kyanite/curry', 'kyanite/type', 'kyanite/ensureArray'], factory) :
-  (global.simplyValid = factory(global.curry,global.type,global.ensureArray));
-}(this, (function (curry,type,ensureArray) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('kyanite')) :
+  typeof define === 'function' && define.amd ? define(['kyanite'], factory) :
+  (global.simplyValid = factory(global.kyanite));
+}(this, (function (kyanite) { 'use strict';
 
-  curry = curry && curry.hasOwnProperty('default') ? curry['default'] : curry;
-  type = type && type.hasOwnProperty('default') ? type['default'] : type;
-  ensureArray = ensureArray && ensureArray.hasOwnProperty('default') ? ensureArray['default'] : ensureArray;
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      var ownKeys = Object.keys(source);
+
+      if (typeof Object.getOwnPropertySymbols === 'function') {
+        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+        }));
+      }
+
+      ownKeys.forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    }
+
+    return target;
+  }
 
   function _toConsumableArray(arr) {
     return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
@@ -61,19 +91,19 @@
     }
     return sum && sum % 10 === 0;
   };
-  var isNotTooShort = curry(function (rule, val) {
+  var isNotTooShort = kyanite.curry(function (rule, val) {
     if (rule.minLen) {
       return val.length >= rule.minLen;
     }
     return val.length >= rule;
   });
-  var isNotTooLong = curry(function (rule, val) {
+  var isNotTooLong = kyanite.curry(function (rule, val) {
     if (rule.maxLen) {
       return val.length <= rule.maxLen;
     }
     return val.length <= rule;
   });
-  var isCorrectLength = curry(function (_ref, val) {
+  var isCorrectLength = kyanite.curry(function (_ref, val) {
     var maxLen = _ref.maxLen,
         minLen = _ref.minLen;
     return isNotTooShort(minLen, val) && isNotTooLong(maxLen, val);
@@ -117,50 +147,50 @@
   var isLicensePlate = function isLicensePlate(val) {
     return /^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i.test(val);
   };
-  var isVisaCard = curry(function (strict, val) {
+  var isVisaCard = kyanite.curry(function (strict, val) {
     if (strict) {
       return luhn(val);
     }
     return /^4[0-9]{15}$/.test(val);
   });
-  var isVisaPanCard = curry(function (strict, val) {
+  var isVisaPanCard = kyanite.curry(function (strict, val) {
     if (strict) {
       return luhn(val);
     }
     return /^4[0-9]{18}$/.test(val);
   });
-  var isMasterCard = curry(function (strict, val) {
+  var isMasterCard = kyanite.curry(function (strict, val) {
     if (strict) {
       return luhn(val);
     }
     return /^5[1-5][0-9]{14}$/.test(val);
   });
-  var isAmexCard = curry(function (strict, val) {
+  var isAmexCard = kyanite.curry(function (strict, val) {
     if (strict) {
       return luhn(val);
     }
     return /^3(4|7)[0-9]{13}$/.test(val);
   });
-  var isDiscoverCard = curry(function (strict, val) {
+  var isDiscoverCard = kyanite.curry(function (strict, val) {
     if (strict) {
       return luhn(val);
     }
     return /^6[0-9]{15}$/.test(val);
   });
-  var isBelowMax = curry(function (m, val) {
+  var isBelowMax = kyanite.curry(function (m, val) {
     if (m.max != null) {
       return !isNaN(val) && Number(val) < m.max;
     }
     return !isNaN(val) && Number(val) < m;
   });
-  var isAboveMin = curry(function (m, val) {
+  var isAboveMin = kyanite.curry(function (m, val) {
     if (m.min != null) {
       return !isNaN(val) && Number(val) > m.min;
     }
     return !isNaN(val) && Number(val) > m;
   });
 
-  var meetsMinMax = curry(function (_ref, val) {
+  var meetsMinMax = kyanite.curry(function (_ref, val) {
     var min = _ref.min,
         max = _ref.max;
     return !isNaN(val) && Number(val) >= min && Number(val) <= max;
@@ -279,8 +309,8 @@
   };
   var validate = function validate(data, schema, methods) {
     var story = [];
-    var schemaArr = ensureArray(schema);
-    var dataArr = ensureArray(data);
+    var schemaArr = kyanite.ensureArray(schema);
+    var dataArr = kyanite.ensureArray(data);
     dataArr.forEach(function (d) {
       var results = schemaArr.reduce(function (acc, fn) {
         if (!methods[fn](d)) {
@@ -301,14 +331,14 @@
   var validateDataObj = function validateDataObj(data, schema, methods) {
     return Object.keys(data).reduce(function (acc, k) {
       var value = data[k];
-      if (type(value) === 'Object') {
+      if (kyanite.type(value) === 'Object') {
         return acc.concat(validateDataObj(value, schema[k], methods));
       }
       return acc.concat([validate(value, schema[k], methods)]);
     }, []);
   };
   var validateSchema = function validateSchema(schema) {
-    return Array.isArray(schema) && schema.length || type(schema) === 'Object' && Object.keys(schema).length || Boolean(schema.length);
+    return Array.isArray(schema) && schema.length || kyanite.type(schema) === 'Object' && Object.keys(schema).length || Boolean(schema.length);
   };
   var setup = function setup(methods, opts) {
     return Object.keys(methods).reduce(function (acc, k) {
@@ -339,12 +369,14 @@
     if (!validateSchema(opts.schema)) {
       throw new Error('The schema is either invalid or one was not provided for validation');
     }
-    if (type(data) === 'Object') {
+    if (kyanite.type(data) === 'Object') {
       return format(validateDataObj(data, opts.schema, fns));
     }
     return validate(data, opts.schema, fns);
   };
-  var main = curry(simplyValid);
+  var main = _objectSpread({
+    validate: kyanite.curry(simplyValid)
+  }, validationMethods);
 
   return main;
 

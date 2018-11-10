@@ -1,4 +1,4 @@
-import curry from 'kyanite/curry'
+import { between, curry, isNil } from 'kyanite'
 
 const luhn = val => {
   const numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
@@ -472,3 +472,27 @@ export const isAboveMin = curry((m, val) => {
 
   return !isNaN(val) && Number(val) > m
 })
+
+/**
+ * @name isBetween
+ * @since v5.0.0
+ * @category Is
+ * @description Checks if the provided value is between the max and min
+ * @param {Object} m The object containing max and min values
+ * @param {Number} m.max The maximum the value should be below
+ * @param {Number} m.min The minimum the value should be above
+ * @param {Number} val The value to compare
+ * @returns {Boolean} Whether or not the number is between the max and min numbers
+ * @example
+ * isBetween({ max: 10, min: 5 }, 6) // => true
+ * isBetween({ max: 10, min: 5 }, 3) // => false
+ *
+ * // It's also curried
+ * const fn = isBetween({ max: 10, min: 5 })
+ *
+ * fn(6) // => true
+ * fn(3) // => false
+ */
+const _isBetween = (m, val) => !isNaN(val) && between(m.min, m.max, val)
+
+export const isBetween = curry(_isBetween)

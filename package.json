@@ -12,7 +12,7 @@
     "build": "rollup -c",
     "clean": "node scripts/clean.js",
     "postpublish": "npm run clean",
-    "test": "tape -r esm tests/*.js | tap-spec",
+    "test": "tape -r esm tests/main.js | tap-spec",
     "test:cov": "nyc npm test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "standard ./src/*.js"
@@ -37,19 +37,19 @@
   },
   "homepage": "https://github.com/dhershman1/simply_valid",
   "devDependencies": {
-    "@babel/core": "7.0.1",
-    "@babel/preset-env": "7.0.0",
+    "@babel/core": "7.1.5",
+    "@babel/preset-env": "7.1.5",
     "coveralls": "3.0.2",
     "del": "3.0.0",
-    "esm": "3.0.82",
+    "esm": "3.0.84",
     "globby": "8.0.1",
     "jsdoc-to-markdown": "4.0.1",
-    "nyc": "13.0.1",
-    "rollup": "0.65.2",
+    "nyc": "13.1.0",
+    "rollup": "0.67.0",
     "rollup-plugin-babel": "4.0.3",
     "rollup-plugin-cleanup": "3.0.0",
-    "rollup-plugin-filesize": "4.0.1",
-    "rollup-plugin-uglify": "5.0.2",
+    "rollup-plugin-filesize": "5.0.1",
+    "rollup-plugin-terser": "3.0.0",
     "standard": "12.0.1",
     "tap-spec": "5.0.0",
     "tape": "4.9.1"
@@ -69,6 +69,6 @@
     ]
   },
   "dependencies": {
-    "kyanite": "^0.7.1"
+    "kyanite": "0.10.1"
   }
 }

@@ -18,18 +18,11 @@ Find individual documentation per function on the site: **[You can click here to
 
 You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
 
-## Old Readmes
-
-You can find Non-depricated old readmes [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-readmes)
-
 ## Contents
 * [Philosophy](#philosophy)
 * [Parameters](#parameters)
-* [Options](#options)
-* [Defaults](#defaults)
 * [Usage](#usage)
 * [Schema](#schema)
-* [Methods](#methods)
 * [Return](#return)
 
 ## Philosophy
@@ -43,129 +36,147 @@ With the schema system in place for the module you can easily validate complex o
 ## Parameters
 
 - `options` - `Object`: An object of rules to overwrite the default rules
+  - `options.schema`: `Object|Array|String` - The validation methods you want simply valid to use
+  - `options.strictCard`: `Boolean` - If credit card validation should use the `luhn` algorithm strictly
+  - `options.max`: `Number` - The maximum of a value
+  - `options.min`: `Number` - The minimum of a value
+  - `options.maxLen`: `Number` - The maximum length of a value
+  - `options.minLen`: `Number` - The minimum length of a value
 - `data` - `String|Array|Object`: Data is the value sent in with the 2nd call made to simplyValid (curried call)
 
-## Options
-
-- `schema` - `Object|Array|String` - The validation methods you want simply valid to use
-- `strictCard` - `Boolean` - If credit card validation should use the `luhn` algorithm strictly
-- `max` - `Number`: The maximum of a value
-- `min` - `Number`: The minimum of a value
-- `maxLen` - `Number`: The maximum length of a value
-- `minLen` - `Number`: The minimum length of a value
-
-## Defaults
+#### Default Options
 
 ```js
-const defaults = {
+{
   schema: [],
   strictCard: true,
   max: Infinity,
   min: -Infinity,
   maxLen: 100,
   minLen: 1
-};
+}
 ```
 
 ## Usage
 
-However you can also call any of the built in validation methods the same way if you only need one or two. Making tree shaking that much better
-
-Using Standardized JS
+Using Standard JS
 ```js
-import simplyValid from 'simply_valid';
+import { validate } from 'simply_valid'
 
-simplyValid(options, data);
+validate(options, data)
 
 // Or
-const validate = simplyValid(options);
+const valid = validate(options)
 
-validate(data);
+valid(data)
 ```
 
 Using commonjs
 ```js
-const simplyValid = require('simply_valid');
+const { validate } = require('simply_valid')
 
-simplyValid(options, data);
+validate(options, data)
 
 // Or
-const validate = simplyValid(options);
+const valid = validate(options)
 
-validate(data);
+valid(data)
 ```
 
 In the browser
 ```html
 <script src="path/to/dist/simplyValid.min.js"></script>
 <script>
-  simplyValid(options, data);
+  validate(options, data)
 
   // Or
-  var validate = simplyValid(options);
+  var valid = validate(options)
 
-  validate(data);
+  valid(data)
 </script>
 ```
 
 ## Schema
 
-You can pass schema an `Array` of methods just like passing it an array of methods from v2.x.x
+#### Single Method
 
+You can even pass it a single method
 ```js
-import simplyValid from 'simply_valid';
+import { hasValue, validate } from 'simply_valid'
 
-const validate = simplyValid({
-  schema: ['hasValue', 'hasLetters']
-});
+const valid = validate({
+  schema: hasValue
+})
 
-validate(data);
+valid('123') // => { isValid: true, story: [] }
+valid() // => { isValid: false, story: [{ isValid: true, story: [{ test: 'hasValue', value: undefined }] }] }
 ```
 
-You can pass schema an `Object` now which would be used if you are validating your own object
+#### Flat Array
 
+You can pass schema an `Array` of methods
 ```js
-import simplyValid from 'simply_valid';
+import { hasValue, hasLetters, validate } from 'simply_valid'
 
-const validate = simplyValid({
+const valid = validate({
+  schema: [hasValue, hasLetters]
+})
+
+valid('123abc') // => { isValid: true, story: [] }
+valid() // => { isValid: false, story: [{ test: 'hasValue', value: undefined }] }
+valid(123) // => { isValid: false, story: [{ test: 'hasLetters', value: 123 }] }
+```
+
+#### Flat Object
+
+You can pass schema an `Object` now which would be used if you are validating your own object
+```js
+import { isNumber, hasLetters, hasNumbers, validate } from 'simply_valid'
+
+const valid = validate({
   schema: {
-    zip: 'isNumber',
-    address: ['hasLetters', 'hasNumbers']
+    zip: isNumber,
+    address: [hasLetters, hasNumbers]
   }
-});
+})
 const data = {
   zip: '11445',
   address: '1132 Cool St'
-};
+}
 
-validate(data);
-// Output: {isValid: true, story: []}
-
+valid(data) // => { isValid: true, story: [] }
+valid({ zip: 'abc', address: '1123 Test Dr' }) // => { isValid: false, story: [{ test: 'isNumber', value: '123' }] }
 ```
 
-You can even pass it a single string if desired
+#### Mixed
 
+You can even mix it up! (Or even use your own methods)
 ```js
-import simplyValid from 'simply_valid';
+import { isNumber, hasLetters, validate } from 'simply_valid'
 
-const validate = simplyValid({
-  schema: 'hasValue'
-});
+const isEven = (_, val) => val % 2 === 0
+const valid = validate({
+  schema: {
+    zip: isNumber,
+    num: [isNumber, isEven],
+    address: {
+      street: hasLetters,
+      streetNum: isNumber
+    }
+  }
+})
 
-validate(data);
+valid({
+  zip: 11445,
+  num: 4,
+  address: {
+    street: 'Cool St',
+    streetNum: 123
+  }
+})
+// Output: { isValid: true, story: [] }
+
 ```
-
-## Methods
-
-You can simply require in a chunk of validation functions if you only need a certain set of them in your app
-
-- `simply_valid/has` - Return the `has` methods
-- `simply_valid/is` - Return the `is` methods
-- `simply_valid/meets` - Return the `meets` methods
-- `simply_valid/no` - Return the `no` methods
-- `simply_valid/combo` - Return the `combo` methods
-- `simply_valid/esm` - Return `all` methods
-- `simply_valid` - Returns the validation functionality built into `Simply_Valid` (Includes all of the methods by default)
 
 ## Return
 

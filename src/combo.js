@@ -14,17 +14,6 @@ import {
   meetsCVNAmex
 } from './meets'
 
-// const runner = (val, methods) => {
-//   console.log(methods.some(fn => fn(val)))
-//   for (let i = 0, len = methods.length; i < len; i++) {
-//     if (methods[i](val)) {
-//       return true
-//     }
-//   }
-
-//   return false
-// }
-
 const runner = (methods, val) => methods.some(fn => fn(val))
 
 /**
