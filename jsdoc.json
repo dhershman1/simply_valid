@@ -1,0 +1,61 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "includePattern": ".js$",
+    "include": [
+      "src/",
+      "./README.md"
+    ]
+  },
+  "sourceType": "module",
+  "plugins": [
+    "plugins/markdown",
+    "scripts/custom-tags.js"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "template": "node_modules/@killparadise/docdash",
+    "destination": "./docs/",
+    "recurse": true,
+    "verbose": true
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true,
+    "idInHeadings": true
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": true,
+      "includeDate": false
+    }
+  },
+  "docdash": {
+    "static": true,
+    "sort": true,
+    "moduleName": "Simply_Valid",
+    "disqus": "",
+    "meta": {
+      "title": "Kyanite",
+      "description": "A small library of pure functional utilities to make life easier and data better",
+      "keyword": "functional, library, javascript, pure, helpers, utils"
+    },
+    "search": true,
+    "collapse": true,
+    "typedefs": true,
+    "removeQuotes": "none",
+    "scripts": [],
+    "menu": {
+      "Github repo": {
+        "href": "https://github.com/dhershman1/simply_valid",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "repository"
+      }
+    }
+  }
+}

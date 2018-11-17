@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Home - Kyanite</title>
+    
+    <meta name="description" content="A small library of pure functional utilities to make life easier and data better" />
+    
+        <meta name="keywords" content="functional, library, javascript, pure, helpers, utils" />
+        <meta name="keyword" content="functional, library, javascript, pure, helpers, utils" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/dhershman1/simply_valid" target="_blank" class="menu-item" id="repository" >Github repo</a></h2><ul class="nav-list"><h3>Combo</h3><li class="nav-item" data-cat="Combo"><a href="functions.html#date">date</a></li><li class="nav-item" data-cat="Combo"><a href="functions.html#zipOrPostal">zipOrPostal</a></li><h3>Has</h3><li class="nav-item" data-cat="Has"><a href="functions.html#hasLetters">hasLetters</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasNumbers">hasNumbers</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasNumbersOrSpecials">hasNumbersOrSpecials</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasSpecialCharacters">hasSpecialCharacters</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasUpperAndLowerCase">hasUpperAndLowerCase</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasValue">hasValue</a></li><h3>Is</h3><li class="nav-item" data-cat="Is"><a href="functions.html#isAboveMin">isAboveMin</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isBelowMax">isBelowMax</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isBetween">isBetween</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isCAPostalCode">isCAPostalCode</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isCorrectLength">isCorrectLength</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDate">isDate</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDateProper">isDateProper</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDateShort">isDateShort</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isEmail">isEmail</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isLicensePlate">isLicensePlate</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isLongerThan">isLongerThan</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isNegative">isNegative</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isNumber">isNumber</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isPhone">isPhone</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isPositive">isPositive</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isShorterThan">isShorterThan</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isVin">isVin</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isZip">isZip</a></li><h3>Meets</h3><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsMinMax">meetsMinMax</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsPassReq">meetsPassReq</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsTreadDepth">meetsTreadDepth</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsYearStandard">meetsYearStandard</a></li><h3>No</h3><li class="nav-item" data-cat="No"><a href="functions.html#noLetters">noLetters</a></li><li class="nav-item" data-cat="No"><a href="functions.html#noNumbers">noNumbers</a></li><li class="nav-item" data-cat="No"><a href="functions.html#noSpecials">noSpecials</a></li><h3>Main</h3><li class="nav-item" data-cat="Main"><a href="functions.html#validate">validate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><p><a href="https://www.npmjs.com/package/simply_valid"><img src="https://img.shields.io/npm/v/simply_valid.svg?style=flat-square" alt="npm"></a><br><a href="https://david-dm.org/dhershman1/simply_valid"><img src="https://img.shields.io/david/dhershman1/simply_valid.svg?style=flat-square" alt="David"></a><br><a href="https://david-dm.org/dhershman1/simply_valid?type=dev"><img src="https://img.shields.io/david/dev/dhershman1/simply_valid.svg?style=flat-square" alt="David"></a><br><a href="https://travis-ci.org/dhershman1/simply_valid"><img src="https://img.shields.io/travis/dhershman1/simply_valid.svg?style=flat-square" alt="Travis"></a><br><a href="https://coveralls.io/github/dhershman1/simply_valid?branch=master"><img src="https://img.shields.io/coveralls/github/dhershman1/simply_valid.svg?style=flat-square" alt="Coverage Status"></a></p>
+<h1 id="simply-valid">Simply Valid</h1>
+<p>A simple to use data driven validation system</p>
+<p>Have a suggestion? Feel free to post them over in the github issues section and I will happily check them out!</p>
+<h2 id="documentation">Documentation</h2>
+<p>Find individual documentation per function on the site: <strong><a href="https://www.dusty.codes/documentation/simply_valid">You can click here to go there</a></strong></p>
+<h2 id="changelog">Changelog</h2>
+<p>You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#philosophy">Philosophy</a></li>
+<li><a href="#parameters">Parameters</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#schema">Schema</a></li>
+<li><a href="#return">Return</a></li>
+</ul>
+<h2 id="philosophy">Philosophy</h2>
+<p>The idea behind <code>simply_valid</code> was a ui free data driven validation system. It started as something I wanted at work over our current validation library and then grew into this. (You can see the inspiration of some of the validation types that lives currently in the functions)</p>
+<p>I wanted this module to be <code>fast</code>, <code>easy to use</code>, and above all as <code>plug and play</code> as I could get it.</p>
+<p>With the schema system in place for the module you can easily validate complex objects such as form data put into an object, applying an array of rules or even just a single rule to your data value. Making it easy to create validation <code>instances</code> for different forms or multiple data styles.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>options</code> - <code>Object</code>: An object of rules to overwrite the default rules<ul>
+<li><code>options.schema</code>: <code>Object|Array|String</code> - The validation methods you want simply valid to use</li>
+<li><code>options.strictCard</code>: <code>Boolean</code> - If credit card validation should use the <code>luhn</code> algorithm strictly</li>
+<li><code>options.max</code>: <code>Number</code> - The maximum of a value</li>
+<li><code>options.min</code>: <code>Number</code> - The minimum of a value</li>
+<li><code>options.maxLen</code>: <code>Number</code> - The maximum length of a value</li>
+<li><code>options.minLen</code>: <code>Number</code> - The minimum length of a value</li>
+</ul>
+</li>
+<li><code>data</code> - <code>String|Array|Object</code>: Data is the value sent in with the 2nd call made to simplyValid (curried call)</li>
+</ul>
+<h4 id="default-options">Default Options</h4>
+<pre class="prettyprint source lang-js"><code>{
+  schema: [],
+  strictCard: true,
+  max: Infinity,
+  min: -Infinity,
+  maxLen: 100,
+  minLen: 1
+}</code></pre><h2 id="usage">Usage</h2>
+<p>Using Standard JS</p>
+<pre class="prettyprint source lang-js"><code>import { validate } from 'simply_valid'
+
+validate(options, data)
+
+// Or
+const valid = validate(options)
+
+valid(data)</code></pre><p>Using commonjs</p>
+<pre class="prettyprint source lang-js"><code>const { validate } = require('simply_valid')
+
+validate(options, data)
+
+// Or
+const valid = validate(options)
+
+valid(data)</code></pre><p>In the browser</p>
+<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;path/to/dist/simplyValid.min.js&quot;>&lt;/script>
+&lt;script>
+  validate(options, data)
+
+  // Or
+  var valid = validate(options)
+
+  valid(data)
+&lt;/script></code></pre><h2 id="schema">Schema</h2>
+<h4 id="single-method">Single Method</h4>
+<p>You can even pass it a single method</p>
+<pre class="prettyprint source lang-js"><code>import { hasValue, validate } from 'simply_valid'
+
+const valid = validate({
+  schema: hasValue
+})
+
+valid('123') // => { isValid: true, story: [] }
+valid() // => { isValid: false, story: [{ isValid: true, story: [{ test: 'hasValue', value: undefined }] }] }</code></pre><h4 id="flat-array">Flat Array</h4>
+<p>You can pass schema an <code>Array</code> of methods</p>
+<pre class="prettyprint source lang-js"><code>import { hasValue, hasLetters, validate } from 'simply_valid'
+
+const valid = validate({
+  schema: [hasValue, hasLetters]
+})
+
+valid('123abc') // => { isValid: true, story: [] }
+valid() // => { isValid: false, story: [{ test: 'hasValue', value: undefined }] }
+valid(123) // => { isValid: false, story: [{ test: 'hasLetters', value: 123 }] }</code></pre><h4 id="flat-object">Flat Object</h4>
+<p>You can pass schema an <code>Object</code> now which would be used if you are validating your own object</p>
+<pre class="prettyprint source lang-js"><code>import { isNumber, hasLetters, hasNumbers, validate } from 'simply_valid'
+
+const valid = validate({
+  schema: {
+    zip: isNumber,
+    address: [hasLetters, hasNumbers]
+  }
+})
+const data = {
+  zip: '11445',
+  address: '1132 Cool St'
+}
+
+valid(data) // => { isValid: true, story: [] }
+valid({ zip: 'abc', address: '1123 Test Dr' }) // => { isValid: false, story: [{ test: 'isNumber', value: '123' }] }</code></pre><h4 id="mixed">Mixed</h4>
+<p>You can even mix it up! (Or even use your own methods)</p>
+<pre class="prettyprint source lang-js"><code>import { isNumber, hasLetters, validate } from 'simply_valid'
+
+const isEven = (_, val) => val % 2 === 0
+const valid = validate({
+  schema: {
+    zip: isNumber,
+    num: [isNumber, isEven],
+    address: {
+      street: hasLetters,
+      streetNum: isNumber
+    }
+  }
+})
+
+valid({
+  zip: 11445,
+  num: 4,
+  address: {
+    street: 'Cool St',
+    streetNum: 123
+  }
+})
+// Output: { isValid: true, story: [] }
+</code></pre><h2 id="return">Return</h2>
+<p>I tried to keep it so you can always expect the same level of return no matter how you are using <code>simply_valid</code></p>
+<pre class="prettyprint source lang-js"><code>// Passing Validation
+{
+  isValid: true,
+  story: []
+}
+
+// Failing returns will look like this
+{
+  isValid: false,
+  story: [{
+    test: 'isNumber',
+    value: 'cool'
+  }]
+}</code></pre></article>
+    </section>
+
+
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+</body>
+</html>

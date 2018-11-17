@@ -8,6 +8,40 @@
   - Schema will **No longer** take string values, you must import and pass the functions you want to use.
     - Why? This offers a cleaner and more direct experience, less the library has to worry about so less overhead!
     - This also opens the door for _you_ to be able to pass in your own functionality!
+- Auto recursion dropped for nested complex data
+  - Simply recall validate within an object to support nested objects
+  - example:
+  ```js
+  const data = {
+    a: 1,
+    b: {
+      c: 3
+    }
+  }
+  const schema = {
+    a: isNumber,
+    b: validate({ c: isNumber })
+  }
+
+  validate({ schema }, data)
+  ```
+
+#### Renames
+
+- `isNotToShort` -> `isLongerThan`
+- `isNotToLong` -> `isShorterThan`
+
+#### Removed
+
+- `isVisaCard`: Should lean more towards relying on proper CC libs
+- `isVisPanCard`: Should lean more towards relying on proper CC libs
+- `isAmexCard`: Should lean more towards relying on proper CC libs
+- `isMasterCard`: Should lean more towards relying on proper CC libs
+- `isDiscoverCard`: Should lean more towards relying on proper CC libs
+- `creditCard`: Since the above were also removed
+- `meetsCVN`: Lean more towards proper CC validation
+- `meetsCVNAmex`: Lean more towards proper CC validation
+- `cvn`: Since the two cvn methods were removed
 
 ## v4.0.2
 

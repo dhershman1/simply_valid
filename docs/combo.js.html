@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>combo.js - Kyanite</title>
+    
+    <meta name="description" content="A small library of pure functional utilities to make life easier and data better" />
+    
+        <meta name="keywords" content="functional, library, javascript, pure, helpers, utils" />
+        <meta name="keyword" content="functional, library, javascript, pure, helpers, utils" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/dhershman1/simply_valid" target="_blank" class="menu-item" id="repository" >Github repo</a></h2><ul class="nav-list"><h3>Combo</h3><li class="nav-item" data-cat="Combo"><a href="functions.html#date">date</a></li><li class="nav-item" data-cat="Combo"><a href="functions.html#zipOrPostal">zipOrPostal</a></li><h3>Has</h3><li class="nav-item" data-cat="Has"><a href="functions.html#hasLetters">hasLetters</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasNumbers">hasNumbers</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasNumbersOrSpecials">hasNumbersOrSpecials</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasSpecialCharacters">hasSpecialCharacters</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasUpperAndLowerCase">hasUpperAndLowerCase</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasValue">hasValue</a></li><h3>Is</h3><li class="nav-item" data-cat="Is"><a href="functions.html#isAboveMin">isAboveMin</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isBelowMax">isBelowMax</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isBetween">isBetween</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isCAPostalCode">isCAPostalCode</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isCorrectLength">isCorrectLength</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDate">isDate</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDateProper">isDateProper</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDateShort">isDateShort</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isEmail">isEmail</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isLicensePlate">isLicensePlate</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isLongerThan">isLongerThan</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isNegative">isNegative</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isNumber">isNumber</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isPhone">isPhone</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isPositive">isPositive</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isShorterThan">isShorterThan</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isVin">isVin</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isZip">isZip</a></li><h3>Meets</h3><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsMinMax">meetsMinMax</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsPassReq">meetsPassReq</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsTreadDepth">meetsTreadDepth</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsYearStandard">meetsYearStandard</a></li><h3>No</h3><li class="nav-item" data-cat="No"><a href="functions.html#noLetters">noLetters</a></li><li class="nav-item" data-cat="No"><a href="functions.html#noNumbers">noNumbers</a></li><li class="nav-item" data-cat="No"><a href="functions.html#noSpecials">noSpecials</a></li><h3>Main</h3><li class="nav-item" data-cat="Main"><a href="functions.html#validate">validate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">combo.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  isCAPostalCode,
+  isDate,
+  isDateProper,
+  isDateShort,
+  isZip
+} from './is'
+
+const runner = (methods, val) => methods.some(fn => fn(val))
+
+/**
+ * @name date
+ * @since v3.2.0
+ * @function
+ * @category Combo
+ * @description Validates that the value is some kind of date (short, proper, or normal)
+ * @param {String} val The date string value to validate
+ * @returns {Boolean} Returns true or false based on the validation test
+ *
+ * @example
+ * date('01/19'); // => true
+ * date('01/15/2019'); // => true
+ * date('2019/01/05'); // => true
+ */
+export const date = val => runner([isDate, isDateShort, isDateProper], val)
+
+/**
+ * @name zipOrPostal
+ * @since v3.2.0
+ * @function
+ * @category Combo
+ * @description Validates that the value is some kind of zip or postal code
+ * @param {String} val The zip or postal code string to validate
+ * @returns {Boolean} Returns true or false based on the validation test
+ *
+ * @example
+ * zipOrPostal('55555'); // => true
+ * zipOrPostal('K1A0B1'); // => true
+ */
+export const zipOrPostal = val => runner([isZip, isCAPostalCode], val)
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+</body>
+</html>

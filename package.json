@@ -1,16 +1,15 @@
 {
   "name": "simply_valid",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "description": "A simple data driven validation utility library",
   "main": "dist/simply-valid.min.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "prepack": "rollup -c && node scripts/generateInfo.js",
-    "postpack": "npm run clean",
+    "prepack": "rollup -c && npm run docs",
     "build": "rollup -c",
-    "clean": "node scripts/clean.js",
+    "docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "postpublish": "npm run clean",
     "test": "tape -r esm tests/main.js | tap-spec",
     "test:cov": "nyc npm test",
@@ -39,10 +38,12 @@
   "devDependencies": {
     "@babel/core": "7.1.5",
     "@babel/preset-env": "7.1.5",
+    "@killparadise/docdash": "github:dhershman1/docdash",
     "coveralls": "3.0.2",
     "del": "3.0.0",
     "esm": "3.0.84",
     "globby": "8.0.1",
+    "jsdoc": "3.5.5",
     "jsdoc-to-markdown": "4.0.1",
     "nyc": "13.1.0",
     "rollup": "0.67.0",
