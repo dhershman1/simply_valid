@@ -1,6 +1,7 @@
 /**
  * @name noSpecials
  * @since v1.0.0
+ * @function
  * @category No
  * @description Validates if the value has no special characters
  * @param {String} val The value to validate against
@@ -16,6 +17,7 @@ export const noSpecials = (val = '') => val.match(/\W/) === null
 /**
  * @name noNumbers
  * @since v1.0.0
+ * @function
  * @category No
  * @description Validates if the value has no numbers
  * @param {String} val The value to validate against
@@ -31,6 +33,7 @@ export const noNumbers = (val = '') => val.match(/[0-9]/) === null
 /**
  * @name noLetters
  * @since v1.0.0
+ * @function
  * @category No
  * @description Validates if the value has no Letters
  * @param {String} val The value to validate against

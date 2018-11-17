@@ -1,6 +1,7 @@
 /**
  * @name hasValue
  * @since v1.0.0
+ * @function
  * @category Has
  * @description Validates if the value is actually a value
  * @param {Any} val The value to validate against
@@ -15,6 +16,7 @@ export const hasValue = val => val === 0 || Boolean(val)
 /**
  * @name hasNumbers
  * @since v1.0.0
+ * @function
  * @category Has
  * @description Validates if the value contains numbers or not
  * @param {String} val The value to validate against
@@ -30,6 +32,7 @@ export const hasNumbers = val => (/[0-9]/).test(val)
 /**
  * @name hasLetters
  * @since v1.0.0
+ * @function
  * @category Has
  * @description Validates if the value contains numbers or not
  * @param {String} val The value to validate against
@@ -45,6 +48,7 @@ export const hasLetters = val => (/[A-Z]/i).test(val)
 /**
  * @name hasSpecialCharacters
  * @since v1.0.0
+ * @function
  * @category Has
  * @description Validates if the value contains Special Characters
  * @param {String} val The value to validate against
@@ -60,6 +64,7 @@ export const hasSpecialCharacters = val => (/\W/).test(val)
 /**
  * @name hasNumbersOrSpecials
  * @since v1.0.0
+ * @function
  * @category Has
  * @description Validates if the value contains Special Characters or numbers
  * @param {String} val The value to validate against
@@ -75,6 +80,7 @@ export const hasNumbersOrSpecials = val => hasNumbers(val) || hasSpecialCharacte
 /**
  * @name hasUpperAndLowerCase
  * @since v1.0.0
+ * @function
  * @category Has
  * @description Validates if the value contains Special Characters or numbers
  * @param {String} val The value to validate against
