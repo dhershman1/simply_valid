@@ -12,7 +12,7 @@
  * noSpecials('1122334') // => true
  * noSpecials('AAA12!#$'); // => false
  */
-export const noSpecials = (val = '') => val.match(/\W/) === null
+export const noSpecials = (val = '') => String(val).match(/\W/) === null
 
 /**
  * @name noNumbers
@@ -28,7 +28,7 @@ export const noSpecials = (val = '') => val.match(/\W/) === null
  * noNumbers('1122334') // => false
  * noNumbers('AAA12!#$'); // => false
  */
-export const noNumbers = (val = '') => val.match(/[0-9]/) === null
+export const noNumbers = (val = '') => String(val).match(/[0-9]/) === null
 
 /**
  * @name noLetters
@@ -44,4 +44,4 @@ export const noNumbers = (val = '') => val.match(/[0-9]/) === null
  * noLetters('AAAA'); // => false
  * noLetters('AAA12!#$'); // => false
  */
-export const noLetters = (val = '') => val.match(/[A-Z]/i) === null
+export const noLetters = (val = '') => String(val).match(/[A-Z]/i) === null
