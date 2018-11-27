@@ -113,16 +113,23 @@ export const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i)
  * @function
  * @category Meets
  * @description Validates if the value is a valid treaddepth style
+ * @param {RegExp} [reg=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&amp;])[A-Za-z\d$@$!%*?&amp;]{8,}$/] The Password RegExp to test the value against. Does contain a default if none is provided
  * @param {String} val The value to validate against
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
  * meetsPassReq('cOol12$d'); // => true
  */
-export const meetsPassReq = val => {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&amp;])[A-Za-z\d$@$!%*?&amp;]{8,}$/
+export const meetsPassReq = (reg, val) => {
+  let value = val;
+  let passwordRegex = reg;
 
-  return passwordRegex.test(val)
+  if (!val) {
+    value = reg;
+    passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&amp;])[A-Za-z\d$@$!%*?&amp;]{8,}$/
+  }
+
+  return passwordRegex.test(value)
 }
 </code></pre>
         </article>

@@ -49,91 +49,12 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { always, any, branch, curry, ensureArray, prop, type, whole } from 'kyanite'
-import * as is from './is'
-import * as no from './no'
-import * as meets from './meets'
-import * as has from './has'
-import * as combo from './combo'
+            <pre class="prettyprint source linenums"><code>import { any, curry, height } from 'kyanite'
 
-const validationMethods = {
-  ...is,
-  ...no,
-  ...meets,
-  ...has,
-  ...combo
-}
-
-// Format the response to keep it consistent
-const format = res => {
-  const results = res.reduce((acc, { isValid, story }) => {
-    if (!isValid) {
-      acc.story.push(...story)
-    }
-
-    return acc
-  }, {
-    isValid: true,
-    story: []
-  })
-
-  results.isValid = !results.story.length
-
-  return results
-}
-
-const runValidate = (data, schema, methods) => {
-  const story = []
-  const schemaArr = ensureArray(schema)
-  const dataArr = ensureArray(data)
-
-  dataArr.forEach(d => {
-    const results = schemaArr.reduce((acc, fn) => {
-      if (!methods[fn](d)) {
-        acc.push({
-          test: fn,
-          value: d
-        })
-      }
-
-      return acc
-    }, [])
-
-    story.push(...results)
-  })
-
-  return {
-    isValid: !story.length,
-    story
-  }
-}
-
-const validateDataObj = (data, schema, methods) =>
-  Object.keys(data).reduce((acc, k) => {
-    const value = data[k]
-
-    if (type(value) === 'Object') {
-      return acc.concat(validateDataObj(value, schema[k], methods))
-    }
-
-    return acc.concat([runValidate(value, schema[k], methods)])
-  }, [])
-
-const validateSchema = schema =>
-  (Array.isArray(schema) &amp;&amp; schema.length) ||
-  (type(schema) === 'Object' &amp;&amp; Object.keys(schema).length) ||
-  Boolean(schema.length)
-
-const setup = (methods, opts) =>
-  Object.keys(methods).reduce((acc, k) => {
-    if (typeof methods[k]() === 'function') {
-      acc[k] = methods[k](opts)
-    } else {
-      acc[k] = methods[k]
-    }
-
-    return acc
-  }, {})
+// const validateSchema = schema =>
+//   (Array.isArray(schema) &amp;&amp; schema.length) ||
+//   (type(schema) === 'Object' &amp;&amp; Object.keys(schema).length) ||
+//   Boolean(schema.length)
 
 /**
  * @name validate
@@ -142,13 +63,8 @@ const setup = (methods, opts) =>
  * @category Main
  * @description The main validation functionality of simply valid
  * @param {Object} options The main options to setup simply_valid
- * @property {Any} schema The schema that the functionality of the module should be following
- * @property {Boolean} partial Determines whether objects with missing values should fail or not
- * @property {Boolean} strictCard Whether or not we should run card validation strictly or not
- * @property {Number} max The max number used for max validation methods
- * @property {Number} min The min number used for min validation methods
- * @property {Number} maxLen The maximum length a value can be
- * @property {Number} minLen The minimum length a value can be
+ * @param {Object|Array} options.schema The schema that the functionality of the module should be following
+ * @param {Boolean} [options.partial=true] Determines whether objects with missing values should fail or not
  * @param {Any} data The data that we want to run the validation functionality against
  * @returns {Object} Returns an object with a isValid prop telling if validation was a success, and a story which is an array of objects of which validation methods failed
  *
@@ -158,34 +74,17 @@ const setup = (methods, opts) =>
 const validate = (options, data) => {
   const defaults = {
     schema: [],
-    partial: true,
-    verbose: true
+    partial: true
   }
-  const opts = Object.keys(options).reduce((acc, key) => {
-    if (acc[key]) {
-      acc[key] = options[key]
-    }
+  const opts = Object.assign({}, defaults, options)
 
-    return acc
-  }, defaults)
-
-  const fns = setup(validationMethods, opts)
-
-  if (!validateSchema(opts.schema)) {
+  if (!height(opts.schema)) {
     throw new Error('The schema is either invalid or one was not provided for validation')
   }
 
-  if (type(data) === 'Object') {
-    const isValid = branch(
-      always(prop('partial', opts)),
-      any(opts.schema),
-      whole(opts.schema)
-    )
-
+  if (opts.partial) {
 
   }
-
-  return runValidate(data, opts.schema, fns)
 }
 
 export default curry(validate)

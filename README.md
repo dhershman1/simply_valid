@@ -35,27 +35,8 @@ With the schema system in place for the module you can easily validate complex o
 
 ## Parameters
 
-- `options` - `Object`: An object of rules to overwrite the default rules
-  - `options.schema`: `Object|Array|String` - The validation methods you want simply valid to use
-  - `options.strictCard`: `Boolean` - If credit card validation should use the `luhn` algorithm strictly
-  - `options.max`: `Number` - The maximum of a value
-  - `options.min`: `Number` - The minimum of a value
-  - `options.maxLen`: `Number` - The maximum length of a value
-  - `options.minLen`: `Number` - The minimum length of a value
+- `schema` - `Object`: An object of rules to overwrite the default rules
 - `data` - `String|Array|Object`: Data is the value sent in with the 2nd call made to simplyValid (curried call)
-
-#### Default Options
-
-```js
-{
-  schema: [],
-  strictCard: true,
-  max: Infinity,
-  min: -Infinity,
-  maxLen: 100,
-  minLen: 1
-}
-```
 
 ## Usage
 
@@ -63,10 +44,10 @@ Using Standard JS
 ```js
 import { validate } from 'simply_valid'
 
-validate(options, data)
+validate(schema, data)
 
 // Or
-const valid = validate(options)
+const valid = validate(schema)
 
 valid(data)
 ```
@@ -75,10 +56,10 @@ Using commonjs
 ```js
 const { validate } = require('simply_valid')
 
-validate(options, data)
+validate(schema, data)
 
 // Or
-const valid = validate(options)
+const valid = validate(schema)
 
 valid(data)
 ```
@@ -87,10 +68,10 @@ In the browser
 ```html
 <script src="path/to/dist/simplyValid.min.js"></script>
 <script>
-  validate(options, data)
+  validate(schema, data)
 
   // Or
-  var valid = validate(options)
+  var valid = validate(schema)
 
   valid(data)
 </script>
@@ -98,29 +79,13 @@ In the browser
 
 ## Schema
 
-#### Single Method
-
-You can even pass it a single method
-```js
-import { hasValue, validate } from 'simply_valid'
-
-const valid = validate({
-  schema: hasValue
-})
-
-valid('123') // => { isValid: true, story: [] }
-valid() // => { isValid: false, story: [{ isValid: true, story: [{ test: 'hasValue', value: undefined }] }] }
-```
-
 #### Flat Array
 
 You can pass schema an `Array` of methods
 ```js
 import { hasValue, hasLetters, validate } from 'simply_valid'
 
-const valid = validate({
-  schema: [hasValue, hasLetters]
-})
+const valid = validate([hasValue, hasLetters])
 
 valid('123abc') // => { isValid: true, story: [] }
 valid() // => { isValid: false, story: [{ test: 'hasValue', value: undefined }] }
