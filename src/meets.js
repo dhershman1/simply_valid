@@ -1,4 +1,4 @@
-import { curry } from 'kyanite'
+import _curry3 from './internal/_curry3'
 
 /**
  * @name meetsMinMax
@@ -23,7 +23,7 @@ import { curry } from 'kyanite'
  *
  * meetsMinMax({ min: 0, max: 10 }, '11'); // => false
  */
-export const meetsMinMax = curry((min, max, val) => !isNaN(val) && (Number(val) >= min && Number(val) <= max))
+export const meetsMinMax = _curry3((min, max, val) => !isNaN(val) && (Number(val) >= min && Number(val) <= max))
 
 /**
  * @name meetsYearStandard
