@@ -18,6 +18,7 @@ const arrValidate = curry((methods, data) => {
     if (!ensureArray(data).every(fn)) {
       return {
         isValid: false,
+        rule: fn.name.replace('_', ''),
         data
       }
     }
@@ -66,6 +67,7 @@ const objValidate = (schema, data) => {
       return {
         isValid: false,
         prop: k,
+        rule: fn.name.replace('_', ''),
         data: value
       }
     }
