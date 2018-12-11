@@ -1,3 +1,4 @@
+import { test } from 'kyanite'
 import _curry3 from './internal/_curry3'
 
 /**
@@ -39,7 +40,7 @@ export const meetsMinMax = _curry3((min, max, val) => !isNaN(val) && (Number(val
  * meetsYearStandard('17'); // => true
  * meetsYearStandard('178'); // => false
  */
-export const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).test(val)
+export const meetsYearStandard = test(/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/)
 
 /**
  * @name meetsTreadDepth
@@ -54,7 +55,7 @@ export const meetsYearStandard = val => (/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/).te
  * meetsTreadDepth('12'); // => true
  * meetsTreadDepth('AA'); // => false
  */
-export const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i).test(val)
+export const meetsTreadDepth = test(/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i)
 
 /**
  * @name meetsPassReq
@@ -68,8 +69,4 @@ export const meetsTreadDepth = val => (/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i)
  * @example
  * meetsPassReq('cOol12$d'); // => true
  */
-export const meetsPassReq = val => {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
-
-  return passwordRegex.test(val)
-}
+export const meetsPassReq = test(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/)

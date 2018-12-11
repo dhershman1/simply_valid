@@ -25,6 +25,8 @@
 
   validate({ schema }, data)
   ```
+- Changed how `isBetween` params work instead of an object it expects 2 numbers now
+  - Example: `isBetween(min, max, value)`
 
 #### Renames
 
@@ -42,6 +44,13 @@
 - `meetsCVN`: Lean more towards proper CC validation
 - `meetsCVNAmex`: Lean more towards proper CC validation
 - `cvn`: Since the two cvn methods were removed
+- `isLongerThan`: Use `isAboveMin` with the length of a value
+- `isShorterThan`: Use `isBelowMax` with the length of a value
+- `isCorrectLength`: Use `isBetween` witht he length of a value
+
+### Improved
+
+- Converted more functionality to use Kyanite
 
 ## v4.0.2
 
