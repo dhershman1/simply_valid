@@ -15,7 +15,7 @@ test('Rando', t => {
   //   address: hasLetters
   // })
 
-  testData.nested = { inner: '10' }
+  testData.nested = { inner: '10a' }
 
   // const fn = meetsMinMax(0)
 
