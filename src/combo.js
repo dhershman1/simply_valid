@@ -18,6 +18,8 @@ const runner = (methods, val) => methods.some(fn => fn(val))
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { date } from 'simply_valid'
+ *
  * date('01/19'); // => true
  * date('01/15/2019'); // => true
  * date('2019/01/05'); // => true
@@ -34,6 +36,8 @@ export const date = val => runner([isDate, isDateShort, isDateProper], val)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { zipOrPostal } from 'simply_valid'
+ *
  * zipOrPostal('55555'); // => true
  * zipOrPostal('K1A0B1'); // => true
  */

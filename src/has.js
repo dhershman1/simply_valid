@@ -10,10 +10,12 @@ import { both, either, eq, test } from 'kyanite'
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { hasValue } from 'simply_valid'
+ *
  * const result = hasValue('11') // => true
  * const result = hasValue('') // => false
  */
-export const hasValue = either(eq(0), Boolean)
+export const hasValue = val => either(eq(0), Boolean, val)
 
 /**
  * @name hasNumbers
@@ -25,11 +27,13 @@ export const hasValue = either(eq(0), Boolean)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { hasNumbers } from 'simply_valid'
+ *
  * const result = hasNumbers('11') // => true
  * const result = hasNumbers('eew2211') // => true
  * const result = hasNumbers('eerrt') // => false
  */
-export const hasNumbers = test(/[0-9]/)
+export const hasNumbers = val => test(/[0-9]/, val)
 
 /**
  * @name hasLetters
@@ -41,11 +45,13 @@ export const hasNumbers = test(/[0-9]/)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { hasLetters } from 'simply_valid'
+ *
  * const result = hasLetters('11') // => false
  * const result = hasLetters('eew2211') // => true
  * const result = hasLetters('eerrt') // => true
  */
-export const hasLetters = test(/[A-Z]/i)
+export const hasLetters = val => test(/[A-Z]/i, val)
 
 /**
  * @name hasSpecialCharacters
@@ -57,11 +63,13 @@ export const hasLetters = test(/[A-Z]/i)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { hasSpecialCharacters } from 'simply_valid'
+ *
  * const result = hasSpecialCharacters('11%%$#') // => true
  * const result = hasSpecialCharacters('eew2211!@') // => true
  * const result = hasSpecialCharacters('eerrt') // => false
  */
-export const hasSpecialCharacters = test(/\W/)
+export const hasSpecialCharacters = val => test(/\W/, val)
 
 /**
  * @name hasNumbersOrSpecials
@@ -73,11 +81,13 @@ export const hasSpecialCharacters = test(/\W/)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { hasNumbersOrSpecials } from 'simply_valid'
+ *
  * const result = hasNumbersOrSpecials('11%%$#') // => true
  * const result = hasNumbersOrSpecials('eew2211!@') // => true
  * const result = hasNumbersOrSpecials('eerrt') // => false
  */
-export const hasNumbersOrSpecials = either(hasNumbers, hasSpecialCharacters)
+export const hasNumbersOrSpecials = val => either(hasNumbers, hasSpecialCharacters, val)
 
 /**
  * @name hasUpperAndLowerCase
@@ -89,8 +99,10 @@ export const hasNumbersOrSpecials = either(hasNumbers, hasSpecialCharacters)
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { hasUpperAndLowerCase } from 'simply_valid'
+ *
  * const result = hasUpperAndLowerCase('11%%$#') // => false
  * const result = hasUpperAndLowerCase('Eew2211!@') // => true
  * const result = hasUpperAndLowerCase('eERrt') // => true
  */
-export const hasUpperAndLowerCase = both(test(/[A-Z]/), test(/[a-z]/))
+export const hasUpperAndLowerCase = val => both(test(/[A-Z]/), test(/[a-z]/), val)

@@ -10,11 +10,13 @@ import { compose, isNil, match } from 'kyanite'
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { noSpecials } from 'simply_valid'
+ *
  * noSpecials('AAAA') // => true
  * noSpecials('1122334') // => true
  * noSpecials('AAA12!#$') // => false
  */
-export const noSpecials = compose(isNil, match(/\W/))
+export const noSpecials = val => compose(isNil, match(/\W/), val)
 
 /**
  * @name noNumbers
@@ -26,11 +28,13 @@ export const noSpecials = compose(isNil, match(/\W/))
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { noNumbers } from 'simply_valid'
+ *
  * noNumbers('AAAA') // => true
  * noNumbers('1122334') // => false
  * noNumbers('AAA12!#$') // => false
  */
-export const noNumbers = compose(isNil, match(/[0-9]/))
+export const noNumbers = val => compose(isNil, match(/[0-9]/), val)
 
 /**
  * @name noLetters
@@ -42,8 +46,10 @@ export const noNumbers = compose(isNil, match(/[0-9]/))
  * @returns {Boolean} Returns true or false based on the validation test
  *
  * @example
+ * import { noLetters } from 'simply_valid'
+ *
  * noLetters('1122334') // => true
  * noLetters('AAAA') // => false
  * noLetters('AAA12!#$') // => false
  */
-export const noLetters = compose(isNil, match(/[A-Z]/i))
+export const noLetters = (val = '') => compose(isNil, match(/[A-Z]/), val)
