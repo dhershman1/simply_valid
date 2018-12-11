@@ -6,13 +6,8 @@ import {
 import test from 'tape'
 
 test('Test noLetters', t => {
-  let results = noLetters('1123450')
-
-  t.ok(noLetters)
-  t.ok(results, 'First results set no letters found')
-
-  results = noLetters('GHJffre1123')
-  t.notOk(results, 'Letters found in string')
+  t.ok(noLetters('1123450'), 'First results set no letters found')
+  t.notOk(noLetters('GHJffre1123'), 'Letters found in string')
   t.end()
 })
 

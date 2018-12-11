@@ -1,5 +1,4 @@
-import { meetsMinMax, validate, isNumber, hasLetters, hasNumbers, isPositive, meetsPassReq, noLetters } from '../src/index'
-// import meetsMinMax from '../src/meets/meetsMinMax'
+import { isBetween, validate, isNumber, hasLetters, hasNumbers, isPositive, meetsPassReq, noLetters } from '../src/index'
 import test from 'tape'
 
 const testData = {
@@ -10,26 +9,39 @@ const testData = {
 }
 
 test('Rando', t => {
-  // const isValid = validate({
-  //   zip: isNumber,
-  //   address: hasLetters
-  // })
+  const isValid = validate({
+    zip: isNumber,
+    address: hasNumbers
+  })
+
+  const isEven = val => val % 2 === 0
+  // Multi param functions must be partial
+  // And the value always comes last
+  const notMin = function notMin (min) {
+    return function _notMin (val) {
+      return val !== min
+    }
+  }
+
+  console.log(validate({
+    foo: isEven,
+    bar: [isEven, notMin(4)]
+  }, {
+      foo: 4,
+      bar: 5
+    }))
 
   testData.nested = { inner: '10a' }
 
-  // const fn = meetsMinMax(0)
-
-  // console.log(fn(10))
-
   // console.log(isValid(testData))
   // console.log(isValid({ zip: 44114, address: 1123 }))
-  console.log(validate({
-    zip: isNumber,
-    address: [hasLetters, hasNumbers],
-    between: meetsMinMax(1, 10),
-    pass: meetsPassReq,
-    nested: validate({ inner: noLetters })
-  }, testData))
+  // console.log(validate({
+  //   zip: isNumber,
+  //   address: [hasLetters, hasNumbers],
+    // between: isBetween(1, 10),
+    // pass: meetsPassReq,
+  //   nested: validate({ inner: noLetters })
+  // }, testData))
   // console.log(validate([isNumber, isPositive], -1))
 
   t.ok(true)
