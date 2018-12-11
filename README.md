@@ -14,10 +14,6 @@ Have a suggestion? Feel free to post them over in the github issues section and 
 
 Find individual documentation per function on the site: **[You can click here to go there](https://www.dusty.codes/documentation/simply_valid)**
 
-## Changelog
-
-You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
-
 ## Content
 * [Philosophy](#philosophy)
 * [Parameters](#parameters)
