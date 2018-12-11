@@ -4,6 +4,8 @@
 
 ### BREAKING CHANGES
 
+- `story` is no longer a value included with the return, it is just an object.
+  - `simply_valid` will return on the first failure with the information about that failure
 - Importing/requiring the module is a bit different please see the README for info
   - Schema will **No longer** take string values, you must import and pass the functions you want to use.
     - Why? This offers a cleaner and more direct experience, less the library has to worry about so less overhead!
@@ -28,11 +30,6 @@
 - Changed how `isBetween` params work instead of an object it expects 2 numbers now
   - Example: `isBetween(min, max, value)`
 
-#### Renames
-
-- `isNotToShort` -> `isLongerThan`
-- `isNotToLong` -> `isShorterThan`
-
 #### Removed
 
 - `isVisaCard`: Should lean more towards relying on proper CC libs
@@ -44,9 +41,10 @@
 - `meetsCVN`: Lean more towards proper CC validation
 - `meetsCVNAmex`: Lean more towards proper CC validation
 - `cvn`: Since the two cvn methods were removed
-- `isLongerThan`: Use `isAboveMin` with the length of a value
-- `isShorterThan`: Use `isBelowMax` with the length of a value
-- `isCorrectLength`: Use `isBetween` witht he length of a value
+- `isNotToShort`: Use `isAboveMin` with the length of a value
+- `isNotToLong`: Use `isBelowMax` with the length of a value
+- `isCorrectLength`: Use `isBetween` with the length of a value
+- `meetsMinMax`: Use `isBetween`
 
 ### Improved
 

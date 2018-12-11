@@ -18,11 +18,12 @@ Find individual documentation per function on the site: **[You can click here to
 
 You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
 
-## Contents
+## Content
 * [Philosophy](#philosophy)
 * [Parameters](#parameters)
 * [Usage](#usage)
 * [Schema](#schema)
+* [Custom Rules](#custom-rules)
 * [Return](#return)
 
 ## Philosophy
@@ -87,9 +88,9 @@ import { hasValue, hasLetters, validate } from 'simply_valid'
 
 const valid = validate([hasValue, hasLetters])
 
-valid('123abc') // => { isValid: true, story: [] }
-valid() // => { isValid: false, story: [{ test: 'hasValue', value: undefined }] }
-valid(123) // => { isValid: false, story: [{ test: 'hasLetters', value: 123 }] }
+valid('123abc') // => { isValid: true }
+valid() // => { isValid: false, rule: 'hasValue' data: undefined }
+valid(123) // => { isValid: false, rule: 'hasLetters', data: 123 }
 ```
 
 #### Flat Object
@@ -99,18 +100,16 @@ You can pass schema an `Object` now which would be used if you are validating yo
 import { isNumber, hasLetters, hasNumbers, validate } from 'simply_valid'
 
 const valid = validate({
-  schema: {
-    zip: isNumber,
-    address: [hasLetters, hasNumbers]
-  }
+  zip: isNumber,
+  address: [hasLetters, hasNumbers]
 })
 const data = {
   zip: '11445',
   address: '1132 Cool St'
 }
 
-valid(data) // => { isValid: true, story: [] }
-valid({ zip: 'abc', address: '1123 Test Dr' }) // => { isValid: false, story: [{ test: 'isNumber', value: '123' }] }
+valid(data) // => { isValid: true }
+valid({ zip: 'abc', address: '1123 Test Dr' }) // => { isValid: false, prop: 'zip', rule: 'isNumber', data: 'abc' }
 ```
 
 #### Mixed
@@ -121,15 +120,13 @@ import { isNumber, hasLetters, validate } from 'simply_valid'
 
 const isEven = (_, val) => val % 2 === 0
 const valid = validate({
-  schema: {
     zip: isNumber,
     num: [isNumber, isEven],
     address: {
       street: hasLetters,
       streetNum: isNumber
     }
-  }
-})
+  })
 
 valid({
   zip: 11445,
@@ -139,8 +136,35 @@ valid({
     streetNum: 123
   }
 })
-// Output: { isValid: true, story: [] }
+// Output: { isValid: true }
 
+```
+
+## Custom Rules
+
+Simply_Valid also supports the use of custom rules
+```js
+import { validate } from 'simply_valid'
+
+const isEven = val => val % 2 === 0
+// For multi param functions you need to use the function keyword
+// If you want the name to show up in failures, it also relies on partial execution
+const notMin = function notMin (min) {
+  // The inner function should be named the same but with a _ in front of it
+  // (This gets removed when you get the rule)
+  // This ensures you get an accurate rule back in your object
+  return function _notMin (val) {
+    return val !== min
+  }
+}
+const schema = {
+  foo: isEven,
+  bar: [isEven, notMin(4)]
+}
+
+validate(schema, { foo: 4, bar: 6 }) // => { isValid: true }
+validate(schema, { foo:4, bar: 4 }) // => { isValid: false, rule: 'notMin', data: 4 }
+validate(schema, { foo:4, bar: 5 }) // => { isValid: false, rule: 'isEven', data: 5 }
 ```
 
 ## Return
@@ -149,17 +173,13 @@ I tried to keep it so you can always expect the same level of return no matter h
 
 ```js
 // Passing Validation
-{
-  isValid: true,
-  story: []
-}
+{ isValid: true }
 
 // Failing returns will look like this
 {
   isValid: false,
-  story: [{
-    test: 'isNumber',
-    value: 'cool'
-  }]
+  prop: 'propName',
+  rule: 'functionName'
+  data: 'cool'
 }
 ```
