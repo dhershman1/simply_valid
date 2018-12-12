@@ -8,8 +8,6 @@
 
 A simple to use data driven validation system
 
-Have a suggestion? Feel free to post them over in the github issues section and I will happily check them out!
-
 ## Documentation
 
 Find individual documentation per function on the site: **[You can click here to go there](https://www.dusty.codes/documentation/simply_valid)**
@@ -61,6 +59,20 @@ const valid = validate(schema)
 valid(data)
 ```
 
+Using a CDN
+```html
+<!-- It is recommended to replace @latest with a strict version number -->
+<script src="https://cdn.jsdelivr.net/npm/simply_valid@latest/dist/simply-valid.min.js"></script>
+<script>
+  validate(schema, data)
+
+  // Or
+  const valid = validate(schema)
+
+  valid(data)
+</script>
+```
+
 In the browser
 ```html
 <script src="path/to/dist/simplyValid.min.js"></script>
@@ -68,7 +80,7 @@ In the browser
   validate(schema, data)
 
   // Or
-  var valid = validate(schema)
+  const valid = validate(schema)
 
   valid(data)
 </script>
@@ -76,64 +88,43 @@ In the browser
 
 ## Schema
 
-#### Flat Array
+Simply_Valid supports a schema system, the schema should be either an `Array` or `Object` type. Even when using just one function
 
-You can pass schema an `Array` of methods
+> **Note** If you are validating an object the schema **MUST** also be an object
+
+Examples:
 ```js
-import { hasValue, hasLetters, validate } from 'simply_valid'
+import { validate, hasValue, isNumber, isPositive, hasLetters, hasNumbers, isZip, noNumbers } from 'simply_valid'
 
-const valid = validate([hasValue, hasLetters])
+// Single/Primitive data value
+validate([isNumber], 2) // => { isValid: true }
+validate([isNumber, isPositive], 3) // => { isValid: true }
 
-valid('123abc') // => { isValid: true }
-valid() // => { isValid: false, rule: 'hasValue' data: undefined }
-valid(123) // => { isValid: false, rule: 'hasLetters', data: 123 }
-```
+// Array of Data
+validate([isNumber], [1, 2, 3]) // => { isValid: true }
+validate([isNumber, isPositive], [1, 2, 3]) // => { isValid: true }
+validate([isNumber, isPositive], [1, 2, -3]) // => { isValid: false, rule: 'isPositive', data: [1, 2, -3] }
 
-#### Flat Object
-
-You can pass schema an `Object` now which would be used if you are validating your own object
-```js
-import { isNumber, hasLetters, hasNumbers, validate } from 'simply_valid'
-
-const valid = validate({
-  zip: isNumber,
+// Object of Data
+validate({
+  zip: isZip,
   address: [hasLetters, hasNumbers]
-})
-const data = {
-  zip: '11445',
-  address: '1132 Cool St'
-}
+}, {
+  zip: 11234,
+  address: '123 test dr'
+}) // => { isValid: true }
 
-valid(data) // => { isValid: true }
-valid({ zip: 'abc', address: '1123 Test Dr' }) // => { isValid: false, prop: 'zip', rule: 'isNumber', data: 'abc' }
-```
-
-#### Mixed
-
-You can even mix it up! (Or even use your own methods)
-```js
-import { isNumber, hasLetters, validate } from 'simply_valid'
-
-const isEven = val => val % 2 === 0
-const valid = validate({
-    zip: isNumber,
-    num: [isNumber, isEven],
-    address: {
-      street: hasLetters,
-      streetNum: isNumber
-    }
-  })
-
-valid({
-  zip: 11445,
-  num: 4,
+// Object with nested data
+validate({
+  zip: isZip,
+  address: validate({ num: isNumber, name: [hasLetters, noNumbers] })
+}, {
+  zip: 11234,
   address: {
-    street: 'Cool St',
-    streetNum: 123
+    num: 123,
+    name: 'test dr'
   }
 })
-// Output: { isValid: true }
-
 ```
 
 ## Custom Rules
@@ -165,7 +156,7 @@ validate(schema, { foo:4, bar: 5 }) // => { isValid: false, rule: 'isEven', data
 
 ## Return
 
-I tried to keep it so you can always expect the same level of return no matter how you are using `simply_valid`
+Simply_Valid when exit out with information on the very first failure it encounters.
 
 ```js
 // Passing Validation
