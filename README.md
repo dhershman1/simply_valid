@@ -6,7 +6,7 @@
 
 # Simply Valid
 
-A simple to use data driven validation system
+A simple and lightweight validation system. It ships with a bunch of different rules, but is capable of accepting and using custom rules too.
 
 ## Documentation
 
@@ -130,6 +130,10 @@ validate({
 ## Custom Rules
 
 Simply_Valid also supports the use of custom rules
+
+- Custom rules returns will be treated on a true/false basis so try to have them return a boolean
+- If you want a multi param rules name to show up in a failure make sure you name the inner function
+- The inner function should be the same name but with an underscore at the start (it will be formatted out)
 ```js
 import { validate } from 'simply_valid'
 
