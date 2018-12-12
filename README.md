@@ -6,7 +6,7 @@
 
 # Simply Valid
 
-A simple and lightweight validation system. Ships with prebuilt rules but also accepts custom rules.
+A simple and lightweight validation system. Ships with prebuilt rules and accepts custom rules.
 
 ## Documentation
 
