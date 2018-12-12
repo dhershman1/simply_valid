@@ -1,230 +1,160 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('kyanite')) :
-  typeof define === 'function' && define.amd ? define(['kyanite'], factory) :
-  (global.simplyValid = factory(global.kyanite));
-}(this, (function (kyanite) { 'use strict';
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  function _objectSpread(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      var ownKeys = Object.keys(source);
-
-      if (typeof Object.getOwnPropertySymbols === 'function') {
-        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-        }));
-      }
-
-      ownKeys.forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    }
-
-    return target;
-  }
-
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
-  }
-
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-      return arr2;
-    }
-  }
-
-  function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-  }
-
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance");
-  }
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('kyanite')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'kyanite'], factory) :
+  (factory((global.simplyValid = {}),global.kyanite));
+}(this, (function (exports,kyanite) { 'use strict';
 
   var hasValue = function hasValue(val) {
-    return val === 0 || Boolean(val);
+    return kyanite.either(kyanite.eq(0), Boolean, val);
   };
   var hasNumbers = function hasNumbers(val) {
-    return /[0-9]/.test(val);
+    return kyanite.test(/[0-9]/, val);
   };
   var hasLetters = function hasLetters(val) {
-    return /[A-Z]/i.test(val);
+    return kyanite.test(/[A-Z]/i, val);
   };
   var hasSpecialCharacters = function hasSpecialCharacters(val) {
-    return /\W/.test(val);
+    return kyanite.test(/\W/, val);
   };
   var hasNumbersOrSpecials = function hasNumbersOrSpecials(val) {
-    return hasNumbers(val) || hasSpecialCharacters(val);
+    return kyanite.either(hasNumbers, hasSpecialCharacters, val);
   };
   var hasUpperAndLowerCase = function hasUpperAndLowerCase(val) {
-    return /[A-Z]/.test(val) && /[a-z]/.test(val);
+    return kyanite.both(kyanite.test(/[A-Z]/), kyanite.test(/[a-z]/), val);
   };
 
-  var luhn = function luhn(val) {
-    var numArr = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
-    var stringVal = String(val);
-    var len = stringVal.length;
-    var bit = 1;
-    var sum = 0;
-    var num = 0;
-    while (len) {
-      num = parseInt(stringVal.charAt(--len), 10);
-      bit ^= 1;
-      sum += bit ? numArr[num] : num;
+  function _slicedToArray(arr, i) {
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+  }
+
+  function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArrayLimit(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"] != null) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
     }
-    return sum && sum % 10 === 0;
-  };
-  var isNotTooShort = kyanite.curry(function (rule, val) {
-    if (rule.minLen) {
-      return val.length >= rule.minLen;
-    }
-    return val.length >= rule;
-  });
-  var isNotTooLong = kyanite.curry(function (rule, val) {
-    if (rule.maxLen) {
-      return val.length <= rule.maxLen;
-    }
-    return val.length <= rule;
-  });
-  var isCorrectLength = kyanite.curry(function (_ref, val) {
-    var maxLen = _ref.maxLen,
-        minLen = _ref.minLen;
-    return isNotTooShort(minLen, val) && isNotTooLong(maxLen, val);
-  });
+
+    return _arr;
+  }
+
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+  }
+
   var isDate = function isDate(val) {
-    return /^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m.test(val);
+    return kyanite.test(/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?(([1-2]{1}[0-9]{3})|([0-9]{2}))$/m, val);
   };
   var isDateShort = function isDateShort(val) {
-    return /^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m.test(val);
+    return kyanite.test(/^((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))[-/.]?$/m, val);
   };
   var isDateProper = function isDateProper(val) {
-    return /^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m.test(val);
+    return kyanite.test(/^(([1-2]{1}[0-9]{3})|([0-9]{2}))[-/.]?((1[0-2])|(0?[1-9]))[-/.]?((0?[1-9])|([1-2][0-9])|(3[0-1]))$/m, val);
   };
   var isEmail = function isEmail(val) {
-    var emailRegex = /^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i;
-    return emailRegex.test(val);
+    return kyanite.test(/^[\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+[@][\w\u00c0-\u017f][\w.-_\u00c0-\u017f]*[\w\u00c0-\u017f]+\.[a-z]{2,4}$/i, val);
   };
   var isNumber = function isNumber(val) {
     return !isNaN(val);
   };
   var isPositive = function isPositive(val) {
-    return !isNaN(val) && Number(val) >= 0;
+    return !isNaN(val) && val >= 0;
   };
   var isNegative = function isNegative(val) {
-    return !isNaN(val) && Number(val) < 0;
+    return !isNaN(val) && val < 0;
   };
   var isVin = function isVin(val) {
-    var vinRegex = /^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i;
-    return vinRegex.test(val);
+    return kyanite.test(/^[a-hj-npr-z0-9]{9}[a-hj-npr-tv-y1-9]{1}[a-hj-npr-z0-9]{7}$/i, val);
   };
   var isZip = function isZip(val) {
-    return /^\d{5}(-\d{4})?$/.test(val);
+    return kyanite.test(/^\d{5}(-\d{4})?$/, val);
   };
   var isCAPostalCode = function isCAPostalCode(val) {
-    return /^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i.test(val);
+    return kyanite.test(/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$/i, val);
   };
   var isPhone = function isPhone() {
     var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    return /^[0-9]{10}$/.test(val.replace(/\W/g, ''));
+    return kyanite.test(/^[0-9]{10}$/, val.replace(/\W/g, ''));
   };
   var isLicensePlate = function isLicensePlate(val) {
-    return /^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i.test(val);
+    return kyanite.test(/^([A-Z]|[0-9]){1,3}(\s|-|•)?([A-Z]|[0-9]){3,5}$/i, val);
   };
-  var isVisaCard = kyanite.curry(function (strict, val) {
-    if (strict) {
-      return luhn(val);
+  var isBelowMax = function isBelowMax() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
-    return /^4[0-9]{15}$/.test(val);
-  });
-  var isVisaPanCard = kyanite.curry(function (strict, val) {
-    if (strict) {
-      return luhn(val);
+    var max = args[0],
+        val = args[1];
+    if (args.length === 1) {
+      return function _isBelowMax(_c) {
+        return isBelowMax(max, _c);
+      };
     }
-    return /^4[0-9]{18}$/.test(val);
-  });
-  var isMasterCard = kyanite.curry(function (strict, val) {
-    if (strict) {
-      return luhn(val);
+    return !isNaN(val) && val < max;
+  };
+  var isAboveMin = function isAboveMin() {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
     }
-    return /^5[1-5][0-9]{14}$/.test(val);
-  });
-  var isAmexCard = kyanite.curry(function (strict, val) {
-    if (strict) {
-      return luhn(val);
+    var min = args[0],
+        val = args[1];
+    if (args.length === 1) {
+      return function _isAboveMin(_c) {
+        return isAboveMin(min, _c);
+      };
     }
-    return /^3(4|7)[0-9]{13}$/.test(val);
-  });
-  var isDiscoverCard = kyanite.curry(function (strict, val) {
-    if (strict) {
-      return luhn(val);
+    return !isNaN(val) && val > min;
+  };
+  var isBetween = function isBetween(arr, val) {
+    var _arr = _slicedToArray(arr, 2),
+        min = _arr[0],
+        max = _arr[1];
+    if (!val) {
+      return function _isBetween(_c) {
+        return isBetween([min, max], _c);
+      };
     }
-    return /^6[0-9]{15}$/.test(val);
-  });
-  var isBelowMax = kyanite.curry(function (m, val) {
-    if (m.max != null) {
-      return !isNaN(val) && Number(val) < m.max;
-    }
-    return !isNaN(val) && Number(val) < m;
-  });
-  var isAboveMin = kyanite.curry(function (m, val) {
-    if (m.min != null) {
-      return !isNaN(val) && Number(val) > m.min;
-    }
-    return !isNaN(val) && Number(val) > m;
-  });
+    return !isNaN(val) && kyanite.between(min, max, val);
+  };
 
-  var meetsMinMax = kyanite.curry(function (_ref, val) {
-    var min = _ref.min,
-        max = _ref.max;
-    return !isNaN(val) && Number(val) >= min && Number(val) <= max;
-  });
   var meetsYearStandard = function meetsYearStandard(val) {
-    return /(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/.test(val);
-  };
-  var meetsCVN = function meetsCVN() {
-    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    return val.length === 3 && /[0-9]/.test(val);
-  };
-  var meetsCVNAmex = function meetsCVNAmex() {
-    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    return val.length === 4 && /[0-9]/.test(val);
+    return kyanite.test(/(^[0-9]{2}$)|(^[1-2]{1}[0-9]{3}$)/, val);
   };
   var meetsTreadDepth = function meetsTreadDepth(val) {
-    return /^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i.test(val);
+    return kyanite.test(/^(([0-1]?[0-9]|2[0-1])(\.[0-9])?|22)$/i, val);
   };
   var meetsPassReq = function meetsPassReq(val) {
-    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
-    return passwordRegex.test(val);
+    return kyanite.test(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/, val);
   };
 
-  var noSpecials = function noSpecials() {
-    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    return val.match(/\W/) === null;
+  var noSpecials = function noSpecials(val) {
+    return kyanite.compose(kyanite.isNil, kyanite.match(/\W/), val);
   };
-  var noNumbers = function noNumbers() {
-    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    return val.match(/[0-9]/) === null;
+  var noNumbers = function noNumbers(val) {
+    return kyanite.compose(kyanite.isNil, kyanite.match(/[0-9]/), val);
   };
   var noLetters = function noLetters() {
     var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    return val.match(/[A-Z]/i) === null;
+    return kyanite.compose(kyanite.isNil, kyanite.match(/[A-Z]/), val);
   };
 
   var runner = function runner(methods, val) {
@@ -232,152 +162,99 @@
       return fn(val);
     });
   };
-  var creditCard = function creditCard(val) {
-    return runner([isAmexCard(true), isDiscoverCard(true), isMasterCard(true), isVisaCard(true)], val);
-  };
   var date = function date(val) {
     return runner([isDate, isDateShort, isDateProper], val);
-  };
-  var cvn = function cvn(val) {
-    return runner([meetsCVN, meetsCVNAmex], val);
   };
   var zipOrPostal = function zipOrPostal(val) {
     return runner([isZip, isCAPostalCode], val);
   };
 
-
-
-  var validationMethods = /*#__PURE__*/Object.freeze({
-    hasValue: hasValue,
-    hasNumbers: hasNumbers,
-    hasLetters: hasLetters,
-    hasSpecialCharacters: hasSpecialCharacters,
-    hasNumbersOrSpecials: hasNumbersOrSpecials,
-    hasUpperAndLowerCase: hasUpperAndLowerCase,
-    isNotTooShort: isNotTooShort,
-    isNotTooLong: isNotTooLong,
-    isCorrectLength: isCorrectLength,
-    isDate: isDate,
-    isDateShort: isDateShort,
-    isDateProper: isDateProper,
-    isEmail: isEmail,
-    isNumber: isNumber,
-    isPositive: isPositive,
-    isNegative: isNegative,
-    isVin: isVin,
-    isZip: isZip,
-    isCAPostalCode: isCAPostalCode,
-    isPhone: isPhone,
-    isLicensePlate: isLicensePlate,
-    isVisaCard: isVisaCard,
-    isVisaPanCard: isVisaPanCard,
-    isMasterCard: isMasterCard,
-    isAmexCard: isAmexCard,
-    isDiscoverCard: isDiscoverCard,
-    isBelowMax: isBelowMax,
-    isAboveMin: isAboveMin,
-    meetsMinMax: meetsMinMax,
-    meetsYearStandard: meetsYearStandard,
-    meetsCVN: meetsCVN,
-    meetsCVNAmex: meetsCVNAmex,
-    meetsTreadDepth: meetsTreadDepth,
-    meetsPassReq: meetsPassReq,
-    noSpecials: noSpecials,
-    noNumbers: noNumbers,
-    noLetters: noLetters,
-    creditCard: creditCard,
-    date: date,
-    cvn: cvn,
-    zipOrPostal: zipOrPostal
-  });
-
-  var format = function format(res) {
-    var results = res.reduce(function (acc, _ref) {
-      var isValid = _ref.isValid,
-          story = _ref.story;
-      if (!isValid) {
-        var _acc$story;
-        (_acc$story = acc.story).push.apply(_acc$story, _toConsumableArray(story));
+  var arrValidate = kyanite.curry(function (methods, data) {
+    if (!Array.isArray(methods)) {
+      return data.every(methods);
+    }
+    for (var i = 0, len = methods.length; i < len; i++) {
+      var fn = methods[i];
+      if (!kyanite.ensureArray(data).every(fn)) {
+        return {
+          isValid: false,
+          rule: fn.name.replace('_', ''),
+          data: data
+        };
       }
-      return acc;
-    }, {
-      isValid: true,
-      story: []
-    });
-    results.isValid = !results.story.length;
-    return results;
-  };
-  var validate = function validate(data, schema, methods) {
-    var story = [];
-    var schemaArr = kyanite.ensureArray(schema);
-    var dataArr = kyanite.ensureArray(data);
-    dataArr.forEach(function (d) {
-      var results = schemaArr.reduce(function (acc, fn) {
-        if (!methods[fn](d)) {
-          acc.push({
-            test: fn,
-            value: d
-          });
-        }
-        return acc;
-      }, []);
-      story.push.apply(story, _toConsumableArray(results));
-    });
+    }
     return {
-      isValid: !story.length,
-      story: story
+      isValid: true
     };
-  };
-  var validateDataObj = function validateDataObj(data, schema, methods) {
-    return Object.keys(data).reduce(function (acc, k) {
+  });
+  var objValidate = function objValidate(schema, data) {
+    if (kyanite.type(data) !== 'Object') {
+      throw new TypeError('Data must be an object if the provided schema is an object');
+    }
+    var keys = Object.keys(schema);
+    for (var i = 0, len = keys.length; i < len; i++) {
+      var k = keys[i];
+      var fn = schema[k];
       var value = data[k];
-      if (kyanite.type(value) === 'Object') {
-        return acc.concat(validateDataObj(value, schema[k], methods));
+      var valid = kyanite.branch(kyanite.always(Array.isArray(fn)), arrValidate(fn), fn, value);
+      if (kyanite.eq(valid.isValid, false)) {
+        return valid;
       }
-      return acc.concat([validate(value, schema[k], methods)]);
-    }, []);
-  };
-  var validateSchema = function validateSchema(schema) {
-    return Array.isArray(schema) && schema.length || kyanite.type(schema) === 'Object' && Object.keys(schema).length || Boolean(schema.length);
-  };
-  var setup = function setup(methods, opts) {
-    return Object.keys(methods).reduce(function (acc, k) {
-      if (typeof methods[k]() === 'function') {
-        acc[k] = methods[k](opts);
-      } else {
-        acc[k] = methods[k];
+      if (!valid) {
+        return {
+          isValid: false,
+          prop: k,
+          rule: fn.name.replace('_', ''),
+          data: value
+        };
       }
-      return acc;
-    }, {});
-  };
-  var simplyValid = function simplyValid(options, data) {
-    var defaults = {
-      schema: [],
-      strictCard: false,
-      max: Infinity,
-      min: -Infinity,
-      maxLen: 100,
-      minLen: 1
+    }
+    return {
+      isValid: true
     };
-    var opts = Object.keys(options).reduce(function (acc, key) {
-      if (acc[key]) {
-        acc[key] = options[key];
-      }
-      return acc;
-    }, defaults);
-    var fns = setup(validationMethods, opts);
-    if (!validateSchema(opts.schema)) {
-      throw new Error('The schema is either invalid or one was not provided for validation');
-    }
-    if (kyanite.type(data) === 'Object') {
-      return format(validateDataObj(data, opts.schema, fns));
-    }
-    return validate(data, opts.schema, fns);
   };
-  var main = _objectSpread({
-    validate: kyanite.curry(simplyValid)
-  }, validationMethods);
+  var validate = function validate(schema, data) {
+    if (!Array.isArray(schema) && kyanite.type(schema) !== 'Object') {
+      throw new TypeError('The Schema should either be an Array or Object');
+    }
+    if (Array.isArray(schema)) {
+      return arrValidate(schema, data);
+    }
+    return objValidate(schema, data);
+  };
+  var main = kyanite.curry(validate);
 
-  return main;
+  exports.validate = main;
+  exports.hasValue = hasValue;
+  exports.hasNumbers = hasNumbers;
+  exports.hasLetters = hasLetters;
+  exports.hasSpecialCharacters = hasSpecialCharacters;
+  exports.hasNumbersOrSpecials = hasNumbersOrSpecials;
+  exports.hasUpperAndLowerCase = hasUpperAndLowerCase;
+  exports.isDate = isDate;
+  exports.isDateShort = isDateShort;
+  exports.isDateProper = isDateProper;
+  exports.isEmail = isEmail;
+  exports.isNumber = isNumber;
+  exports.isPositive = isPositive;
+  exports.isNegative = isNegative;
+  exports.isVin = isVin;
+  exports.isZip = isZip;
+  exports.isCAPostalCode = isCAPostalCode;
+  exports.isPhone = isPhone;
+  exports.isLicensePlate = isLicensePlate;
+  exports.isBelowMax = isBelowMax;
+  exports.isAboveMin = isAboveMin;
+  exports.isBetween = isBetween;
+  exports.meetsYearStandard = meetsYearStandard;
+  exports.meetsTreadDepth = meetsTreadDepth;
+  exports.meetsPassReq = meetsPassReq;
+  exports.noSpecials = noSpecials;
+  exports.noNumbers = noNumbers;
+  exports.noLetters = noLetters;
+  exports.date = date;
+  exports.zipOrPostal = zipOrPostal;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
