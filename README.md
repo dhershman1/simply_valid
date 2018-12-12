@@ -114,7 +114,7 @@ You can even mix it up! (Or even use your own methods)
 ```js
 import { isNumber, hasLetters, validate } from 'simply_valid'
 
-const isEven = (_, val) => val % 2 === 0
+const isEven = val => val % 2 === 0
 const valid = validate({
     zip: isNumber,
     num: [isNumber, isEven],
