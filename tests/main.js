@@ -1,5 +1,11 @@
-import { isBetween, validate, isNumber, hasLetters, hasNumbers, meetsPassReq, isPositive } from '../src/index'
+import { isBetween, validate, isNumber, hasLetters, hasNumbers, meetsPassReq, isPositive, noNumbers } from '../src/index'
 import test from 'tape'
+
+test('validate -- Single function with data', t => {
+  t.same(validate([isNumber], 2), { isValid: true })
+  t.same(validate([isPositive], -2), { isValid: false, rule: 'isPositive', data: -2 })
+  t.end()
+})
 
 test('validate -- Single data functionality', t => {
   const v = validate([isNumber, isPositive])
@@ -43,5 +49,22 @@ test('validate -- Object based functionality', t => {
     pass: 'c00Lk1d$17',
     between: 20
   }), { isValid: true })
+  t.end()
+})
+
+test('validate -- Objects with nested data', t => {
+  const data = {
+    zip: 114455,
+    address: {
+      streetNum: 123,
+      streetName: 'test dr'
+    }
+  }
+  const v = validate({
+    zip: isNumber,
+    address: validate({ streetNum: isNumber, streetName: [hasLetters, noNumbers] })
+  })
+
+  t.same(v(data), { isValid: true })
   t.end()
 })
