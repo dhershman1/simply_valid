@@ -10,7 +10,7 @@ A simple and lightweight validation system. Ships with prebuilt rules and accept
 
 ## Documentation
 
-Find individual documentation per function on the site: **[You can click here to go there](https://www.dusty.codes/documentation/simply_valid)**
+Find individual documentation per function on the site: **[You can click here to go there](https://simply_valid.dusty.codes)**
 
 ## Content
 * [Philosophy](#philosophy)
@@ -124,7 +124,7 @@ validate({
     num: 123,
     name: 'test dr'
   }
-})
+}) // => { isValid: true }
 ```
 
 ## Custom Rules
@@ -160,7 +160,7 @@ validate(schema, { foo:4, bar: 5 }) // => { isValid: false, rule: 'isEven', data
 
 ## Return
 
-Simply_Valid when exit out with information on the very first failure it encounters.
+Simply_Valid will return upon the first failing rule it finds, with information about the failure.
 
 ```js
 // Passing Validation
