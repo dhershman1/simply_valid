@@ -17,7 +17,7 @@ export default [{
     file: './dist/simply-valid.min.js',
     format: 'umd',
     name: 'simplyValid',
-    exports: 'default',
+    exports: 'named',
     globals: {
       kyanite: 'kyanite'
     }
@@ -36,7 +36,7 @@ export default [{
     file: './dist/simply-valid.js',
     format: 'umd',
     name: 'simplyValid',
-    exports: 'default',
+    exports: 'named',
     globals: {
       kyanite: 'kyanite'
     }
