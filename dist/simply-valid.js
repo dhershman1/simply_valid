@@ -4,24 +4,23 @@
   (factory((global.simplyValid = {}),global.kyanite));
 }(this, (function (exports,kyanite) { 'use strict';
 
-  var arrValidate = kyanite.curry(function (methods, data) {
-    if (!Array.isArray(methods)) {
-      return data.every(methods);
-    }
-    for (var i = 0, len = methods.length; i < len; i++) {
-      var fn = methods[i];
-      if (!kyanite.ensureArray(data).every(fn)) {
-        return {
-          isValid: false,
-          rule: fn.name.replace('_', ''),
-          data: data
-        };
+  var arrValidate = function arrValidate(methods) {
+    return function (data) {
+      for (var i = 0, len = methods.length; i < len; i++) {
+        var fn = methods[i];
+        if (!kyanite.ensureArray(data).every(fn)) {
+          return {
+            isValid: false,
+            rule: fn.name.replace('_', ''),
+            data: data
+          };
+        }
       }
-    }
-    return {
-      isValid: true
+      return {
+        isValid: true
+      };
     };
-  });
+  };
   var objValidate = function objValidate(schema, data) {
     if (kyanite.type(data) !== 'Object') {
       throw new TypeError('Data must be an object if the provided schema is an object');
@@ -53,7 +52,7 @@
       throw new TypeError('The Schema should either be an Array or Object');
     }
     if (Array.isArray(schema)) {
-      return arrValidate(schema, data);
+      return arrValidate(schema)(data);
     }
     return objValidate(schema, data);
   };
