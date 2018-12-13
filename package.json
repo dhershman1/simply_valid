@@ -35,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/dhershman1/simply_valid/issues"
   },
-  "homepage": "https://github.com/dhershman1/simply_valid",
+  "homepage": "https://simply_valid.dusty.codes",
   "devDependencies": {
     "@babel/core": "7.1.5",
     "@babel/preset-env": "7.1.5",
