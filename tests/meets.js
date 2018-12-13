@@ -1,39 +1,9 @@
 import {
-  meetsCVN,
-  meetsCVNAmex,
-  meetsMinMax,
   meetsPassReq,
   meetsTreadDepth,
   meetsYearStandard
 } from '../src/meets'
 import test from 'tape'
-
-test('Test meetsCVN', t => {
-  t.ok(meetsCVN)
-  t.ok(meetsCVN('201'), 'Proper 3 digit CVN format')
-  t.notOk(meetsCVN('2011'), 'Invalid format for CVN')
-  t.end()
-})
-
-test('Test meetsCVNAmex', t => {
-  t.ok(meetsCVNAmex)
-  t.ok(meetsCVNAmex('2031'), 'Proper 3 digit CVN format')
-  t.notOk(meetsCVNAmex('201'), 'Invalid format for CVN')
-  t.end()
-})
-
-test('Test meetsMinMax', t => {
-  t.ok(meetsMinMax)
-  t.ok(meetsMinMax({
-    min: 0,
-    max: 5
-  })(3), 'Returns OK within our min/max')
-  t.notOk(meetsMinMax({
-    min: 0,
-    max: 5
-  })(6), 'Invalid exceeds max')
-  t.end()
-})
 
 test('Test meetsPassReq', t => {
   t.ok(meetsPassReq)

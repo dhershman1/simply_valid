@@ -11,3 +11,7 @@ webpack.config.js
 .babelrc
 rollup.config.js
 rollup.config.split.js
+docs/
+jsdoc.json
+.nyc_output
+coverage/

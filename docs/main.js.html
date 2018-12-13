@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>main.js - Documentation</title>
+    
+    <meta name="description" content="A simple data driven validation library" />
+    
+        <meta name="keywords" content="validation, simple, data, simply_valid" />
+        <meta name="keyword" content="validation, simple, data, simply_valid" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/dhershman1/simply_valid" target="_blank" class="menu-item" id="repository" >Github repo</a></h2><ul class="nav-list"><h3>Combo</h3><li class="nav-item" data-cat="Combo"><a href="functions.html#date">date</a></li><li class="nav-item" data-cat="Combo"><a href="functions.html#zipOrPostal">zipOrPostal</a></li><h3>Has</h3><li class="nav-item" data-cat="Has"><a href="functions.html#hasLetters">hasLetters</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasNumbers">hasNumbers</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasNumbersOrSpecials">hasNumbersOrSpecials</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasSpecialCharacters">hasSpecialCharacters</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasUpperAndLowerCase">hasUpperAndLowerCase</a></li><li class="nav-item" data-cat="Has"><a href="functions.html#hasValue">hasValue</a></li><h3>Is</h3><li class="nav-item" data-cat="Is"><a href="functions.html#isAboveMin">isAboveMin</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isBelowMax">isBelowMax</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isBetween">isBetween</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isCAPostalCode">isCAPostalCode</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDate">isDate</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDateProper">isDateProper</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isDateShort">isDateShort</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isEmail">isEmail</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isLicensePlate">isLicensePlate</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isNegative">isNegative</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isNumber">isNumber</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isPhone">isPhone</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isPositive">isPositive</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isVin">isVin</a></li><li class="nav-item" data-cat="Is"><a href="functions.html#isZip">isZip</a></li><h3>Meets</h3><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsPassReq">meetsPassReq</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsTreadDepth">meetsTreadDepth</a></li><li class="nav-item" data-cat="Meets"><a href="functions.html#meetsYearStandard">meetsYearStandard</a></li><h3>No</h3><li class="nav-item" data-cat="No"><a href="functions.html#noLetters">noLetters</a></li><li class="nav-item" data-cat="No"><a href="functions.html#noNumbers">noNumbers</a></li><li class="nav-item" data-cat="No"><a href="functions.html#noSpecials">noSpecials</a></li><h3>Main</h3><li class="nav-item" data-cat="Main"><a href="functions.html#validate">validate</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">main.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { always, branch, curry, ensureArray, eq, type } from 'kyanite'
+
+/**
+ * @private
+ * @function
+ * Runs an array of validation functions against given data
+ * @param {Array} methods An Array of validation functions
+ * @param {Array} data The data to validate
+ */
+const arrValidate = methods => data => {
+  for (let i = 0, len = methods.length; i &lt; len; i++) {
+    const fn = methods[i]
+
+    if (!ensureArray(data).every(fn)) {
+      return {
+        isValid: false,
+        rule: fn.name.replace('_', ''),
+        data
+      }
+    }
+  }
+
+  return {
+    isValid: true
+  }
+}
+
+/**
+ * Runs a validation schema against a provided object of data
+ * If the schema is an object the data provided must also be an object
+ * @function
+ * @private
+ * @param {Object} schema The object schema of validation methods
+ * @param {Object} data The data object to validate
+ */
+const objValidate = (schema, data) => {
+  if (type(data) !== 'Object') {
+    throw new TypeError('Data must be an object if the provided schema is an object')
+  }
+
+  const keys = Object.keys(schema)
+
+  for (let i = 0, len = keys.length; i &lt; len; i++) {
+    const k = keys[i]
+    const fn = schema[k]
+    const value = data[k]
+
+    // Run the proper function to handle these situations
+    const valid = branch(
+      always(Array.isArray(fn)),
+      arrValidate(fn),
+      fn,
+      value
+    )
+
+    // A nested validate call failed, so back out and show that return
+    if (eq(valid.isValid, false)) {
+      return valid
+    }
+
+    // Check to see if the function passed or not
+    if (!valid) {
+      return {
+        isValid: false,
+        prop: k,
+        rule: fn.name.replace('_', ''),
+        data: value
+      }
+    }
+  }
+
+  return {
+    isValid: true
+  }
+}
+
+/**
+ * @name validate
+ * @since v1.0.0
+ * @function
+ * @category Main
+ * @description The main validation functionality of simply valid
+ * @param {Object|Array} schema The schema that the functionality of the module should be following
+ * @param {Any} data The data that we want to run the validation functionality against
+ * @returns {Object} Returns an object with a isValid prop telling if validation was a success, and a story which is an array of objects of which validation methods failed
+ *
+ * @example
+ * import { validate, isNumber, hasNumber, hasLetters, noNumbers } from 'simply_valid'
+ *
+ * // Validating Objects
+ * validate({ zip: isNumber, address: [hasNumbers, hasLetters] }, { zip: 12345, address: '123 Test St' })
+ * // => { isValid: true }
+ *
+ * // Validating Nested Objects (Call validate again on nested objects)
+ * validate({
+ *   zip: isNumber,
+ *   address: validate({
+ *     num: isNumber,
+ *     street: [noNumbers, hasLetters]
+ *   })
+ * }, {
+ *   zip: 12345,
+ *   address: {
+ *     num: 123,
+ *     stree: 'Test St'
+ *   }
+ * })
+ * // => { isValid: true }
+ *
+ * // Validating Arrays
+ * validate([isNumber, isPositive], [1, 2, 3, 4, 5])
+ * // => { isValid: true }
+ *
+ * // This is also all curried
+ * const fn = validate({ zip: isNumber, address: [hasLetters, hasNumbers] })
+ *
+ * fn({ zip: 12345, address: '123 Test St' }) // => { isValid: true }
+ */
+const validate = (schema, data) => {
+  if (!Array.isArray(schema) &amp;&amp; type(schema) !== 'Object') {
+    throw new TypeError('The Schema should either be an Array or Object')
+  }
+
+  if (Array.isArray(schema)) {
+    return arrValidate(schema)(data)
+  }
+
+  return objValidate(schema, data)
+}
+
+export default curry(validate)
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+</body>
+</html>

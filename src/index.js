@@ -1,3 +1,4 @@
+export { default as validate } from './main'
 export * from './has'
 export * from './is'
 export * from './meets'

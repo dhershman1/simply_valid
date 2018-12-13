@@ -1,25 +1,18 @@
 import {
   isAboveMin,
-  isAmexCard,
   isBelowMax,
+  isBetween,
   isCAPostalCode,
-  isCorrectLength,
   isDate,
   isDateProper,
   isDateShort,
-  isDiscoverCard,
   isEmail,
   isLicensePlate,
-  isMasterCard,
   isNegative,
-  isNotTooLong,
-  isNotTooShort,
   isNumber,
   isPhone,
   isPositive,
   isVin,
-  isVisaCard,
-  isVisaPanCard,
   isZip
 } from '../src/is'
 import test from 'tape'
@@ -126,6 +119,7 @@ test('Testing isPhone', t => {
   t.ok(isPhone('8885559987'), 'Returned OK This is a phone format')
   t.notOk(isPhone('88-444-8877'), 'Returned invalid this is not a valid phone')
   t.notOk(isPhone('8888-4444-8877'), 'Returned invalid this is not a valid phone')
+  t.notOk(isPhone(), 'No value returns false')
   t.end()
 })
 
@@ -139,62 +133,10 @@ test('Testing isLicensePlate', t => {
   t.end()
 })
 
-test('Testing isVisaCard', t => {
-  t.ok(isVisaCard(false)('4111111111111111'), 'Returned OK This is a Visa card format')
-  t.notOk(isVisaCard(false)('5111111111111111'), 'Invalid lead number')
-  t.notOk(isVisaCard(false)('41111111111111111'), 'Invalid to long')
-  t.notOk(isVisaCard(false)('411111111111111'), 'Invalid to short')
-  t.notOk(isVisaCard(false)('55544444444444GGF'), 'Invalid bad start number and has letters')
-  t.notOk(isVisaCard(false)('4111111111111GGF'), 'Invalid bad has letters')
-  t.end()
-})
-
-test('Testing isVisaPanCard', t => {
-  t.ok(isVisaPanCard(false)('4111111111111111222'), 'Returned OK This is a Visa card format')
-  t.notOk(isVisaPanCard(false)('5111111111111111222'), 'Invalid lead number')
-  t.notOk(isVisaPanCard(false)('411111111111111112222'), 'Invalid to long')
-  t.notOk(isVisaPanCard(false)('411111111111111222'), 'Invalid to short')
-  t.notOk(isVisaPanCard(false)('55544444444444GGF'), 'Invalid bad start number and has letters')
-  t.notOk(isVisaPanCard(false)('4111111111111GGF'), 'Invalid bad has letters')
-  t.notOk(isVisaPanCard(true, 4111111111111111222), 'Invalid with test number in strict mode')
-  t.end()
-})
-
-test('Testing isMasterCard', t => {
-  t.ok(isMasterCard(false)('5511111111111111'), 'Returned OK This is a MasterCard format')
-  t.notOk(isMasterCard(false)('5711111111111111'), 'Invalid 2nd digit (not 1-5)')
-  t.notOk(isMasterCard(false)('7511111111111111'), 'Invalid 1st digit (not 5)')
-  t.notOk(isMasterCard(false)('55511111111111111'), 'Invalid to long')
-  t.notOk(isMasterCard(false)('551111111111111'), 'Invalid to short')
-  t.notOk(isMasterCard(false)('551111111111111G'), 'Invalid to short')
-  t.notOk(isMasterCard(false)('5511111111111111GG'), 'Invalid to short')
-  t.end()
-})
-
-test('Testing isAmexCard', t => {
-  t.ok(isAmexCard(false)('341111111111111'), 'Returned valid format')
-  t.notOk(isAmexCard(false)('381111111111111'), 'Invalid 2nd digit (not 4 or 7)')
-  t.notOk(isAmexCard(false)('541111111111111'), 'Invalid 1st digit (not 3)')
-  t.notOk(isAmexCard(false)('3411111111111111'), 'Invalid to long')
-  t.notOk(isAmexCard(false)('34111111111111'), 'Invalid to short')
-  t.notOk(isAmexCard(false)('34111111111111GG'), 'Invalid to short')
-  t.end()
-})
-
-test('Testing isDiscoverCard', t => {
-  t.ok(isDiscoverCard(false)('6111111111111111'), 'Returned OK This is a Discover card format')
-  t.notOk(isDiscoverCard(false)('5111111111111111'), 'Invalid lead number')
-  t.notOk(isDiscoverCard(false)('41111111111111111'), 'Invalid to long')
-  t.notOk(isDiscoverCard(false)('411111111111111'), 'Invalid to short')
-  t.notOk(isDiscoverCard(false)('55544444444444GGF'), 'Invalid bad start number and has letters')
-  t.notOk(isDiscoverCard(false)('4111111111111GGF'), 'Invalid bad has letters')
-  t.end()
-})
-
 test('Testing isBelowMax', t => {
   const tstBelow = isBelowMax(8)
 
-  t.ok(isBelowMax({ max: 8 }, 2), 'Testing handling of an object option set')
+  t.ok(isBelowMax(8, 2), 'Testing handling of an object option set')
   t.ok(tstBelow)
   t.ok(tstBelow('7'), 'Returned OK This is below max')
   t.notOk(tstBelow('9'), 'Invalid exceeds/matches max')
@@ -202,55 +144,17 @@ test('Testing isBelowMax', t => {
 })
 
 test('Testing isAboveMin', t => {
-  t.ok(isAboveMin({ min: 0 }, 2), 'Testing handling of an object option set')
+  t.ok(isAboveMin(0, 2), 'Testing handling of an object option set')
   t.ok(isAboveMin(4)('5'), 'Returned OK This is above min')
   t.notOk(isAboveMin(4)('3'), 'Invalid below min')
   t.end()
 })
 
-test('Testing isNotTooShort', t => {
-  const tst = isNotTooShort(1)
+test('Testing isBetween', t => {
+  const tst = isBetween([5, 10])
 
-  t.ok(tst('The brown Cow'))
-  t.notOk(tst(''))
-  t.notOk(isNotTooShort(5, 'the'))
-  t.ok(isNotTooShort(5, 'Brown Cow'))
-  t.ok(isNotTooShort({ minLen: 5 }, 'Brown Cow'))
-  t.end()
-})
-
-test('Testing isNotTooLong', t => {
-  const tst = isNotTooLong(10)
-
-  t.ok(tst('The Cow'))
-  t.notOk(tst('The Cow Ate Grass'))
-  t.ok(isNotTooLong(15, 'Another Cow'))
-  t.notOk(isNotTooLong(5, 'Another Cow'))
-  t.ok(isNotTooLong({ maxLen: 15 }, 'Brown Cow'))
-  t.end()
-})
-
-test('Testing isCorrectLength', t => {
-  const tst = isCorrectLength({
-    maxLen: 10,
-    minLen: 5
-  })
-
-  t.ok(tst('The Cow'))
-  t.notOk(tst('The'))
-  t.notOk(tst('The Cow Ate Grass'))
-
-  t.ok(isCorrectLength({
-    maxLen: 15,
-    minLen: 3
-  }, 'The Cow'))
-  t.notOk(isCorrectLength({
-    maxLen: 10,
-    minLen: 3
-  }, 'The Cow Ate Grass'))
-  t.notOk(isCorrectLength({
-    maxLen: 10,
-    minLen: 3
-  }, 'At'))
+  t.ok(tst('The Cow'.length))
+  t.notOk(tst('The'.length))
+  t.notOk(tst('The Cow Ate Grass'.length))
   t.end()
 })

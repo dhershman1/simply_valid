@@ -51,5 +51,6 @@ test('Test hasValue', t => {
   t.ok(hasValue('test'), 'Has a value')
   t.notOk(hasValue(''), 'Has no value')
   t.ok(hasValue(0), 'Still true for number zero values')
+  t.notOk(hasValue(null), 'Treats null as not a value')
   t.end()
 })

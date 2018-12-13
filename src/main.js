@@ -1,174 +1,131 @@
-import curry from './_internals/curry'
-import * as validationMethods from './index'
-
-const isObject = x => Object.prototype.toString.call(x) === '[object Object]'
-
-const ensureArray = val => {
-  if (Array.isArray(val)) {
-    return val
-  }
-
-  if (val === void 0) {
-    return []
-  }
-
-  return [val]
-}
-
-// Format the response to keep it consistent
-const format = res => {
-  const results = res.reduce((acc, { isValid, story }) => {
-    if (!isValid) {
-      acc.story.push(...story)
-    }
-
-    return acc
-  }, {
-    isValid: true,
-    story: []
-  })
-
-  results.isValid = !results.story.length
-
-  return results
-}
-
-const validate = (data, schema, methods) => {
-  const story = []
-  const schemaArr = ensureArray(schema)
-  const dataArr = ensureArray(data)
-
-  dataArr.forEach(d => {
-    const results = schemaArr.reduce((acc, fn) => {
-      if (!methods[fn](d)) {
-        acc.push({
-          test: fn,
-          value: d
-        })
-      }
-
-      return acc
-    }, [])
-
-    story.push(...results)
-  })
-
-  return {
-    isValid: !story.length,
-    story
-  }
-}
-
-const validateDataObj = (data, schema, methods) =>
-  Object.keys(data).reduce((acc, k) => {
-    const value = data[k]
-
-    if (isObject(value)) {
-      return acc.concat(validateDataObj(value, schema[k], methods))
-    }
-
-    return acc.concat([validate(value, schema[k], methods)])
-  }, [])
-
-const validateSchema = schema =>
-  (Array.isArray(schema) && schema.length) ||
-  (isObject(schema) && Object.keys(schema).length) ||
-  Boolean(schema.length)
-
-const setup = (methods, opts) =>
-  Object.keys(methods).reduce((acc, k) => {
-    if (typeof methods[k]() === 'function') {
-      acc[k] = methods[k](opts)
-    } else {
-      acc[k] = methods[k]
-    }
-
-    return acc
-  }, {})
+import { always, branch, curry, ensureArray, eq, type } from 'kyanite'
 
 /**
- * @name simplyValid
+ * @private
+ * @function
+ * Runs an array of validation functions against given data
+ * @param {Array} methods An Array of validation functions
+ * @param {Array} data The data to validate
+ */
+const arrValidate = methods => data => {
+  for (let i = 0, len = methods.length; i < len; i++) {
+    const fn = methods[i]
+
+    if (!ensureArray(data).every(fn)) {
+      return {
+        isValid: false,
+        rule: fn.name.replace('_', ''),
+        data
+      }
+    }
+  }
+
+  return {
+    isValid: true
+  }
+}
+
+/**
+ * Runs a validation schema against a provided object of data
+ * If the schema is an object the data provided must also be an object
+ * @function
+ * @private
+ * @param {Object} schema The object schema of validation methods
+ * @param {Object} data The data object to validate
+ */
+const objValidate = (schema, data) => {
+  if (type(data) !== 'Object') {
+    throw new TypeError('Data must be an object if the provided schema is an object')
+  }
+
+  const keys = Object.keys(schema)
+
+  for (let i = 0, len = keys.length; i < len; i++) {
+    const k = keys[i]
+    const fn = schema[k]
+    const value = data[k]
+
+    // Run the proper function to handle these situations
+    const valid = branch(
+      always(Array.isArray(fn)),
+      arrValidate(fn),
+      fn,
+      value
+    )
+
+    // A nested validate call failed, so back out and show that return
+    if (eq(valid.isValid, false)) {
+      return valid
+    }
+
+    // Check to see if the function passed or not
+    if (!valid) {
+      return {
+        isValid: false,
+        prop: k,
+        rule: fn.name.replace('_', ''),
+        data: value
+      }
+    }
+  }
+
+  return {
+    isValid: true
+  }
+}
+
+/**
+ * @name validate
  * @since v1.0.0
+ * @function
  * @category Main
  * @description The main validation functionality of simply valid
- * @param {Object} options The main options to setup simply_valid
- * @property {Any} schema The schema that the functionality of the module should be following
- * @property {Boolean} strictCard Whether or not we should run card validation strictly or not
- * @property {Number} max The max number used for max validation methods
- * @property {Number} min The min number used for min validation methods
- * @property {Number} maxLen The maximum length a value can be
- * @property {Number} minLen The minimum length a value can be
+ * @param {Object|Array} schema The schema that the functionality of the module should be following
  * @param {Any} data The data that we want to run the validation functionality against
  * @returns {Object} Returns an object with a isValid prop telling if validation was a success, and a story which is an array of objects of which validation methods failed
  *
  * @example
- * // Simple validation schemas
+ * import { validate, isNumber, hasNumber, hasLetters, noNumbers } from 'simply_valid'
  *
- * const validate = simplyValid({
-    schema: 'hasValue'
-  });
-
-  validate('test'); // => { isValid: true }
-  validate(''); // => { isValid: false, story: [{ test: 'hasValue', value: '' }] }
-  simplyValid({
-    schema: 'hasValue'
-  }, 'test'); // => { isValid: true }
+ * // Validating Objects
+ * validate({ zip: isNumber, address: [hasNumbers, hasLetters] }, { zip: 12345, address: '123 Test St' })
+ * // => { isValid: true }
  *
- * // Array Validation Schemas
- *
- * const validate = simplyValid({
- *  schema: ['hasValue', 'hasNumber']
- * });
- * validate('test1123'); // => { isValid: true }
- * validate('test'); // => { isValid: false, story: [{ test: 'hasNumbers', value: 'test' }] }
- *
- * // Object Validation Schema
- *
- * const validate = simplyValid({
- *  schema: {
- *    test: ['hasNumbers', 'hasLetters'],
- *    thing: 'hasValue',
- *    other: {
- *      nestedThing: ['isPositive', 'hasNumbers']
- *    }
- *  }
- * });
+ * // Validating Nested Objects (Call validate again on nested objects)
  * validate({
- *   test: 'cool112',
- *   thing: 'test',
- *   other: {
- *     nestedThing: '1234'
+ *   zip: isNumber,
+ *   address: validate({
+ *     num: isNumber,
+ *     street: [noNumbers, hasLetters]
+ *   })
+ * }, {
+ *   zip: 12345,
+ *   address: {
+ *     num: 123,
+ *     stree: 'Test St'
  *   }
- * }); // => { isValid: true }
+ * })
+ * // => { isValid: true }
+ *
+ * // Validating Arrays
+ * validate([isNumber, isPositive], [1, 2, 3, 4, 5])
+ * // => { isValid: true }
+ *
+ * // This is also all curried
+ * const fn = validate({ zip: isNumber, address: [hasLetters, hasNumbers] })
+ *
+ * fn({ zip: 12345, address: '123 Test St' }) // => { isValid: true }
  */
-const simplyValid = (options, data) => {
-  const defaults = {
-    schema: [],
-    strictCard: false,
-    max: Infinity,
-    min: -Infinity,
-    maxLen: 100,
-    minLen: 1
-  }
-  const opts = Object.keys(options).reduce((acc, key) => {
-    if (acc[key]) {
-      acc[key] = options[key]
-    }
-
-    return acc
-  }, defaults)
-
-  const fns = setup(validationMethods, opts)
-
-  if (!validateSchema(opts.schema)) {
-    throw new Error('The schema is either invalid or one was not provided for validation')
+const validate = (schema, data) => {
+  if (!Array.isArray(schema) && type(schema) !== 'Object') {
+    throw new TypeError('The Schema should either be an Array or Object')
   }
 
-  if (isObject(data)) {
-    return format(validateDataObj(data, opts.schema, fns))
+  if (Array.isArray(schema)) {
+    return arrValidate(schema)(data)
   }
 
-  return validate(data, opts.schema, fns)
+  return objValidate(schema, data)
 }
 
-export default curry(simplyValid)
+export default curry(validate)

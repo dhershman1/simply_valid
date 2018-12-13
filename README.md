@@ -4,32 +4,20 @@
 [![Travis](https://img.shields.io/travis/dhershman1/simply_valid.svg?style=flat-square)](https://travis-ci.org/dhershman1/simply_valid)
 [![Coverage Status](https://img.shields.io/coveralls/github/dhershman1/simply_valid.svg?style=flat-square)](https://coveralls.io/github/dhershman1/simply_valid?branch=master)
 
-# Simply Valid
+![main-mid](https://user-images.githubusercontent.com/8997380/49965860-6977dc80-feec-11e8-90ae-3bcbe43639b3.png)
 
-A simple to use data driven validation system
-
-Have a suggestion? Feel free to post them over in the github issues section and I will happily check them out!
+A simple and lightweight validation system. Ships with prebuilt rules and accepts custom rules.
 
 ## Documentation
 
-Find individual documentation per function on the site: **[You can click here to go there](https://www.dusty.codes/documentation/simply_valid)**
+Find individual documentation per function on the site: **[You can click here to go there](https://simply_valid.dusty.codes)**
 
-## Changelog
-
-You can find the changelog here: https://github.com/dhershman1/simply_valid/blob/master/changelog.md
-
-## Old Readmes
-
-You can find Non-depricated old readmes [HERE](https://github.com/dhershman1/simply_valid/blob/master/old-readmes)
-
-## Contents
+## Content
 * [Philosophy](#philosophy)
 * [Parameters](#parameters)
-* [Options](#options)
-* [Defaults](#defaults)
 * [Usage](#usage)
 * [Schema](#schema)
-* [Methods](#methods)
+* [Custom Rules](#custom-rules)
 * [Return](#return)
 
 ## Philosophy
@@ -42,148 +30,147 @@ With the schema system in place for the module you can easily validate complex o
 
 ## Parameters
 
-- `options` - `Object`: An object of rules to overwrite the default rules
+- `schema` - `Object`: An object of rules to overwrite the default rules
 - `data` - `String|Array|Object`: Data is the value sent in with the 2nd call made to simplyValid (curried call)
-
-## Options
-
-- `schema` - `Object|Array|String` - The validation methods you want simply valid to use
-- `strictCard` - `Boolean` - If credit card validation should use the `luhn` algorithm strictly
-- `max` - `Number`: The maximum of a value
-- `min` - `Number`: The minimum of a value
-- `maxLen` - `Number`: The maximum length of a value
-- `minLen` - `Number`: The minimum length of a value
-
-## Defaults
-
-```js
-const defaults = {
-  schema: [],
-  strictCard: true,
-  max: Infinity,
-  min: -Infinity,
-  maxLen: 100,
-  minLen: 1
-};
-```
 
 ## Usage
 
-However you can also call any of the built in validation methods the same way if you only need one or two. Making tree shaking that much better
-
-Using Standardized JS
+Using Standard JS
 ```js
-import simplyValid from 'simply_valid';
+import { validate } from 'simply_valid'
 
-simplyValid(options, data);
+validate(schema, data)
 
 // Or
-const validate = simplyValid(options);
+const valid = validate(schema)
 
-validate(data);
+valid(data)
 ```
 
 Using commonjs
 ```js
-const simplyValid = require('simply_valid');
+const { validate } = require('simply_valid')
 
-simplyValid(options, data);
+validate(schema, data)
 
 // Or
-const validate = simplyValid(options);
+const valid = validate(schema)
 
-validate(data);
+valid(data)
+```
+
+Using a CDN
+```html
+<!-- It is recommended to replace @latest with a strict version number -->
+<script src="https://cdn.jsdelivr.net/npm/simply_valid@latest/dist/simply-valid.min.js"></script>
+<script>
+  validate(schema, data)
+
+  // Or
+  const valid = validate(schema)
+
+  valid(data)
+</script>
 ```
 
 In the browser
 ```html
 <script src="path/to/dist/simplyValid.min.js"></script>
 <script>
-  simplyValid(options, data);
+  validate(schema, data)
 
   // Or
-  var validate = simplyValid(options);
+  const valid = validate(schema)
 
-  validate(data);
+  valid(data)
 </script>
 ```
 
 ## Schema
 
-You can pass schema an `Array` of methods just like passing it an array of methods from v2.x.x
+Simply_Valid supports a schema system, the schema should be either an `Array` or `Object` type. Even when using just one function
 
+> **Note** If you are validating an object the schema **MUST** also be an object
+
+Examples:
 ```js
-import simplyValid from 'simply_valid';
+import { validate, hasValue, isNumber, isPositive, hasLetters, hasNumbers, isZip, noNumbers } from 'simply_valid'
 
-const validate = simplyValid({
-  schema: ['hasValue', 'hasLetters']
-});
+// Single/Primitive data value
+validate([isNumber], 2) // => { isValid: true }
+validate([isNumber, isPositive], 3) // => { isValid: true }
 
-validate(data);
-```
+// Array of Data
+validate([isNumber], [1, 2, 3]) // => { isValid: true }
+validate([isNumber, isPositive], [1, 2, 3]) // => { isValid: true }
+validate([isNumber, isPositive], [1, 2, -3]) // => { isValid: false, rule: 'isPositive', data: [1, 2, -3] }
 
-You can pass schema an `Object` now which would be used if you are validating your own object
+// Object of Data
+validate({
+  zip: isZip,
+  address: [hasLetters, hasNumbers]
+}, {
+  zip: 11234,
+  address: '123 test dr'
+}) // => { isValid: true }
 
-```js
-import simplyValid from 'simply_valid';
-
-const validate = simplyValid({
-  schema: {
-    zip: 'isNumber',
-    address: ['hasLetters', 'hasNumbers']
+// Object with nested data
+validate({
+  zip: isZip,
+  address: validate({ num: isNumber, name: [hasLetters, noNumbers] })
+}, {
+  zip: 11234,
+  address: {
+    num: 123,
+    name: 'test dr'
   }
-});
-const data = {
-  zip: '11445',
-  address: '1132 Cool St'
-};
-
-validate(data);
-// Output: {isValid: true, story: []}
-
+}) // => { isValid: true }
 ```
 
-You can even pass it a single string if desired
+## Custom Rules
 
+Simply_Valid also supports the use of custom rules
+
+- Custom rules returns will be treated on a true/false basis so try to have them return a boolean
+- If you want a multi param rules name to show up in a failure make sure you name the inner function
+- The inner function should be the same name but with an underscore at the start (it will be formatted out)
 ```js
-import simplyValid from 'simply_valid';
+import { validate } from 'simply_valid'
 
-const validate = simplyValid({
-  schema: 'hasValue'
-});
+const isEven = val => val % 2 === 0
+// For multi param functions you need to use the function keyword
+// If you want the name to show up in failures, it also relies on partial execution
+const notMin = function notMin (min) {
+  // The inner function should be named the same but with a _ in front of it
+  // (This gets removed when you get the rule)
+  // This ensures you get an accurate rule back in your object
+  return function _notMin (val) {
+    return val !== min
+  }
+}
+const schema = {
+  foo: isEven,
+  bar: [isEven, notMin(4)]
+}
 
-validate(data);
+validate(schema, { foo: 4, bar: 6 }) // => { isValid: true }
+validate(schema, { foo:4, bar: 4 }) // => { isValid: false, rule: 'notMin', data: 4 }
+validate(schema, { foo:4, bar: 5 }) // => { isValid: false, rule: 'isEven', data: 5 }
 ```
-
-## Methods
-
-You can simply require in a chunk of validation functions if you only need a certain set of them in your app
-
-- `simply_valid/has` - Return the `has` methods
-- `simply_valid/is` - Return the `is` methods
-- `simply_valid/meets` - Return the `meets` methods
-- `simply_valid/no` - Return the `no` methods
-- `simply_valid/combo` - Return the `combo` methods
-- `simply_valid/esm` - Return `all` methods
-- `simply_valid` - Returns the validation functionality built into `Simply_Valid` (Includes all of the methods by default)
 
 ## Return
 
-I tried to keep it so you can always expect the same level of return no matter how you are using `simply_valid`
+Simply_Valid will return upon the first failing rule it finds, with information about the failure.
 
 ```js
 // Passing Validation
-{
-  isValid: true,
-  story: []
-}
+{ isValid: true }
 
 // Failing returns will look like this
 {
   isValid: false,
-  story: [{
-    test: 'isNumber',
-    value: 'cool'
-  }]
+  prop: 'propName',
+  rule: 'functionName'
+  data: 'cool'
 }
 ```

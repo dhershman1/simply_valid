@@ -1,0 +1,61 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "includePattern": ".js$",
+    "include": [
+      "src/",
+      "./README.md"
+    ]
+  },
+  "sourceType": "module",
+  "plugins": [
+    "plugins/markdown",
+    "scripts/custom-tags.js"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "template": "node_modules/@killparadise/docdash",
+    "destination": "./docs/",
+    "recurse": true,
+    "verbose": true
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true,
+    "idInHeadings": true
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": true,
+      "includeDate": false
+    }
+  },
+  "docdash": {
+    "static": true,
+    "sort": true,
+    "moduleName": "Simply_Valid",
+    "disqus": "",
+    "meta": {
+      "title": "Documentation",
+      "description": "A simple data driven validation library",
+      "keyword": "validation, simple, data, simply_valid"
+    },
+    "search": true,
+    "collapse": true,
+    "typedefs": true,
+    "removeQuotes": "none",
+    "scripts": [],
+    "menu": {
+      "Github repo": {
+        "href": "https://github.com/dhershman1/simply_valid",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "repository"
+      }
+    }
+  }
+}

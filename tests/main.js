@@ -1,216 +1,109 @@
-import simplyValid from '../src/main'
+import { isBetween, validate, isNumber, hasLetters, hasNumbers, meetsPassReq, isPositive, noNumbers } from '../src/index'
 import test from 'tape'
 
-const testData = {
-  zip: '11445',
-  address: '1132 Cool St'
-}
-
-test('Test String Schema', t => {
-  const validate = simplyValid({
-    schema: 'hasValue'
-  })
-
-  t.ok(validate)
-  t.ok(validate('cool').isValid, 'Validation passed')
-  t.notOk(validate('').isValid, 'Empty string is not valid')
+test('validate -- Single function with data', t => {
+  t.same(validate([isNumber], 2), { isValid: true })
+  t.same(validate([isPositive], -2), { isValid: false, rule: 'isPositive', data: -2 })
   t.end()
 })
 
-test('Test Object Schema', t => {
-  const validate = simplyValid({
-    schema: {
-      zip: ['isNumber'],
-      address: ['hasLetters', 'hasNumbers']
-    }
-  })
+test('validate -- Single data functionality', t => {
+  const v = validate([isNumber, isPositive])
 
-  t.ok(validate)
-  t.ok(validate(testData).isValid, 'Object is a valid object')
-  t.notOk(validate({
-    zip: 'cool',
-    address: '112 test St'
-  }).isValid, 'Object is invalid')
+  t.same(v(1), { isValid: true })
+  t.same(v('1'), { isValid: true })
+  t.same(v(-1), { isValid: false, rule: 'isPositive', data: -1 })
+  t.same(v('-1'), { isValid: false, rule: 'isPositive', data: '-1' })
+  t.same(v('abc'), { isValid: false, rule: 'isNumber', data: 'abc' })
   t.end()
 })
 
-test('Test Object Schema Omitting values', t => {
-  const validate = simplyValid({
-    schema: {
-      zip: ['hasValue', 'isNumber']
-    }
-  })
+test('validate -- Array based functionality', t => {
+  const v = validate([isNumber, isPositive])
 
-  t.ok(validate)
-  t.ok(validate(testData).isValid, 'Object is a valid object')
-  t.notOk(validate({
-    zip: '',
-    address: '112 test St'
-  }).isValid, 'Object is invalid')
+  t.same(v([1, 2, 3]), { isValid: true })
+  t.same(v([1, '2', 3]), { isValid: true })
+  t.same(v([1, 2, -3]), { isValid: false, rule: 'isPositive', data: [1, 2, -3] })
+  t.same(v([1, 2, '-3']), { isValid: false, rule: 'isPositive', data: [1, 2, '-3'] })
+  t.same(v([1, 2, 'abc']), { isValid: false, rule: 'isNumber', data: [1, 2, 'abc'] })
   t.end()
 })
 
-test('Test Array Schema', t => {
-  const validate = simplyValid({
-    schema: ['isNumber', 'isPositive']
+test('validate -- Object based functionality', t => {
+  const v = validate({
+    zip: isNumber,
+    addres: [hasNumbers, hasLetters],
+    pass: meetsPassReq,
+    between: isBetween([0, 20])
   })
 
-  t.ok(validate)
-  t.ok(validate('5').isValid, 'Number is valid and positive')
-  t.notOk(validate('-4').isValid, 'Number is negative and not valid')
+  t.same(v({
+    zip: '11445',
+    address: '1132 Cool St',
+    pass: 'turd',
+    between: 20
+  }), { isValid: false, prop: 'pass', rule: 'meetsPassReq', data: 'turd' })
+  t.same(v({
+    zip: '11445',
+    address: '1132 Cool St',
+    pass: 'c00Lk1d$17',
+    between: 20
+  }), { isValid: true })
   t.end()
 })
 
-test('Test nested Object', t => {
-  const validate = simplyValid({
-    schema: {
-      test: ['isPositive'],
-      info: {
-        zip: ['hasValue', 'hasNumbers'],
-        address: ['hasLetters']
-      }
-    }
-  })
-
-  t.ok(validate)
-  t.ok(validate({
-    test: '4',
-    info: {
-      zip: '44432',
-      address: '4432 Test St'
-    }
-  }).isValid, 'Valid nested object')
-  t.end()
-})
-
-test('Test nested object with arrays', t => {
-  const validate = simplyValid({
-    schema: {
-      test: {
-        arraytest: ['isPositive']
-      },
-      info: {
-        zip: ['hasValue', 'hasNumbers'],
-        moreInfo: {
-          address: ['hasLetters']
-        }
-      }
-    }
-  })
-
-  const results = validate({
-    test: {
-      arraytest: ['3', '2', '1', '5']
-    },
-    info: {
-      zip: '44564',
-      moreInfo: {
-        address: '11234 Test Rd'
-      }
-    }
-  })
-
-  t.ok(validate)
-  t.ok(results.isValid, 'Is a valid object')
-  t.is(results.story.length, 0, 'There is no story')
-  t.end()
-})
-
-test('Testing Combo Functionality', t => {
-  const simple = simplyValid({
-    schema: {
-      cc: 'creditCard',
-      date: 'date',
-      cvn: 'cvn',
-      zip: 'zipOrPostal'
-    }
-  })
-  const results = simple({
-    cc: '4012888888881881',
-    date: '01/18',
-    cvn: '333',
-    zip: '55555'
-  })
-
-  t.ok(results)
-  t.ok(results.isValid)
-  t.end()
-})
-
-test('Testing Combo Functionality Mixup', t => {
-  const simple = simplyValid({
-    schema: {
-      cc: 'creditCard',
-      date: 'date',
-      cvn: 'cvn',
-      zip: 'zipOrPostal'
-    }
-  })
-  const results = simple({
-    cc: '4012888888881881',
-    date: '01/20/18',
-    cvn: '3333',
-    zip: 'K1A0B1'
-  })
-
-  t.ok(results)
-  t.ok(results.isValid)
-  t.end()
-})
-
-test('Test edge case for objects in schema', t => {
+test('validate -- Objects with nested data', t => {
   const data = {
-    email: 'dusty@gmail.com',
-    zip: '44114',
-    name: 'firstname',
-    phone: {
-      area: 'a123',
-      local: '-999'
+    zip: 114455,
+    address: {
+      streetNum: 123,
+      streetName: 'test dr'
     }
   }
-  const schema = {
-    email: 'isEmail',
-    zip: 'isZip',
-    name: ['hasValue', 'hasLetters'],
-    phone: {
-      area: ['noLetters', 'hasNumbers'],
-      local: 'noSpecials'
-    }
-  }
-  const results = simplyValid({ schema }, data)
+  const v = validate({
+    zip: isNumber,
+    address: validate({ streetNum: isNumber, streetName: [hasLetters, noNumbers] })
+  })
 
-  t.notOk(results.isValid)
-  t.is(results.story[0].test, 'noLetters')
-  t.is(results.story[1].test, 'noSpecials')
+  t.same(v(data), { isValid: true })
   t.end()
 })
 
-test('Testing main validation for Arrays', t => {
-  const results = simplyValid({ schema: ['hasNumbers', 'hasLetters'] }, ['henlo112', 'blep102'])
-
-  t.ok(results.isValid)
-  t.end()
-})
-
-test('Testing main validation for Strings', t => {
-  const results = simplyValid({ schema: 'hasNumbers' }, 'blep')
-
-  t.notOk(results.isValid)
-  t.end()
-})
-
-test('Throws an error when the schema passed in is invalid', t => {
+test('validate -- handles schema invalid error', t => {
   try {
-    simplyValid({ schema: [] }, 'test')
+    validate(isNumber, 2)
   } catch (err) {
-    t.is(err.message, 'The schema is either invalid or one was not provided for validation')
+    t.same(err.message, 'The Schema should either be an Array or Object')
     t.end()
   }
 })
 
-test('Handles if a random invalid option is passed in', t => {
-  const validator = simplyValid({ schema: ['isPositive'], hi: 'test' })
+test('validate -- handles schema not object for object data', t => {
+  try {
+    validate({ a: isNumber }, 2)
+  } catch (err) {
+    t.same(err.message, 'Data must be an object if the provided schema is an object')
+    t.end()
+  }
+})
 
-  t.ok(validator(1).isValid)
+test('validate -- handles nested failures', t => {
+  const data = {
+    a: { b: 2 }
+  }
+
+  t.same(validate({ a: validate({ b: hasLetters }) }, data), { isValid: false, prop: 'b', rule: 'hasLetters', data: 2 })
+  t.end()
+})
+
+test('validate -- Handles mixed object', t => {
+  const data = {
+    a: 1,
+    b: 2,
+    c: ['a', 'b', 'c']
+  }
+  const results = validate({ a: isNumber, b: isPositive, c: hasLetters }, data)
+
+  t.same(results, { isValid: true })
   t.end()
 })

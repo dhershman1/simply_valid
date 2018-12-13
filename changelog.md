@@ -1,5 +1,66 @@
 # Change Log
 
+## v5.0.0
+
+### BREAKING CHANGES
+
+- `story` is no longer a value included with the return, it is just an object.
+  - `simply_valid` will return on the first failure with the information about that failure
+- Importing/requiring the module is a bit different please see the README for info
+  - Schema will **No longer** take string values, you must import and pass the functions you want to use.
+    - Why? This offers a cleaner and more direct experience, less the library has to worry about so less overhead!
+    - This also opens the door for _you_ to be able to pass in your own functionality!
+- Auto recursion dropped for nested complex data
+  - Simply recall validate within an object to support nested objects
+  - example:
+  ```js
+  const data = {
+    a: 1,
+    b: {
+      c: 3
+    }
+  }
+  const schema = {
+    a: isNumber,
+    b: validate({ c: isNumber })
+  }
+
+  validate({ schema }, data)
+  ```
+- Changed how `isBetween` params work instead of an object it expects 2 numbers now
+  - Example: `isBetween(min, max, value)`
+
+#### Removed
+
+- `isVisaCard`: Should lean more towards relying on proper CC libs
+- `isVisPanCard`: Should lean more towards relying on proper CC libs
+- `isAmexCard`: Should lean more towards relying on proper CC libs
+- `isMasterCard`: Should lean more towards relying on proper CC libs
+- `isDiscoverCard`: Should lean more towards relying on proper CC libs
+- `creditCard`: Since the above were also removed
+- `meetsCVN`: Lean more towards proper CC validation
+- `meetsCVNAmex`: Lean more towards proper CC validation
+- `cvn`: Since the two cvn methods were removed
+- `isNotToShort`: Use `isAboveMin` with the length of a value
+- `isNotToLong`: Use `isBelowMax` with the length of a value
+- `isCorrectLength`: Use `isBetween` with the length of a value
+- `meetsMinMax`: Use `isBetween`
+
+### Improved
+
+- Converted more functionality to use Kyanite
+- Re wrote how the app handles all validation for better performance
+
+## v4.0.2
+
+### New
+
+- Added Kyanite library to help with utility functionality
+
+### Improved
+
+- Cleaned up code a bit using the library
+
 ## v4.0.1
 
 ### New

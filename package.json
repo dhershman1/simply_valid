@@ -1,20 +1,19 @@
 {
   "name": "simply_valid",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "A simple data driven validation utility library",
   "main": "dist/simply-valid.min.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "prepack": "rollup -c && node scripts/generateInfo.js",
-    "postpack": "npm run clean",
+    "prepack": "rollup -c && npm run docs",
     "build": "rollup -c",
-    "clean": "node scripts/clean.js",
-    "postpublish": "npm run clean",
+    "docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "test": "tape -r esm tests/*.js | tap-spec",
     "test:cov": "nyc npm test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "check": "nyc report --reporter=html",
     "lint": "standard ./src/*.js"
   },
   "repository": {
@@ -35,23 +34,22 @@
   "bugs": {
     "url": "https://github.com/dhershman1/simply_valid/issues"
   },
-  "homepage": "https://github.com/dhershman1/simply_valid",
+  "homepage": "https://simply_valid.dusty.codes",
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.46",
-    "@babel/preset-env": "7.0.0-beta.46",
-    "@babel/preset-stage-2": "7.0.0-beta.46",
-    "coveralls": "3.0.1",
-    "del": "3.0.0",
-    "esm": "3.0.55",
-    "globby": "8.0.1",
-    "jsdoc-to-markdown": "3.0.3",
-    "nyc": "11.8.0",
-    "rollup": "0.62.0",
-    "rollup-plugin-babel": "4.0.0-beta.4",
-    "rollup-plugin-cleanup": "3.0.0-beta.1",
-    "rollup-plugin-filesize": "2.0.0",
-    "rollup-plugin-uglify": "4.0.0",
-    "standard": "11.0.1",
+    "@babel/core": "7.1.5",
+    "@babel/preset-env": "7.1.5",
+    "@killparadise/docdash": "github:dhershman1/docdash",
+    "coveralls": "3.0.2",
+    "esm": "3.0.84",
+    "jsdoc": "3.5.5",
+    "jsdoc-to-markdown": "4.0.1",
+    "nyc": "13.1.0",
+    "rollup": "0.67.4",
+    "rollup-plugin-babel": "4.0.3",
+    "rollup-plugin-cleanup": "3.0.0",
+    "rollup-plugin-filesize": "5.0.1",
+    "rollup-plugin-terser": "3.0.0",
+    "standard": "12.0.1",
     "tap-spec": "5.0.0",
     "tape": "4.9.1"
   },
@@ -68,5 +66,8 @@
       "dist/*",
       "docs.js"
     ]
+  },
+  "dependencies": {
+    "kyanite": "0.10.3"
   }
 }
