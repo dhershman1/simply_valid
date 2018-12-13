@@ -30,10 +30,10 @@ const arrValidate = curry((methods, data) => {
 })
 
 /**
- * @function
- * @private
  * Runs a validation schema against a provided object of data
  * If the schema is an object the data provided must also be an object
+ * @function
+ * @private
  * @param {Object} schema The object schema of validation methods
  * @param {Object} data The data object to validate
  */

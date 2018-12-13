@@ -40,9 +40,9 @@
     "moduleName": "Simply_Valid",
     "disqus": "",
     "meta": {
-      "title": "Kyanite",
-      "description": "A small library of pure functional utilities to make life easier and data better",
-      "keyword": "functional, library, javascript, pure, helpers, utils"
+      "title": "Documentation",
+      "description": "A simple data driven validation library",
+      "keyword": "validation, simple, data, simply_valid"
     },
     "search": true,
     "collapse": true,

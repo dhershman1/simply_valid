@@ -4,6 +4,61 @@
   (factory((global.simplyValid = {}),global.kyanite));
 }(this, (function (exports,kyanite) { 'use strict';
 
+  var arrValidate = kyanite.curry(function (methods, data) {
+    if (!Array.isArray(methods)) {
+      return data.every(methods);
+    }
+    for (var i = 0, len = methods.length; i < len; i++) {
+      var fn = methods[i];
+      if (!kyanite.ensureArray(data).every(fn)) {
+        return {
+          isValid: false,
+          rule: fn.name.replace('_', ''),
+          data: data
+        };
+      }
+    }
+    return {
+      isValid: true
+    };
+  });
+  var objValidate = function objValidate(schema, data) {
+    if (kyanite.type(data) !== 'Object') {
+      throw new TypeError('Data must be an object if the provided schema is an object');
+    }
+    var keys = Object.keys(schema);
+    for (var i = 0, len = keys.length; i < len; i++) {
+      var k = keys[i];
+      var fn = schema[k];
+      var value = data[k];
+      var valid = kyanite.branch(kyanite.always(Array.isArray(fn)), arrValidate(fn), fn, value);
+      if (kyanite.eq(valid.isValid, false)) {
+        return valid;
+      }
+      if (!valid) {
+        return {
+          isValid: false,
+          prop: k,
+          rule: fn.name.replace('_', ''),
+          data: value
+        };
+      }
+    }
+    return {
+      isValid: true
+    };
+  };
+  var validate = function validate(schema, data) {
+    if (!Array.isArray(schema) && kyanite.type(schema) !== 'Object') {
+      throw new TypeError('The Schema should either be an Array or Object');
+    }
+    if (Array.isArray(schema)) {
+      return arrValidate(schema, data);
+    }
+    return objValidate(schema, data);
+  };
+  var main = kyanite.curry(validate);
+
   var hasValue = function hasValue(val) {
     return kyanite.either(kyanite.eq(0), Boolean, val);
   };
@@ -168,61 +223,6 @@
   var zipOrPostal = function zipOrPostal(val) {
     return runner([isZip, isCAPostalCode], val);
   };
-
-  var arrValidate = kyanite.curry(function (methods, data) {
-    if (!Array.isArray(methods)) {
-      return data.every(methods);
-    }
-    for (var i = 0, len = methods.length; i < len; i++) {
-      var fn = methods[i];
-      if (!kyanite.ensureArray(data).every(fn)) {
-        return {
-          isValid: false,
-          rule: fn.name.replace('_', ''),
-          data: data
-        };
-      }
-    }
-    return {
-      isValid: true
-    };
-  });
-  var objValidate = function objValidate(schema, data) {
-    if (kyanite.type(data) !== 'Object') {
-      throw new TypeError('Data must be an object if the provided schema is an object');
-    }
-    var keys = Object.keys(schema);
-    for (var i = 0, len = keys.length; i < len; i++) {
-      var k = keys[i];
-      var fn = schema[k];
-      var value = data[k];
-      var valid = kyanite.branch(kyanite.always(Array.isArray(fn)), arrValidate(fn), fn, value);
-      if (kyanite.eq(valid.isValid, false)) {
-        return valid;
-      }
-      if (!valid) {
-        return {
-          isValid: false,
-          prop: k,
-          rule: fn.name.replace('_', ''),
-          data: value
-        };
-      }
-    }
-    return {
-      isValid: true
-    };
-  };
-  var validate = function validate(schema, data) {
-    if (!Array.isArray(schema) && kyanite.type(schema) !== 'Object') {
-      throw new TypeError('The Schema should either be an Array or Object');
-    }
-    if (Array.isArray(schema)) {
-      return arrValidate(schema, data);
-    }
-    return objValidate(schema, data);
-  };
-  var main = kyanite.curry(validate);
 
   exports.validate = main;
   exports.hasValue = hasValue;
