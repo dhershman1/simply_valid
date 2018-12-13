@@ -10,7 +10,6 @@
     "prepack": "rollup -c && npm run docs",
     "build": "rollup -c",
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json",
-    "postpublish": "npm run clean",
     "test": "tape -r esm tests/*.js | tap-spec",
     "test:cov": "nyc npm test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
