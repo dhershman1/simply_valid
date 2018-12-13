@@ -7,6 +7,7 @@ import test from 'tape'
 
 test('Test noLetters', t => {
   t.ok(noLetters('1123450'), 'First results set no letters found')
+  t.ok(noLetters(), 'Empty Letters is false')
   t.notOk(noLetters('GHJffre1123'), 'Letters found in string')
   t.end()
 })

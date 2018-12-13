@@ -68,3 +68,42 @@ test('validate -- Objects with nested data', t => {
   t.same(v(data), { isValid: true })
   t.end()
 })
+
+test('validate -- handles schema invalid error', t => {
+  try {
+    validate(isNumber, 2)
+  } catch (err) {
+    t.same(err.message, 'The Schema should either be an Array or Object')
+    t.end()
+  }
+})
+
+test('validate -- handles schema not object for object data', t => {
+  try {
+    validate({ a: isNumber }, 2)
+  } catch (err) {
+    t.same(err.message, 'Data must be an object if the provided schema is an object')
+    t.end()
+  }
+})
+
+test('validate -- handles nested failures', t => {
+  const data = {
+    a: { b: 2 }
+  }
+
+  t.same(validate({ a: validate({ b: hasLetters }) }, data), { isValid: false, prop: 'b', rule: 'hasLetters', data: 2 })
+  t.end()
+})
+
+test('validate -- Handles mixed object', t => {
+  const data = {
+    a: 1,
+    b: 2,
+    c: ['a', 'b', 'c']
+  }
+  const results = validate({ a: isNumber, b: isPositive, c: hasLetters }, data)
+
+  t.same(results, { isValid: true })
+  t.end()
+})

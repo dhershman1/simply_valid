@@ -119,6 +119,7 @@ test('Testing isPhone', t => {
   t.ok(isPhone('8885559987'), 'Returned OK This is a phone format')
   t.notOk(isPhone('88-444-8877'), 'Returned invalid this is not a valid phone')
   t.notOk(isPhone('8888-4444-8877'), 'Returned invalid this is not a valid phone')
+  t.notOk(isPhone(), 'No value returns false')
   t.end()
 })
 

@@ -7,11 +7,7 @@ import { always, branch, curry, ensureArray, eq, type } from 'kyanite'
  * @param {Array} methods An Array of validation functions
  * @param {Array} data The data to validate
  */
-const arrValidate = curry((methods, data) => {
-  if (!Array.isArray(methods)) {
-    return data.every(methods)
-  }
-
+const arrValidate = methods => data => {
   for (let i = 0, len = methods.length; i < len; i++) {
     const fn = methods[i]
 
@@ -27,7 +23,7 @@ const arrValidate = curry((methods, data) => {
   return {
     isValid: true
   }
-})
+}
 
 /**
  * Runs a validation schema against a provided object of data
@@ -126,7 +122,7 @@ const validate = (schema, data) => {
   }
 
   if (Array.isArray(schema)) {
-    return arrValidate(schema, data)
+    return arrValidate(schema)(data)
   }
 
   return objValidate(schema, data)
