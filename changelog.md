@@ -49,6 +49,7 @@
 ### Improved
 
 - Converted more functionality to use Kyanite
+- Re wrote how the app handles all validation for better performance
 
 ## v4.0.2
 
