@@ -4,7 +4,7 @@
 [![Travis](https://img.shields.io/travis/dhershman1/simply_valid.svg?style=flat-square)](https://travis-ci.org/dhershman1/simply_valid)
 [![Coverage Status](https://img.shields.io/coveralls/github/dhershman1/simply_valid.svg?style=flat-square)](https://coveralls.io/github/dhershman1/simply_valid?branch=master)
 
-# Simply Valid
+![main-mid](https://user-images.githubusercontent.com/8997380/49965860-6977dc80-feec-11e8-90ae-3bcbe43639b3.png)
 
 A simple and lightweight validation system. Ships with prebuilt rules and accepts custom rules.
 
