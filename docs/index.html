@@ -158,17 +158,31 @@ validate({
 <ul>
 <li>Custom rules returns will be treated on a true/false basis so try to have them return a boolean</li>
 <li>If you want a multi param rules name to show up in a failure make sure you name the inner function</li>
-<li>The inner function should be the same name but with an underscore at the start (it will be formatted out)<br><code>`</code>js<br>import { validate } from 'simply_valid'</li>
+<li>The inner function should be the same name but with an underscore at the start (it will be formatted out)</li>
 </ul>
-<p>const isEven = val =&gt; val % 2 === 0<br>// For multi param functions you need to use the function keyword<br>// If you want the name to show up in failures, it also relies on partial execution<br>const notMin = function notMin (min) {<br>  // The inner function should be named the same but with a _ in front of it<br>  // (This gets removed when you get the rule)<br>  // This ensures you get an accurate rule back in your object<br>  return function _notMin (val) {<br>    return val !== min<br>  }<br>}<br>const schema = {<br>  foo: isEven,<br>  bar: [isEven, notMin(4)]<br>}</p>
-<p>validate(schema, { foo: 4, bar: 6 }) // =&gt; { isValid: true }<br>validate(schema, { foo:4, bar: 4 }) // =&gt; { isValid: false, rule: 'notMin', data: 4 }<br>validate(schema, { foo:4, bar: 5 }) // =&gt; { isValid: false, rule: 'isEven', data: 5 }</p>
-<pre class="prettyprint source"><code>
-## Return
+<pre class="prettyprint source lang-js"><code>import { validate } from 'simply_valid'
 
-Simply_Valid will return upon the first failing rule it finds, with information about the failure.
+const isEven = val => val % 2 === 0
+// For multi param functions you need to use the function keyword
+// If you want the name to show up in failures, it also relies on partial execution
+const notMin = function notMin (min) {
+  // The inner function should be named the same but with a _ in front of it
+  // (This gets removed when you get the rule)
+  // This ensures you get an accurate rule back in your object
+  return function _notMin (val) {
+    return val !== min
+  }
+}
+const schema = {
+  foo: isEven,
+  bar: [isEven, notMin(4)]
+}
 
-```js
-// Passing Validation
+validate(schema, { foo: 4, bar: 6 }) // => { isValid: true }
+validate(schema, { foo:4, bar: 4 }) // => { isValid: false, rule: 'notMin', data: 4 }
+validate(schema, { foo:4, bar: 5 }) // => { isValid: false, rule: 'isEven', data: 5 }</code></pre><h2 id="return">Return</h2>
+<p>Simply_Valid will return upon the first failing rule it finds, with information about the failure.</p>
+<pre class="prettyprint source lang-js"><code>// Passing Validation
 { isValid: true }
 
 // Failing returns will look like this
