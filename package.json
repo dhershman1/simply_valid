@@ -36,22 +36,22 @@
   },
   "homepage": "https://simply_valid.dusty.codes",
   "devDependencies": {
-    "@babel/core": "7.1.5",
-    "@babel/preset-env": "7.1.5",
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.3.1",
     "@killparadise/docdash": "github:dhershman1/docdash",
     "coveralls": "3.0.2",
-    "esm": "3.0.84",
+    "esm": "3.2.0",
     "jsdoc": "3.5.5",
     "jsdoc-to-markdown": "4.0.1",
     "nyc": "13.1.0",
-    "rollup": "0.67.4",
-    "rollup-plugin-babel": "4.0.3",
-    "rollup-plugin-cleanup": "3.0.0",
-    "rollup-plugin-filesize": "5.0.1",
-    "rollup-plugin-terser": "3.0.0",
+    "rollup": "1.1.2",
+    "rollup-plugin-babel": "4.3.2",
+    "rollup-plugin-cleanup": "3.1.1",
+    "rollup-plugin-filesize": "6.0.1",
+    "rollup-plugin-terser": "4.0.3",
     "standard": "12.0.1",
     "tap-spec": "5.0.0",
-    "tape": "4.9.1"
+    "tape": "4.9.2"
   },
   "nyc": {
     "include": [
@@ -68,6 +68,6 @@
     ]
   },
   "dependencies": {
-    "kyanite": "0.10.3"
+    "kyanite": "0.11.1"
   }
 }

@@ -8,11 +8,8 @@
 
 A simple and lightweight validation system. Ships with prebuilt rules and accepts custom rules.
 
-## Documentation
-
-Find individual documentation per function on the site: **[You can click here to go there](https://simply_valid.dusty.codes)**
-
 ## Content
+* [Documentation](http://simply_valid.dusty.codes)
 * [Philosophy](#philosophy)
 * [Parameters](#parameters)
 * [Usage](#usage)
